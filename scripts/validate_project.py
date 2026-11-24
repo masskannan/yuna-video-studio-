@@ -26,8 +26,12 @@ def main():
 
     if tl.get("mode", "cinema") not in VALID_MODES:
         fail(f"Invalid timeline.mode: {tl.get('mode')}")
-    if float(tl.get("total_sec", 0)) <= 0:
-        fail("timeline.total_sec must be > 0")
+    raw_t = tl.get("total_sec", 0)
+    if str(raw_t).strip().lower() != "auto":
+        try:
+            if float(raw_t) <= 0: fail("timeline.total_sec must be > 0")
+        except (TypeError, ValueError):
+            fail(f"Invalid timeline.total_sec: {raw_t}")
     scenes = tl.get("scenes") or []
     if not scenes:
         fail("timeline.scenes cannot be empty")

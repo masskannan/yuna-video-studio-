@@ -55,7 +55,13 @@ def get_duration(path):
 def get_timeline_sec():
     if os.path.exists(TIMELINE_FILE):
         with open(TIMELINE_FILE, "r", encoding="utf-8") as f:
-            return float(json.load(f).get("total_sec", 0.0))
+            tl = json.load(f)
+            raw_t = tl.get("total_sec", 0.0)
+            if str(raw_t).strip().lower() == "auto":
+                vis = max([float(s.get("end_sec", 0)) for s in (tl.get("scenes") or [])], default=0.0)
+                outro = float(tl.get("outro_sec", 2.0)) if not tl.get("outro_included", False) else 0.0
+                return vis + outro
+            return float(raw_t)
     return 0.0
 
 async def synth_edge(text, voice, raw_mp3):

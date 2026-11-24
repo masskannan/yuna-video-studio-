@@ -33,6 +33,8 @@ jobs:
         name: Plan Pro Flags
         run: python3 scripts/plan_flags.py
   voice-lane:
+    outputs:
+      matrix: ${{ steps.vplan.outputs.matrix }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,7 +44,8 @@ jobs:
           path: chunks/voice-cache
           key: voice-cache-${{ hashFiles('dialogue.json', 'narration.txt', 'glossary.json') }}
           restore-keys: voice-cache-
-      - name: Generate Signature Voice (-14 LUFS) + SRT
+      - id: vplan
+        name: Generate Signature Voice (-14 LUFS) + SRT
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
@@ -50,6 +53,8 @@ jobs:
           pip3 install --quiet --break-system-packages edge-tts
           mkdir -p out_audio
           python3 scripts/generate_voice.py
+          python3 scripts/plan_finalize.py
+          ONLY_CHUNK=\"${{ github.event.inputs.only_chunk }}\" python3 scripts/plan_chunks.py
       - uses: actions/upload-artifact@v4
         with:
           name: master-audio
@@ -91,14 +96,14 @@ jobs:
     strategy:
       fail-fast: false
       max-parallel: 15
-      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.voice-lane.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           name: master-audio
           path: chunks/master-audio
-      - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
+      - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/manifest.json ] && cp chunks/master-audio/manifest.json src/manifest.json || true) && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -140,7 +145,7 @@ jobs:
         with:
           name: master-audio
           path: chunks/master-audio
-      - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
+      - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/manifest.json ] && cp chunks/master-audio/manifest.json src/manifest.json || true) && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
