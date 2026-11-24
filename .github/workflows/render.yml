@@ -29,7 +29,7 @@ jobs:
           pip3 install --quiet --break-system-packages edge-tts
 
       - name: Install Remotion in Cloud
-        run: npm install --no-audit --no-fund && npx remotion browser ensure
+        run: npm install --legacy-peer-deps --no-audit --no-fund && npx remotion browser ensure
 
       - name: Render ${{ matrix.comp }}
         run: |
