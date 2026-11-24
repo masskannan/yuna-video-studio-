@@ -1,0 +1,18 @@
+[
+  {
+    "speaker": "YUNA",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.93,
+    "color": "#38BDF8",
+    "sfx": "whoosh",
+    "text": "வணக்கம்! இது நம் முதல் ப்ரொஃபஷனல் AI வீடியோ ஸ்டுடியோ."
+  },
+  {
+    "speaker": "KAVI",
+    "voice": "ta-IN-PallaviNeural",
+    "pitch": 1.03,
+    "color": "#FACC15",
+    "sfx": "ding",
+    "text": "இனி ஒரே கிளிக்கில் பல குரல்கள் மற்றும் கார்ட்டூன் வீடியோக்களை உருவாக்கலாம்."
+  }
+]
