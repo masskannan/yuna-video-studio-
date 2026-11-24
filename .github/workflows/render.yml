@@ -1,77 +1,137 @@
-name: Render 3-Part Video & Merge Final
+name: Pro Studio 30s Micro-Chunk Pipeline
 
 on:
   push:
     branches: [main]
-    paths:
-      - 'src/**'
-      - 'scripts/**'
-      - 'package.json'
+    paths: ['src/**', 'scripts/**', '*.json', 'narration.txt']
   workflow_dispatch:
+    inputs:
+      only_chunk:
+        description: 'Optional single chunk ID to re-render (e.g. 000)'
+        required: false
+        default: ''
+
+concurrency:
+  group: studio-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  render-parts:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.p.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: p
+        env:
+          ONLY_CHUNK: ${{ github.event.inputs.only_chunk || '' }}
+        run: python3 scripts/plan_chunks.py
+
+  voice-lane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate Signature Voice (-14 LUFS) + SRT
+        run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
+          pip3 install --quiet --break-system-packages edge-tts
+          mkdir -p out_audio
+          python3 scripts/generate_voice.py narration.txt out_audio/master_audio.mp3 out_audio/captions.srt ta
+      - uses: actions/upload-artifact@v4
+        with:
+          name: master-audio
+          path: out_audio/*
+          retention-days: 1
+
+  render-chunks:
+    needs: plan
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        comp: [Part1, Part2, Part3, Reel9x16]
+      max-parallel: 15
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Install Tamil Fonts + FFmpeg + Edge-TTS
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg fonts-noto-core fonts-lohit-taml python3-pip
-          pip3 install --quiet --break-system-packages edge-tts
-
-      - name: Install Remotion in Cloud
-        run: npm install --legacy-peer-deps --no-audit --no-fund && npx remotion browser ensure
-
-      - name: Render ${{ matrix.comp }}
+      - uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.cache/remotion
+          key: remotion-v2-${{ hashFiles('package.json') }}
+      - run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg fonts-noto-core fonts-lohit-taml
+          [ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund
+          npx remotion browser ensure
+      - name: Render 30s Chunk ${{ matrix.id }} (3x Self-Heal)
         run: |
           mkdir -p out
-          npx remotion render src/index.ts "${{ matrix.comp }}" "out/${{ matrix.comp }}.mp4" --concurrency=2
-
+          OUT="out/chunk_${{ matrix.id }}.mp4"
+          for attempt in 1 2 3; do
+            if npx remotion render src/index.ts MainMovie "$OUT" --frames=${{ matrix.range }} --muted --concurrency=2; then
+              DUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$OUT" || echo "0")
+              if [ -n "$DUR" ] && awk "BEGIN {exit !($DUR > 0.5)}"; then exit 0; fi
+            fi
+            rm -f "$OUT"; sleep 3
+          done
+          exit 1
       - uses: actions/upload-artifact@v4
         with:
-          name: chunk-${{ matrix.comp }}
-          path: out/${{ matrix.comp }}.mp4
+          name: chunk-${{ matrix.id }}
+          path: out/chunk_*.mp4
+          retention-days: 1
+
+  render-reel:
+    needs: plan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.cache/remotion
+          key: remotion-v2-${{ hashFiles('package.json') }}
+      - run: |
+          sudo apt-get update && sudo apt-get install -y fonts-noto-core fonts-lohit-taml
+          [ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund
+          npx remotion browser ensure
+          mkdir -p out
+          npx remotion render src/index.ts Reel9x16 out/reel_9x16.mp4 --muted --concurrency=2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chunk-reel
+          path: out/reel_9x16.mp4
           retention-days: 1
 
   merge-final:
-    needs: render-parts
+    needs: [plan, voice-lane, render-chunks, render-reel]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           path: chunks
-
-      - name: Merge Part1 + Part2 + Part3 into final_3min.mp4
+      - name: Quality Gate, Mux Audio & Build 480p Proxy
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg
           mkdir -p final
-          printf "file '%s'\nfile '%s'\nfile '%s'\n" \
-            "$PWD/chunks/chunk-Part1/Part1.mp4" \
-            "$PWD/chunks/chunk-Part2/Part2.mp4" \
-            "$PWD/chunks/chunk-Part3/Part3.mp4" > list.txt
-          ffmpeg -y -f concat -safe 0 -i list.txt -c copy final/final_3min.mp4
-          cp chunks/chunk-Reel9x16/Reel9x16.mp4 final/reel_9x16.mp4
-
-      - name: Send Preview to Telegram (if configured)
+          python3 scripts/verify_merge.py
+          ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af apad -c:v copy -c:a aac -b:a 192k -shortest final/reel_9x16.mp4
+          cp chunks/master-audio/captions.srt final/captions.srt || true
+      - name: Send 480p Proxy to Telegram (if configured)
         env:
           BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "caption=YUNA 35s Reel Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
-          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "document=@final/final_3min.mp4" -F "caption=YUNA 3-Min Final Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendDocument" > /dev/null || true
-
-      - name: Upload Final 3-Min & 9:16 Videos
-        uses: actions/upload-artifact@v4
+          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "caption=YUNA 480p Proxy Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+      - uses: actions/upload-artifact@v4
         with:
-          name: final-videos
-          path: final/*.mp4
+          name: pro-studio-delivery-pack
+          path: final/*
           retention-days: 2
