@@ -142,6 +142,10 @@ jobs:
           CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "caption=YUNA 480p Proxy Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+      - name: Generate A/B Thumbnails
+        run: |
+          sudo apt-get update && sudo apt-get install -y fonts-noto-core fonts-lohit-taml python3-pil libraqm0
+          python3 scripts/generate_thumbnails.py
       - uses: actions/upload-artifact@v4
         with:
           name: pro-studio-delivery-pack
