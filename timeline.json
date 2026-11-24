@@ -23,5 +23,6 @@
   ],
   "mode": "cartoon",
   "use_manim": false,
-  "use_blender": false
+  "use_blender": false,
+  "enable_overlays": true
 }

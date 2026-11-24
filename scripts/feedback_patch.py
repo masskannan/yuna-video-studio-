@@ -13,24 +13,25 @@ def main():
     if len(sys.argv) < 2:
         sys.exit("Usage: python3 scripts/feedback_patch.py \"<feedback>\"")
     fb = " ".join(sys.argv[1:])
-    backups = {f: open(f, "r", encoding="utf-8").read() for f in ("timeline.json", "characters.json", "dialogue.json") if os.path.exists(f)}
-    cur = {k: json.loads(backups[f"{k}.json"]) for k in ("timeline", "characters", "dialogue")}
+    files = ("timeline.json", "characters.json", "dialogue.json", "overlays.json")
+    backups = {f: open(f, "r", encoding="utf-8").read() for f in files if os.path.exists(f)}
+    cur = {k: json.loads(backups.get(f"{k}.json", "[]" if k in ("dialogue", "overlays") else "{}")) for k in ("timeline", "characters", "dialogue", "overlays")}
     sys_msg = (
         "You are a surgical video patcher. Given current JSONs and user feedback (in Tamil or English), "
-        "return ONLY a JSON object containing ONLY the changed keys ('characters', 'timeline', or 'dialogue'). "
-        "For 'characters' and 'timeline', you may return partial nested dicts with only changed fields. "
-        "For 'dialogue', return the full updated list if dialogue changed. Do NOT alter anything unrequested."
+        "return ONLY a JSON object containing ONLY the changed keys ('characters', 'timeline', 'dialogue', or 'overlays'). "
+        "For 'characters' and 'timeline', you may return partial nested dicts. For 'dialogue' or 'overlays', return the full updated list. "
+        "Do NOT alter anything unrequested."
     )
     patch = call_groq(sys_msg, f"Current:\n{json.dumps(cur, ensure_ascii=False)}\nFeedback:\n{fb}")
     try:
         for k in ("characters", "timeline"):
             if k in patch and isinstance(patch[k], dict):
-                merged = deep_merge(cur[k], patch[k])
-                json.dump(merged, open(f"{k}.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+                json.dump(deep_merge(cur[k], patch[k]), open(f"{k}.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
                 print(f"Patched {k}.json")
-        if "dialogue" in patch and isinstance(patch["dialogue"], list):
-            json.dump(patch["dialogue"], open("dialogue.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-            print("Patched dialogue.json")
+        for lk in ("dialogue", "overlays"):
+            if lk in patch and isinstance(patch[lk], list):
+                json.dump(patch[lk], open(f"{lk}.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+                print(f"Patched {lk}.json")
         subprocess.run(["python3", "scripts/validate_project.py"], check=True)
         subprocess.run(["git", "diff", "--stat"])
     except Exception:

@@ -1,3 +1,4 @@
+import { OverlayLayer } from "./OverlayLayer";
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import timelineRaw from "../timeline.json";
@@ -145,6 +146,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         </AbsoluteFill>
       ) : null}
 
+      <OverlayLayer />
       <Captions />
     </AbsoluteFill>
   );

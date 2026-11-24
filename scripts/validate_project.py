@@ -70,6 +70,24 @@ def main():
         if c.get("dress_style", "casual") not in VALID_DRESS:
             fail(f"char {name} invalid dress_style")
 
+
+    if os.path.exists("overlays.json"):
+        ovs = load_req("overlays.json")
+        if not isinstance(ovs, list):
+            fail("overlays.json must be a list")
+        seen_ids = set()
+        for i, o in enumerate(ovs):
+            oid = str(o.get("id", "")).strip()
+            if not oid or oid in seen_ids:
+                fail(f"overlay[{i}] missing or duplicate id")
+            seen_ids.add(oid)
+            if not str(o.get("text", "")).strip():
+                fail(f"overlay[{i}] empty text")
+            if float(o.get("end_sec", 0)) <= float(o.get("start_sec", 0)):
+                fail(f"overlay[{i}] end_sec must be > start_sec")
+            if not (0.0 <= float(o.get("x", 0.5)) <= 1.0 and 0.0 <= float(o.get("y", 0.5)) <= 1.0):
+                fail(f"overlay[{i}] x,y must be in [0.0, 1.0]")
+
     print("VALIDATION PASSED (timeline + dialogue + characters + brand OK)")
 
 if __name__ == "__main__":
