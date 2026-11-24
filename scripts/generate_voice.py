@@ -1,4 +1,4 @@
-import asyncio, hashlib, json, os, subprocess, sys, urllib.request, uuid
+import asyncio, hashlib, json, os, subprocess, urllib.request, uuid
 import edge_tts
 
 DIALOGUE_FILE = "dialogue.json"
@@ -70,14 +70,12 @@ async def synth_edge(text, voice, raw_mp3):
             if ctype == "audio":
                 f.write(chunk["data"])
             elif ctype == "WordBoundary":
-                st = chunk["offset"] / 10_000_000.0
-                dur = chunk["duration"] / 10_000_000.0
+                st, dur = chunk["offset"] / 10_000_000.0, chunk["duration"] / 10_000_000.0
                 w = chunk.get("text", "").strip()
                 if w:
                     words.append({"word": w, "start": st, "end": st + dur})
             elif ctype == "SentenceBoundary":
-                st = chunk["offset"] / 10_000_000.0
-                dur = chunk["duration"] / 10_000_000.0
+                st, dur = chunk["offset"] / 10_000_000.0, chunk["duration"] / 10_000_000.0
                 s = chunk.get("text", "").strip()
                 if s:
                     sentences.append({"text": s, "start": st, "end": st + dur})
@@ -88,8 +86,7 @@ def groq_whisper_words(audio_path):
     if not api_key:
         return []
     boundary = uuid.uuid4().hex
-    with open(audio_path, "rb") as f:
-        audio_bytes = f.read()
+    audio_bytes = open(audio_path, "rb").read()
     parts = []
     for k, v in [("model", "whisper-large-v3"), ("response_format", "verbose_json"), ("timestamp_granularities[]", "word")]:
         parts.append(f"--{boundary}\r\nContent-Disposition: form-data; name=\"{k}\"\r\n\r\n{v}\r\n".encode())
@@ -114,8 +111,7 @@ def proportional_words(text, total_dur, offset=0.0):
         return []
     weights = [max(1, len(t)) for t in tokens]
     tw = sum(weights)
-    cur = offset
-    out = []
+    cur, out = offset, []
     for t, w in zip(tokens, weights):
         dur = total_dur * (w / tw)
         out.append({"word": t, "start": cur, "end": cur + dur})
@@ -136,9 +132,8 @@ def process_line(line):
     raw_dur = get_duration(raw_mp3)
 
     p = max(0.75, min(1.35, line["pitch"]))
-    atempo = 1.0 / p
     af = (
-        f"asetrate=24000*{p:.4f},aresample=48000,atempo={atempo:.4f},"
+        f"asetrate=24000*{p:.4f},aresample=48000,atempo={1.0/p:.4f},"
         "equalizer=f=120:width_type=h:width=100:g=3.5,"
         "equalizer=f=3200:width_type=h:width=800:g=2.5,"
         "acompressor=threshold=-18dB:ratio=3:attack=10:release=120"
@@ -226,7 +221,7 @@ def main():
         for i, (spath, st) in enumerate(sfx_events, start=1):
             cmd.extend(["-i", spath])
             ms = int(round(st * 1000))
-            fc_parts.append(f"[{i}:a]aresample=48000,adelay={ms}|{ms},volume=0.45[s{i}]")
+            fc_parts.append(f"[{i}:a]aresample=48000,adelay={ms}:all=1,volume=0.45[s{i}]")
             mix_labels.append(f"[s{i}]")
         fc_parts.append(f"{''.join(mix_labels)}amix=inputs={len(mix_labels)}:duration=first:normalize=0[out]")
         cmd.extend(["-filter_complex", ";".join(fc_parts), "-map", "[out]", VOICE_SFX_WAV])
@@ -238,10 +233,10 @@ def main():
         print(f"Mixing BGM with sidechaincompress ducking (target={target:.2f}s) -> -14 LUFS, TP -1.5")
         fc = (
             f"[0:a]apad=whole_dur={target:.3f}[v_pad];"
-            f"[1:a]apad=whole_dur={target:.3f},asplit=2[v_mix][v_sc];"
+            f"[1:a]apad=whole_dur={target:.3f}[v_sc];"
             "[2:a]aresample=48000,volume=0.22[bgm];"
             "[bgm][v_sc]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=350:makeup=1[bgm_ducked];"
-            "[v_mix][bgm_ducked]amix=inputs=2:duration=first:dropout_transition=2,"
+            "[v_pad][bgm_ducked]amix=inputs=2:duration=first:dropout_transition=2,"
             "loudnorm=I=-14:TP=-1.5:LRA=11[out]"
         )
         subprocess.run([
