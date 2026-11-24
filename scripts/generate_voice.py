@@ -171,11 +171,7 @@ def main():
     if words:
         print(f"Using edge-tts WordBoundary ({len(words)} words)")
         words = [{"word": w["word"], "start": round(w["start"] * scale, 3), "end": round(w["end"] * scale, 3)} for w in words]
-    elif scaled_sentences:
-        words = sentence_bounded_words(scaled_sentences)
-        print(f"Using sentence-bounded proportional ({len(words)} words, {len(scaled_sentences)} sentences)")
     else:
-        print("No edge-tts boundaries, trying Groq whisper-large-v3...")
         g_words = groq_whisper_words(VOICE_WAV)
         nar_tokens = [t for t in text.split() if t.strip()]
         if g_words and len(g_words) == len(nar_tokens):
@@ -186,10 +182,10 @@ def main():
             print(f"Using Groq Whisper mapped to narration.txt ({len(words)} words)")
         elif scaled_sentences:
             words = sentence_bounded_words(scaled_sentences)
-            print(f"Groq count mismatch, using sentence-bounded proportional ({len(words)} words)")
+            print(f"Using sentence-bounded proportional ({len(words)} words, {len(scaled_sentences)} sentences)")
         else:
-            print("Using full proportional word timing fallback")
             words = proportional_words(text, proc_dur)
+            print("Using full proportional word timing fallback")
 
     with open(WORDS_JSON, "w", encoding="utf-8") as f:
         json.dump(words, f, ensure_ascii=False, indent=2)
