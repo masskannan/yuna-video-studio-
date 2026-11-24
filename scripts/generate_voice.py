@@ -247,7 +247,10 @@ def main():
         voice_bus = VOICE_SFX_WAV
         print(f"Mixed {len(sfx_events)} CC0 SFX into Bus 2")
 
-    if os.path.exists(BGM_FILE):
+    mood = str(json.load(open(TIMELINE_FILE, "r", encoding="utf-8")).get("bgm", "default")) if os.path.exists(TIMELINE_FILE) else "default"
+    mood_bgm = f"assets/audio/bgm_{mood}.mp3"
+    active_bgm = mood_bgm if os.path.exists(mood_bgm) else BGM_FILE
+    if os.path.exists(active_bgm):
         print(f"Mixing BGM with sidechaincompress ducking (target={target:.2f}s) -> -14 LUFS, TP -1.5")
         fc = (
             f"[0:a]apad=whole_dur={target:.3f}[v_pad];"
@@ -255,10 +258,10 @@ def main():
             "[2:a]aresample=48000,volume=0.22[bgm];"
             "[bgm][v_sc]sidechaincompress=threshold=0.02:ratio=6:attack=40:release=350:makeup=1[bgm_ducked];"
             "[v_pad][bgm_ducked]amix=inputs=2:duration=first:dropout_transition=2,"
-            "loudnorm=I=-14:TP=-1.5:LRA=11[out]"
+            f"afade=t=in:st=0:d={min(1.0, target/2.0):.3f},afade=t=out:st={max(0.0, target - min(1.0, target/2.0)):.3f}:d={min(1.0, target/2.0):.3f},loudnorm=I=-14:TP=-1.5:LRA=11[out]"
         )
         subprocess.run([
-            "ffmpeg", "-y", "-i", voice_bus, "-i", VOICE_WAV, "-stream_loop", "-1", "-i", BGM_FILE,
+            "ffmpeg", "-y", "-i", voice_bus, "-i", VOICE_WAV, "-stream_loop", "-1", "-i", active_bgm,
             "-filter_complex", fc, "-map", "[out]", "-t", f"{target:.3f}",
             "-ar", "48000", "-b:a", "192k", MASTER_MP3
         ], check=True)

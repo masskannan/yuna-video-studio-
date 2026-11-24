@@ -49,6 +49,18 @@ def main():
     }
     os.makedirs(os.path.dirname(MANIFEST_OUT), exist_ok=True)
     json.dump(manifest, open(MANIFEST_OUT, "w", encoding="utf-8"), indent=2)
+
+    chaps = []
+    for idx, s in enumerate(tl.get("scenes") or []):
+        st = max(0, int(round(float(s.get("start_sec", 0)))))
+        if st >= total_sec:
+            continue
+        mm, ss = divmod(st, 60)
+        lbl = str(s.get("heading", f"Part {idx+1}")).strip()
+        chaps.append(f"{mm:02d}:{ss:02d} {lbl}")
+    if chaps:
+        open("chunks/master-audio/chapters.txt", "w", encoding="utf-8").write("\n".join(chaps) + "\n")
+
     print(f"Manifest Finalized: {total_frames} frames ({total_sec}s, hash={digest})")
 
 if __name__ == "__main__":

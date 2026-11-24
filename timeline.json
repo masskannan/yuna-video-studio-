@@ -24,5 +24,7 @@
   "mode": "cartoon",
   "use_manim": false,
   "use_blender": false,
-  "enable_overlays": true
+  "enable_overlays": true,
+  "safe_zone_preview": false,
+  "bgm": "default"
 }

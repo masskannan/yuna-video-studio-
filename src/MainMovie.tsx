@@ -1,3 +1,4 @@
+import { SafeZoneGuide } from "./SafeZoneGuide";
 import { OverlayLayer } from "./OverlayLayer";
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
@@ -148,6 +149,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
 
       <OverlayLayer />
       <Captions />
+      <SafeZoneGuide />
     </AbsoluteFill>
   );
 };

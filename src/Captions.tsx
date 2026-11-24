@@ -46,7 +46,7 @@ export const Captions: React.FC = () => {
         position: "absolute",
         left: isVertical ? 60 : 120,
         right: isVertical ? 60 : 120,
-        bottom: isVertical ? 400 : 90,
+        bottom: isVertical ? 480 : 90,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

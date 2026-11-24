@@ -40,6 +40,22 @@ def call_groq(system_prompt, user_prompt):
             if e.code in (400, 404, 429):
                 continue
             sys.exit(last_err)
+    nv = os.environ.get("NVIDIA_API_KEY", "").strip()
+    if not nv and os.path.exists(".env"):
+        for line in open(".env", "r", encoding="utf-8"):
+            if line.startswith("NVIDIA_API_KEY="): nv = line.split("=", 1)[1].strip().strip('"').strip("'")
+    if nv:
+        nreq = urllib.request.Request(
+            "[https://integrate.api.nvidia.com/v1/chat/completions](https://integrate.api.nvidia.com/v1/chat/completions)",
+            data=json.dumps({"model": "meta/llama-3.1-70b-instruct", "temperature": 0.2, "messages": [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}]}).encode("utf-8"),
+            headers={"Authorization": f"Bearer {nv}", "Content-Type": "application/json", "User-Agent": "Mozilla/5.0"},
+            method="POST",
+        )
+        with urllib.request.urlopen(nreq, timeout=60) as resp:
+            txt = json.loads(resp.read().decode("utf-8"))["choices"][0]["message"]["content"]
+            clean = txt.strip().strip("`").strip()
+            if clean.startswith("json"): clean = clean[4:].strip()
+            return json.loads(clean)
     sys.exit(f"All Groq models failed: {last_err}")
 
 def main():
