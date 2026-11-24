@@ -32,19 +32,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Generate Signature Voice (-14 LUFS) + SRT
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
           pip3 install --quiet --break-system-packages edge-tts
           mkdir -p out_audio
-          python3 scripts/generate_voice.py narration.txt out_audio/master_audio.mp3 out_audio/captions.srt ta
+          python3 scripts/generate_voice.py
       - uses: actions/upload-artifact@v4
         with:
           name: master-audio
-          path: out_audio/*
+          path: chunks/master-audio/*
           retention-days: 1
 
   render-chunks:
-    needs: plan
+    needs: [plan, voice-lane]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -52,6 +54,11 @@ jobs:
       matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: master-audio
+          path: chunks/master-audio
+      - run: cp chunks/master-audio/words.json src/words.json
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -84,10 +91,15 @@ jobs:
           retention-days: 1
 
   render-reel:
-    needs: plan
+    needs: [plan, voice-lane]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: master-audio
+          path: chunks/master-audio
+      - run: cp chunks/master-audio/words.json src/words.json
       - uses: actions/setup-node@v4
         with:
           node-version: '20'

@@ -1,3 +1,4 @@
+import { Captions } from "./Captions";
 import React from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import timeline from '../timeline.json';
@@ -24,6 +25,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
       <div style={{ width: '100%', height: 10, background: '#1E293B', borderRadius: 999, overflow: 'hidden' }}>
         <div style={{ width: `${prog}%`, height: '100%', background: acc }} />
       </div>
+          <Captions />
     </AbsoluteFill>
   );
 };
