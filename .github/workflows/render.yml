@@ -54,7 +54,7 @@ jobs:
           mkdir -p out_audio
           python3 scripts/generate_voice.py
           python3 scripts/plan_finalize.py
-          ONLY_CHUNK=\"${{ github.event.inputs.only_chunk }}\" python3 scripts/plan_chunks.py
+          ONLY_CHUNK="${{ github.event.inputs.only_chunk }}" python3 scripts/plan_chunks.py
       - uses: actions/upload-artifact@v4
         with:
           name: master-audio
