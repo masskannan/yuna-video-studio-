@@ -164,6 +164,7 @@ jobs:
 
   merge-final:
     needs: [plan, voice-lane, render-chunks, render-reel]
+    if: ${{ !cancelled() && needs.voice-lane.result == 'success' && needs.render-chunks.result == 'success' && needs.render-reel.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
