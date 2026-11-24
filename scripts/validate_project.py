@@ -1,6 +1,6 @@
 import json, os, re, sys
 
-VALID_MODES = {"cinema", "cartoon", "ui_ux"}
+VALID_MODES = {"cinema", "cartoon", "ui_ux", "split_pip"}
 VALID_SFX = {"", "pop", "whoosh", "click", "ding", "boing"}
 VALID_HATS = {"none", "cap", "crown", "beanie"}
 VALID_MUSTACHES = {"none", "handlebar", "thick", "pencil"}
@@ -24,6 +24,8 @@ def main():
     ch = load_req("characters.json")
     load_req("brand.json")
 
+    if str(tl.get("grade", "none")) not in {"none", "cyber", "warm", "noir"}:
+        fail(f"Invalid timeline.grade: {tl.get('grade')}")
     if tl.get("mode", "cinema") not in VALID_MODES:
         fail(f"Invalid timeline.mode: {tl.get('mode')}")
     raw_t = tl.get("total_sec", 0)

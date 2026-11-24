@@ -1,3 +1,5 @@
+import { SplitPip } from "./modes/SplitPip";
+import { CounterHook } from "./modes/CounterHook";
 import { SafeZoneGuide } from "./SafeZoneGuide";
 import { OverlayLayer } from "./OverlayLayer";
 import React from "react";
@@ -53,6 +55,8 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
   const scenes = buildSubScenes(fps, durationInFrames);
   const totalParts = Array.isArray(timeline.scenes) && timeline.scenes.length ? timeline.scenes.length : 1;
   const bgBottom = brand.bg_bottom || "#070913";
+  const gradeMap: Record<string, string> = { cyber: "contrast(1.12) saturate(1.25) hue-rotate(-8deg)", warm: "sepia(0.18) saturate(1.15) contrast(1.05)", noir: "grayscale(1) contrast(1.25)", none: "none" };
+  const gradeFilter = gradeMap[String(timeline.grade || "none")] || "none";
   const primary = brand.primary_color || "#38BDF8";
 
   const active = scenes.find((s) => frame >= s.startFrame && frame < s.endFrame) || scenes[scenes.length - 1];
@@ -82,7 +86,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
   const charEntries = Object.entries(characters).slice(0, 2);
 
   return (
-    <AbsoluteFill style={{ backgroundColor: bgBottom, overflow: "hidden", fontFamily: '"Noto Sans Tamil", "Space Grotesk", system-ui, sans-serif' }}>
+    <AbsoluteFill style={{ backgroundColor: bgBottom, filter: gradeFilter, overflow: "hidden", fontFamily: '"Noto Sans Tamil", "Space Grotesk", system-ui, sans-serif' }}>
       {scenes.map((sc, idx) => {
         const dur = Math.max(3, sc.endFrame - sc.startFrame);
         const fade = Math.max(1, Math.min(15, Math.floor(dur / 3)));
@@ -113,6 +117,8 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
               />
             ))}
           </div>
+        ) : mode === "split_pip" ? (
+          <SplitPip wide={wide} frame={frame} accent={active.accent} heading={active.heading} charName={activeSpeaker} charCfg={characters[activeSpeaker] || charEntries[0]?.[1] || {}} mouth={activeLip ? activeLip.mouth : "X"} />
         ) : mode === "ui_ux" ? (
           <div style={{ paddingBottom: wide ? 70 : 280 }}>
             <UiUxOverlay frame={frame} accent={active.accent} heading={active.heading} wide={wide} />
@@ -147,6 +153,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         </AbsoluteFill>
       ) : null}
 
+      <CounterHook />
       <OverlayLayer />
       <Captions />
       <SafeZoneGuide />

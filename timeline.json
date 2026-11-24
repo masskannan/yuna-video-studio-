@@ -26,5 +26,8 @@
   "use_blender": false,
   "enable_overlays": true,
   "safe_zone_preview": false,
-  "bgm": "default"
+  "bgm": "default",
+  "grade": "none",
+  "hook_text": "",
+  "counters": []
 }
