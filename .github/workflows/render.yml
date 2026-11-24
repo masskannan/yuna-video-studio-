@@ -1,0 +1,78 @@
+name: Render 3-Part Video & Merge Final
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+      - 'package.json'
+  workflow_dispatch:
+
+jobs:
+  render-parts:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        comp: [Part1, Part2, Part3, Reel9x16]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Tamil Fonts + FFmpeg + Edge-TTS
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-core fonts-lohit-taml python3-pip
+          pip3 install --quiet --break-system-packages edge-tts
+
+      - name: Install Remotion in Cloud
+        run: npm install --no-audit --no-fund && npx remotion browser ensure
+
+      - name: Render ${{ matrix.comp }}
+        run: |
+          mkdir -p out
+          npx remotion render src/index.ts "${{ matrix.comp }}" "out/${{ matrix.comp }}.mp4" --concurrency=2
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chunk-${{ matrix.comp }}
+          path: out/${{ matrix.comp }}.mp4
+          retention-days: 1
+
+  merge-final:
+    needs: render-parts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: chunks
+
+      - name: Merge Part1 + Part2 + Part3 into final_3min.mp4
+        run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+          mkdir -p final
+          printf "file '%s'\nfile '%s'\nfile '%s'\n" \
+            "$PWD/chunks/chunk-Part1/Part1.mp4" \
+            "$PWD/chunks/chunk-Part2/Part2.mp4" \
+            "$PWD/chunks/chunk-Part3/Part3.mp4" > list.txt
+          ffmpeg -y -f concat -safe 0 -i list.txt -c copy final/final_3min.mp4
+          cp chunks/chunk-Reel9x16/Reel9x16.mp4 final/reel_9x16.mp4
+
+      - name: Send Preview to Telegram (if configured)
+        if: ${{ secrets.TELEGRAM_BOT_TOKEN != '' && secrets.TELEGRAM_CHAT_ID != '' }}
+        env:
+          BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "caption=YUNA 35s Reel Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null
+          curl -s -F "chat_id=$CHAT" -F "document=@final/final_3min.mp4" -F "caption=YUNA 3-Min Final Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendDocument" > /dev/null
+
+      - name: Upload Final 3-Min & 9:16 Videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: final-videos
+          path: final/*.mp4
+          retention-days: 2
