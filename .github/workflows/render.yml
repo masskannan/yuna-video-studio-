@@ -62,13 +62,12 @@ jobs:
           cp chunks/chunk-Reel9x16/Reel9x16.mp4 final/reel_9x16.mp4
 
       - name: Send Preview to Telegram (if configured)
-        if: ${{ secrets.TELEGRAM_BOT_TOKEN != '' && secrets.TELEGRAM_CHAT_ID != '' }}
         env:
           BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "caption=YUNA 35s Reel Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null
-          curl -s -F "chat_id=$CHAT" -F "document=@final/final_3min.mp4" -F "caption=YUNA 3-Min Final Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendDocument" > /dev/null
+          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "caption=YUNA 35s Reel Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "document=@final/final_3min.mp4" -F "caption=YUNA 3-Min Final Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendDocument" > /dev/null || true
 
       - name: Upload Final 3-Min & 9:16 Videos
         uses: actions/upload-artifact@v4
