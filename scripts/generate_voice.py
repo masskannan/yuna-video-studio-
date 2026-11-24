@@ -165,6 +165,17 @@ def process_line(line):
     print(f"Using {mode} [{line['speaker']}] ({len(wlist)} words, {proc_dur:.2f}s)")
     return wav_path, meta
 
+
+def write_lipsync(words, out_path):
+    shapes = ["B", "C", "D", "E", "C"]
+    frames = []
+    for idx, w in enumerate(words):
+        st, en = float(w["start"]), float(w["end"])
+        mid = (st + en) / 2.0
+        frames.append({"start": round(st, 3), "end": round(mid, 3), "mouth": shapes[idx % len(shapes)], "speaker": w.get("speaker", "YUNA")})
+        frames.append({"start": round(mid, 3), "end": round(en, 3), "mouth": shapes[(idx + 2) % len(shapes)], "speaker": w.get("speaker", "YUNA")})
+    json.dump(frames, open(out_path, "w", encoding="utf-8"), ensure_ascii=False)
+
 def write_srt(words):
     lines, idx = [], 1
     for i in range(0, len(words), 5):
@@ -212,6 +223,7 @@ def main():
     json.dump(all_words, open(WORDS_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     json.dump(line_timings, open(LINE_TIMINGS_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     write_srt(all_words)
+    write_lipsync(all_words, os.path.join(OUT_DIR, 'lipsync.json'))
 
     voice_bus = VOICE_WAV
     if sfx_events:

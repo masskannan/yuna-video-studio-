@@ -58,7 +58,7 @@ jobs:
         with:
           name: master-audio
           path: chunks/master-audio
-      - run: cp chunks/master-audio/words.json src/words.json
+      - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -99,7 +99,7 @@ jobs:
         with:
           name: master-audio
           path: chunks/master-audio
-      - run: cp chunks/master-audio/words.json src/words.json
+      - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
       - uses: actions/setup-node@v4
         with:
           node-version: '20'

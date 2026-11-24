@@ -6,7 +6,20 @@
   "reel_sec": 35,
   "lang": "ta",
   "scenes": [
-    { "part": 1, "start_sec": 0, "end_sec": 30, "heading": "முதல் ப்ரொஃபஷனல் AI வீடியோ", "accent": "#38BDF8" },
-    { "part": 2, "start_sec": 30, "end_sec": 60, "heading": "30s Micro-Chunk + -14 LUFS Voice", "accent": "#22C55E" }
-  ]
+    {
+      "part": 1,
+      "start_sec": 0,
+      "end_sec": 30,
+      "heading": "முதல் ப்ரொஃபஷனல் AI வீடியோ",
+      "accent": "#38BDF8"
+    },
+    {
+      "part": 2,
+      "start_sec": 30,
+      "end_sec": 60,
+      "heading": "30s Micro-Chunk + -14 LUFS Voice",
+      "accent": "#22C55E"
+    }
+  ],
+  "mode": "cartoon"
 }

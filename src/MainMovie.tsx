@@ -2,28 +2,26 @@ import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import timelineRaw from "../timeline.json";
 import brandRaw from "../brand.json";
+import charsRaw from "../characters.json";
+import wordsRaw from "./words.json";
+import lipsyncRaw from "./lipsync.json";
 import { Captions } from "./Captions";
+import { CharacterRig, CharConfig } from "./rig/CharacterRig";
+import { UiUxOverlay } from "./modes/UiUxOverlay";
 
 const timeline = timelineRaw as Record<string, any>;
 const brand = brandRaw as Record<string, any>;
+const characters = charsRaw as Record<string, CharConfig>;
+const words = (wordsRaw as any[]) || [];
+const lipsync = (lipsyncRaw as any[]) || [];
 const BG_TINTS = ["#171333", "#261136", "#0D2B2E", "#2B1612", "#1A2238", "#2E1A2B"];
 
-type SubScene = {
-  part: number;
-  heading: string;
-  accent: string;
-  startFrame: number;
-  endFrame: number;
-  bgTop: string;
-};
+type SubScene = { part: number; heading: string; accent: string; startFrame: number; endFrame: number; bgTop: string; };
 
 function buildSubScenes(fps: number, durationInFrames: number): SubScene[] {
   const raw = Array.isArray(timeline.scenes) ? timeline.scenes : [];
   if (!raw.length) {
-    return [{
-      part: 1, heading: brand.name || "YUNA Studio", accent: brand.primary_color || "#38BDF8",
-      startFrame: 0, endFrame: durationInFrames, bgTop: brand.bg_top || BG_TINTS[0],
-    }];
+    return [{ part: 1, heading: brand.name || "YUNA Studio", accent: brand.primary_color || "#38BDF8", startFrame: 0, endFrame: durationInFrames, bgTop: brand.bg_top || BG_TINTS[0] }];
   }
   const out: SubScene[] = [];
   const stepFrames = fps * 10;
@@ -48,6 +46,8 @@ function buildSubScenes(fps: number, durationInFrames: number): SubScene[] {
 export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
+  const time = frame / fps;
+  const mode = String(timeline.mode || "cinema");
   const scenes = buildSubScenes(fps, durationInFrames);
   const totalParts = Array.isArray(timeline.scenes) && timeline.scenes.length ? timeline.scenes.length : 1;
   const bgBottom = brand.bg_bottom || "#070913";
@@ -59,14 +59,8 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
   const partEnd = partScenes[partScenes.length - 1]?.endFrame ?? durationInFrames;
   const partDur = Math.max(4, partEnd - partStart);
   const hFade = Math.max(1, Math.min(10, Math.floor(partDur / 3)));
-  const localFrame = Math.max(0, frame - partStart);
-  const pop = spring({ frame: localFrame, fps, config: { damping: 14, stiffness: 130 } });
-  const headingOpacity = interpolate(
-    frame,
-    [partStart, partStart + hFade, partEnd - hFade, partEnd],
-    [0, 1, 1, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
+  const pop = spring({ frame: Math.max(0, frame - partStart), fps, config: { damping: 14, stiffness: 130 } });
+  const headingOpacity = interpolate(frame, [partStart, partStart + hFade, partEnd - hFade, partEnd], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const prog = interpolate(frame, [0, Math.max(1, durationInFrames)], [0, 100], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
 
   const introFrames = Math.min(45, Math.floor(durationInFrames * 0.15));
@@ -80,39 +74,53 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
     ? (outroEnd > outroStart ? interpolate(frame, [outroStart, outroEnd], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) : 1)
     : 0;
 
+  const activeLip = lipsync.find((l) => time >= l.start && time <= l.end);
+  const activeWord = words.find((w) => time >= w.start && time <= w.end + 0.15);
+  const activeSpeaker = activeLip?.speaker || activeWord?.speaker || Object.keys(characters)[0] || "YUNA";
+  const charEntries = Object.entries(characters).slice(0, 2);
+
   return (
     <AbsoluteFill style={{ backgroundColor: bgBottom, overflow: "hidden", fontFamily: '"Noto Sans Tamil", "Space Grotesk", system-ui, sans-serif' }}>
       {scenes.map((sc, idx) => {
         const dur = Math.max(3, sc.endFrame - sc.startFrame);
         const fade = Math.max(1, Math.min(15, Math.floor(dur / 3)));
         if (frame < sc.startFrame - fade || frame > sc.endFrame + fade) return null;
-
         const opacity = idx === 0 ? 1 : interpolate(frame, [sc.startFrame - fade, sc.startFrame], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const zoom = interpolate(frame, [sc.startFrame, sc.endFrame], [1.05, 1.12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const panX = interpolate(frame, [sc.startFrame, sc.endFrame], [idx % 2 === 0 ? -12 : 12, idx % 2 === 0 ? 12 : -12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-
-        return (
-          <AbsoluteFill
-            key={idx}
-            style={{
-              opacity,
-              background: `radial-gradient(circle at 30% 25%, ${sc.bgTop} 0%, ${bgBottom} 75%)`,
-              transform: `scale(${zoom}) translate3d(${panX}px, 0, 0)`,
-            }}
-          />
-        );
+        return <AbsoluteFill key={idx} style={{ opacity, background: `radial-gradient(circle at 30% 25%, ${sc.bgTop} 0%, ${bgBottom} 75%)`, transform: `scale(${zoom}) translate3d(${panX}px, 0, 0)` }} />;
       })}
 
-      <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "72px 96px" : "110px 56px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
+      <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "96px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ fontSize: wide ? 26 : 30, fontWeight: 700, color: active.accent }}>STAGE {active.part} / {totalParts}</div>
-          <div style={{ padding: "6px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.72)", border: `1px solid ${active.accent}88`, fontSize: wide ? 22 : 24, fontWeight: 700, color: "#F8FAFC" }}>
-            {brand.name || "YUNA Studio"}
+          <div style={{ fontSize: wide ? 26 : 28, fontWeight: 700, color: active.accent }}>STAGE {active.part} / {totalParts}</div>
+          <div style={{ padding: "6px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.72)", border: `1px solid ${active.accent}88`, fontSize: wide ? 22 : 24, fontWeight: 700 }}>{brand.name || "YUNA Studio"}</div>
+        </div>
+
+        {mode === "cartoon" && charEntries.length ? (
+          <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", paddingBottom: wide ? 80 : 320 }}>
+            {charEntries.map(([cname, ccfg]) => (
+              <CharacterRig
+                key={cname}
+                name={cname}
+                cfg={ccfg}
+                mouth={activeSpeaker === cname && activeLip ? activeLip.mouth : "X"}
+                frame={frame}
+                active={activeSpeaker === cname}
+                accent={active.accent}
+              />
+            ))}
           </div>
-        </div>
-        <div style={{ transform: `scale(${0.94 + pop * 0.06})`, opacity: headingOpacity, textAlign: "center", paddingBottom: wide ? 60 : 220 }}>
-          <div style={{ fontSize: wide ? 62 : 52, fontWeight: 800, lineHeight: 1.3, textShadow: "0 4px 24px rgba(0,0,0,0.75)" }}>{active.heading}</div>
-        </div>
+        ) : mode === "ui_ux" ? (
+          <div style={{ paddingBottom: wide ? 70 : 280 }}>
+            <UiUxOverlay frame={frame} accent={active.accent} heading={active.heading} wide={wide} />
+          </div>
+        ) : (
+          <div style={{ transform: `scale(${0.94 + pop * 0.06})`, opacity: headingOpacity, textAlign: "center", paddingBottom: wide ? 60 : 220 }}>
+            <div style={{ fontSize: wide ? 62 : 52, fontWeight: 800, lineHeight: 1.3, textShadow: "0 4px 24px rgba(0,0,0,0.75)" }}>{active.heading}</div>
+          </div>
+        )}
+
         <div style={{ width: "100%", height: 6, backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 4, overflow: "hidden" }}>
           <div style={{ width: `${prog}%`, height: "100%", backgroundColor: active.accent }} />
         </div>
