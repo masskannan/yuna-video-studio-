@@ -19,6 +19,8 @@ jobs:
   plan:
     runs-on: ubuntu-latest
     outputs:
+      use_manim: ${{ steps.flags.outputs.use_manim }}
+      use_blender: ${{ steps.flags.outputs.use_blender }}
       matrix: ${{ steps.p.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
@@ -27,10 +29,19 @@ jobs:
           ONLY_CHUNK: ${{ github.event.inputs.only_chunk || '' }}
         run: python3 scripts/plan_chunks.py
 
+      - id: flags
+        name: Plan Pro Flags
+        run: python3 scripts/plan_flags.py
   voice-lane:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Cache Voice Lines
+        uses: actions/cache@v4
+        with:
+          path: chunks/voice-cache
+          key: voice-cache-${{ hashFiles('dialogue.json', 'narration.txt', 'glossary.json') }}
+          restore-keys: voice-cache-
       - name: Generate Signature Voice (-14 LUFS) + SRT
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
@@ -45,8 +56,37 @@ jobs:
           path: chunks/master-audio/*
           retention-days: 1
 
+  manim-lane:
+    needs: plan
+    if: needs.plan.outputs.use_manim == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: manim-pip-v1
+      - name: Render Manim
+        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev libpango1.0-dev ffmpeg && pip install manim && mkdir -p out_pro && manim -ql scenes/manim_scene.py ProScene -o manim_clip.mp4 && cp media/videos/manim_scene/*/manim_clip.mp4 out_pro/ || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pro-manim-clip
+          path: out_pro/*
+  blender-lane:
+    needs: plan
+    if: needs.plan.outputs.use_blender == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render Blender EEVEE
+        run: sudo apt-get update && sudo apt-get install -y blender xvfb && mkdir -p out_pro && xvfb-run -a blender --background --python scenes/blender_scene.py || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pro-blender-clip
+          path: out_pro/*
   render-chunks:
-    needs: [plan, voice-lane]
+    needs: [plan, voice-lane, manim-lane, blender-lane]
+    if: ${{ !cancelled() && (needs.manim-lane.result == 'success' || needs.manim-lane.result == 'skipped') && (needs.blender-lane.result == 'success' || needs.blender-lane.result == 'skipped') }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -91,7 +131,8 @@ jobs:
           retention-days: 1
 
   render-reel:
-    needs: [plan, voice-lane]
+    needs: [plan, voice-lane, manim-lane, blender-lane]
+    if: ${{ !cancelled() && (needs.manim-lane.result == 'success' || needs.manim-lane.result == 'skipped') && (needs.blender-lane.result == 'success' || needs.blender-lane.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

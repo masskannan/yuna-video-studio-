@@ -21,5 +21,7 @@
       "accent": "#22C55E"
     }
   ],
-  "mode": "cartoon"
+  "mode": "cartoon",
+  "use_manim": false,
+  "use_blender": false
 }
