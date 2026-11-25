@@ -9,30 +9,23 @@
     {
       "part": "Intro",
       "start_sec": 0,
-      "end_sec": 15,
-      "heading": "மினியின் அறிமுகம்",
-      "accent": "bright"
+      "end_sec": 30,
+      "heading": "Morning at the Village House",
+      "accent": "Tamil"
     },
     {
-      "part": "Mystery",
-      "start_sec": 15,
-      "end_sec": 45,
-      "heading": "மர்மமான மிட்டாய் டப்பா",
-      "accent": "suspense"
-    },
-    {
-      "part": "Twist",
-      "start_sec": 45,
-      "end_sec": 70,
-      "heading": "முடிவு திருப்பம்",
-      "accent": "surprise"
+      "part": "Story",
+      "start_sec": 30,
+      "end_sec": 60,
+      "heading": "The Tale of the Sacred Mango Tree",
+      "accent": "Tamil"
     },
     {
       "part": "Conclusion",
-      "start_sec": 70,
+      "start_sec": 60,
       "end_sec": 90,
-      "heading": "முடிவு",
-      "accent": "warm"
+      "heading": "Blessings and Farewell",
+      "accent": "Tamil"
     }
   ],
   "fx_mode": "SAFE",

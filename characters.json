@@ -1,38 +1,38 @@
 {
-  "Mini": {
-    "type": "doll",
-    "body_color": "#F5CBA7",
+  "YUNA": {
+    "type": "narrator",
+    "body_color": "#F5E1A4",
     "dress_style": "traditional",
-    "dress_color": "#FF5733",
-    "expression": "curious",
+    "dress_color": "#FFD700",
+    "expression": "smile",
     "hat": false,
-    "hat_color": "",
+    "hat_color": null,
     "mustache": false,
     "hair_color": "#8B4513",
     "glasses": false
   },
-  "Grandma": {
-    "type": "doll",
-    "body_color": "#D2B48C",
+  "ANNA": {
+    "type": "elder",
+    "body_color": "#E0CBA8",
     "dress_style": "saree",
-    "dress_color": "#C0392B",
-    "expression": "wise",
+    "dress_color": "#C2185B",
+    "expression": "warm",
     "hat": false,
-    "hat_color": "",
+    "hat_color": null,
     "mustache": false,
-    "hair_color": "#4B2E83",
-    "glasses": true
+    "hair_color": "#4B2E2E",
+    "glasses": false
   },
-  "Narrator": {
-    "type": "voiceover",
-    "body_color": "",
-    "dress_style": "",
-    "dress_color": "",
-    "expression": "",
+  "KUMAR": {
+    "type": "child",
+    "body_color": "#FAD7A0",
+    "dress_style": "kurta",
+    "dress_color": "#1976D2",
+    "expression": "curious",
     "hat": false,
-    "hat_color": "",
+    "hat_color": null,
     "mustache": false,
-    "hair_color": "",
+    "hair_color": "#5D4037",
     "glasses": false
   }
 }
