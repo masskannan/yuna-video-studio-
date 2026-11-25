@@ -1,14 +1,14 @@
 {
   "YUNA": {
-    "type": "human",
-    "body_color": "#FFDAB9",
+    "type": "host",
+    "body_color": "#FFD700",
     "dress_style": "casual",
     "dress_color": "#FF5733",
-    "expression": "smile",
-    "hat": false,
+    "expression": "laugh",
+    "hat": null,
     "hat_color": null,
     "mustache": false,
-    "hair_color": "#4B3621",
+    "hair_color": "#000000",
     "glasses": false
   }
 }

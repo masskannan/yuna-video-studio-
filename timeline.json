@@ -7,25 +7,11 @@
   "use_blender": false,
   "scenes": [
     {
-      "part": "intro",
+      "part": 1,
       "start_sec": 0,
-      "end_sec": 10,
+      "end_sec": 5,
       "heading": "Opening",
-      "accent": "light"
-    },
-    {
-      "part": "main",
-      "start_sec": 10,
-      "end_sec": 70,
-      "heading": "The Promise",
-      "accent": "dramatic"
-    },
-    {
-      "part": "outro",
-      "start_sec": 70,
-      "end_sec": 90,
-      "heading": "Conclusion",
-      "accent": "funny"
+      "accent": "none"
     }
   ],
   "fx_mode": "SAFE",
