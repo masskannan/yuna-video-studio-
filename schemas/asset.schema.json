@@ -1,0 +1,10 @@
+{
+  "version": "2.3",
+  "required_fields": [
+    "asset_id",
+    "type",
+    "path",
+    "sha256",
+    "validated"
+  ]
+}
