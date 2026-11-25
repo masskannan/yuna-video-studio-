@@ -1,50 +1,42 @@
 [
   {
-    "speaker": "MotU",
+    "speaker": "MASCOT",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1,
-    "color": "#FFFFFF",
-    "sfx": "blink",
-    "text": "நான் ஒரு முக்கியமான முடிவு எடுத்திருக்கேன்! இனி"
-  },
-  {
-    "speaker": "MotU",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1,
-    "color": "#FFFFFF",
+    "pitch": 0.95,
+    "color": "#38BDF8",
     "sfx": "none",
-    "text": "அடுத்தது என்ன செய்ய வேண்டும் என்று யோசிக்கிறேன்."
+    "text": "இனிமேல் தினமும் சீக்கிரம் எழுந்திருப்பேன்!"
   },
   {
-    "speaker": "MotU",
+    "speaker": "MASCOT",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1,
-    "color": "#FFFFFF",
-    "sfx": "laugh",
-    "text": "அது மிகவும் சுவாரஸ்யம்!"
-  },
-  {
-    "speaker": "MotU",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1,
-    "color": "#FFFFFF",
+    "pitch": 0.95,
+    "color": "#38BDF8",
     "sfx": "none",
-    "text": "இப்போது எல்லாம் தயாராக உள்ளது."
+    "text": "காலை 5 மணிக்கு உடற்பயிற்சி செய்வேன்!"
   },
   {
-    "speaker": "MotU",
+    "speaker": "MASCOT",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1,
-    "color": "#FFFFFF",
-    "sfx": "surprise",
-    "text": "ஆஹா! ஒரு ஆச்சரியம்!"
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "alarm",
+    "text": "ஐயோ! இன்னும் கொஞ்சம் தூங்குறேன்!"
   },
   {
-    "speaker": "MotU",
+    "speaker": "MASCOT",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1,
-    "color": "#FFFFFF",
-    "sfx": "cheer",
-    "text": "நன்றி, நண்பர்களே! முடிந்தது."
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "none",
+    "text": "அடடா! மதியமே ஆகிடுச்சா?"
+  },
+  {
+    "speaker": "MASCOT",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "none",
+    "text": "பரவாயில்லை... நாளையிலிருந்து கண்டிப்பா மாறிடுவேன்!"
   }
 ]

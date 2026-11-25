@@ -10,43 +10,36 @@
       "part": 1,
       "start_sec": 0,
       "end_sec": 10,
-      "heading": "Intro",
-      "accent": "light"
+      "heading": "Morning pledge",
+      "accent": "Tamil"
     },
     {
       "part": 2,
       "start_sec": 10,
       "end_sec": 20,
-      "heading": "Decision",
-      "accent": "light"
+      "heading": "Exercise plan",
+      "accent": "Tamil"
     },
     {
       "part": 3,
       "start_sec": 20,
       "end_sec": 30,
-      "heading": "Plan",
-      "accent": "light"
+      "heading": "Alarm rings",
+      "accent": "Tamil"
     },
     {
       "part": 4,
       "start_sec": 30,
-      "end_sec": 40,
-      "heading": "Execution",
-      "accent": "light"
+      "end_sec": 45,
+      "heading": "Late wake‑up shock",
+      "accent": "Tamil"
     },
     {
       "part": 5,
-      "start_sec": 40,
-      "end_sec": 50,
-      "heading": "Twist",
-      "accent": "light"
-    },
-    {
-      "part": 6,
-      "start_sec": 50,
+      "start_sec": 45,
       "end_sec": 60,
-      "heading": "Conclusion",
-      "accent": "light"
+      "heading": "Optimistic ending",
+      "accent": "Tamil"
     }
   ],
   "fx_mode": "SAFE",

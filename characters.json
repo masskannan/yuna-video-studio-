@@ -1,9 +1,9 @@
 {
-  "MOTU": {
+  "MASCOT": {
     "type": "mascot",
     "body_color": "white",
-    "dress_style": "none",
-    "dress_color": "none",
+    "dress_style": "casual",
+    "dress_color": "blue",
     "expression": "neutral",
     "hat": null,
     "hat_color": null,
