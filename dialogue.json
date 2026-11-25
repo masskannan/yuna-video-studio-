@@ -1,42 +1,10 @@
 [
   {
-    "speaker": "YUNA",
+    "speaker": "MINI",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "whoosh",
-    "text": "Vanakkam! Welcome to a traditional South Indian village house."
-  },
-  {
-    "speaker": "ANNA",
-    "voice": "ta-IN-PriyaNeural",
-    "pitch": 1,
-    "color": "#FF7043",
-    "sfx": "ambient",
-    "text": "Good morning, dear visitor. Our walls are warm cream, and the scent of jasmine fills the air."
-  },
-  {
-    "speaker": "KUMAR",
-    "voice": "ta-IN-RajeshNeural",
-    "pitch": 1.05,
-    "color": "#8BC34A",
-    "sfx": "chirp",
-    "text": "Look, Grandma! The mango tree outside is blooming again!"
-  },
-  {
-    "speaker": "ANNA",
-    "voice": "ta-IN-PriyaNeural",
-    "pitch": 1,
-    "color": "#FF7043",
-    "sfx": "soft",
-    "text": "Yes, Kumar. That tree has guarded our family for generations. Let me tell you its story..."
-  },
-  {
-    "speaker": "YUNA",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "fade",
-    "text": "As the sun sets, the village gathers to share blessings, honoring tradition and unity."
+    "color": "#FF69B4",
+    "sfx": "whisper",
+    "text": "பாட்டி இல்லாத நேரத்துல மட்டும் திறந்து பார்த்தா என்ன ஆகப்போகுது?"
   }
 ]

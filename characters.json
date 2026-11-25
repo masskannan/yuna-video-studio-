@@ -1,38 +1,14 @@
 {
-  "YUNA": {
-    "type": "narrator",
-    "body_color": "#F5E1A4",
-    "dress_style": "traditional",
-    "dress_color": "#FFD700",
-    "expression": "smile",
-    "hat": false,
+  "CHAR_MINI": {
+    "type": "girl",
+    "body_color": "#FFDAB9",
+    "dress_style": "casual",
+    "dress_color": "#FF69B4",
+    "expression": "mischievous",
+    "hat": null,
     "hat_color": null,
     "mustache": false,
     "hair_color": "#8B4513",
-    "glasses": false
-  },
-  "ANNA": {
-    "type": "elder",
-    "body_color": "#E0CBA8",
-    "dress_style": "saree",
-    "dress_color": "#C2185B",
-    "expression": "warm",
-    "hat": false,
-    "hat_color": null,
-    "mustache": false,
-    "hair_color": "#4B2E2E",
-    "glasses": false
-  },
-  "KUMAR": {
-    "type": "child",
-    "body_color": "#FAD7A0",
-    "dress_style": "kurta",
-    "dress_color": "#1976D2",
-    "expression": "curious",
-    "hat": false,
-    "hat_color": null,
-    "mustache": false,
-    "hair_color": "#5D4037",
     "glasses": false
   }
 }

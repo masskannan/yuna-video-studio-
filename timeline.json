@@ -7,25 +7,11 @@
   "use_blender": false,
   "scenes": [
     {
-      "part": "Intro",
-      "start_sec": 0,
-      "end_sec": 30,
-      "heading": "Morning at the Village House",
-      "accent": "Tamil"
-    },
-    {
-      "part": "Story",
-      "start_sec": 30,
-      "end_sec": 60,
-      "heading": "The Tale of the Sacred Mango Tree",
-      "accent": "Tamil"
-    },
-    {
-      "part": "Conclusion",
-      "start_sec": 60,
-      "end_sec": 90,
-      "heading": "Blessings and Farewell",
-      "accent": "Tamil"
+      "part": 1,
+      "start_sec": 9,
+      "end_sec": 15.5,
+      "heading": "Mini's Curious Peek",
+      "accent": "playful"
     }
   ],
   "fx_mode": "SAFE",
