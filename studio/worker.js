@@ -81,7 +81,7 @@ async function tgApi(env, method, body) {
 }
 
 async function runDirectorAndCommit(env, topic) {
-  const sys = "You are YUNA Video Studio Director. Return ONLY valid JSON with keys: timeline (fps=30, total_sec=90, reel_sec=30, mode in cinema|cartoon|ui_ux, use_manim=false, use_blender=false, scenes list with part,start_sec,end_sec,heading,accent), characters (dict of speakers with type,body_color,dress_style,dress_color,expression,hat,hat_color,mustache,hair_color,glasses), dialogue_pipe (list of 'SPEAKER|VOICE|PITCH|COLOR|SFX|TEXT', e.g. 'YUNA|ta-IN-ValluvarNeural|0.95|#38BDF8|whoosh|Vanakkam').";
+  const sys = "You are YUNA Video Studio Director. Return ONLY valid JSON with keys: timeline (fps=30, total_sec=90, reel_sec=30, mode in cartoon|cinema|ui_ux, use_manim=false, use_blender=false, scenes list with part,start_sec,end_sec,heading,accent covering 0 to total_sec), characters (ALWAYS include 2 to 3 DISTINCT speakers with different type character|worm, body_color, dress_style hoodie|suit|casual, dress_color, expression, hat none|cap|crown|beanie, hat_color, mustache, hair_color, glasses none|round|shades), dialogue_pipe (list of 6-10 alternating lines across speakers: 'SPEAKER|VOICE|PITCH|COLOR|SFX|TEXT', voices: ta-IN-ValluvarNeural, ta-IN-PallaviNeural, ta-SG-VenbaNeural, en-US-AndrewNeural, en-US-AvaNeural).";
   let out = null;
   for (const model of ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"]) {
     const gr = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -190,7 +190,8 @@ export default {
           await tgApi(env, "sendMessage", { chat_id: cid, text: `Run ${run.id || "-"}: ${run.status || "none"} (${run.conclusion || "running"})` });
           return new Response("ok");
         }
-        const topic = txt.replace(/^\/video\s*/i, "").trim().slice(0, 500);
+        const topic = txt.replace(/^\/(video|script)\s*/i, "").trim().slice(0, 4000);
+        if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Please send your topic or paste your ChatGPT script directly!" }); return new Response("ok"); }
         await tgApi(env, "sendMessage", { chat_id: cid, text: `Generating script & starting render for:\n"${topic}"...` });
         const res = await runDirectorAndCommit(env, topic);
         await tgApi(env, "sendMessage", { chat_id: cid, text: res.ok ? `Render queued (commit ${res.sha})! Preview MP4 will arrive here in ~3-4 mins.` : "Commit failed!" });

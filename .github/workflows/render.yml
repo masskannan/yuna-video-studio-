@@ -28,23 +28,10 @@ jobs:
       matrix: ${{ steps.p.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
-      - name: Generate Project from Topic (if provided)
-        if: ${{ github.event.inputs.topic != '' }}
-        env:
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-        run: python3 scripts/director.py "${{ github.event.inputs.topic }}"
       - id: p
         env:
           ONLY_CHUNK: ${{ github.event.inputs.only_chunk || '' }}
         run: python3 scripts/plan_chunks.py
-      - uses: actions/upload-artifact@v4
-        with:
-          name: project-json
-          path: |
-            timeline.json
-            characters.json
-            dialogue.json
-          retention-days: 1
 
       - id: flags
         name: Plan Pro Flags
@@ -57,9 +44,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: project-json
       - name: Cache Voice Lines
         uses: actions/cache@v4
         with:
@@ -89,9 +73,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: project-json
       - uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -108,9 +89,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: project-json
       - name: Render Blender EEVEE
         run: sudo apt-get update && sudo apt-get install -y blender xvfb && mkdir -p out_pro && xvfb-run -a blender --background --python scenes/blender_scene.py || true
       - uses: actions/upload-artifact@v4
@@ -127,9 +105,6 @@ jobs:
       matrix: ${{ fromJson(needs.voice-lane.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: project-json
       - uses: actions/download-artifact@v4
         with:
           name: master-audio
@@ -174,9 +149,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: project-json
-      - uses: actions/download-artifact@v4
-        with:
           name: master-audio
           path: chunks/master-audio
       - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/manifest.json ] && cp chunks/master-audio/manifest.json src/manifest.json || true) && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
@@ -207,9 +179,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: project-json
       - uses: actions/download-artifact@v4
         with:
           path: chunks
