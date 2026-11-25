@@ -3,7 +3,10 @@ sys.path.insert(0, "scripts")
 from agent_contract import make_contract, write_done
 
 def measure_lufs(media_path):
-    p = subprocess.run(["ffmpeg", "-i", media_path, "-af", "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"], capture_output=True, text=True)
+    try:
+        p = subprocess.run(["ffmpeg", "-i", media_path, "-af", "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"], capture_output=True, text=True)
+    except FileNotFoundError:
+        return None
     m = re.search(r"\{[^{}]*\"input_i\"[^{}]*\}", p.stderr, re.S)
     return float(json.loads(m.group(0))["input_i"]) if m else None
 

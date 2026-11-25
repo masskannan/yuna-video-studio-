@@ -1,7 +1,22 @@
-import json, os, sys, time
+import json, os, sys, time, urllib.error, urllib.request
 sys.path.insert(0, "scripts")
 from agent_contract import make_contract, write_done
 from cost_firewall import check_budget
+
+def acquire_git_ref_lock(task_id, sha, token, repo="masskannan/yuna-video-studio-"):
+    req = urllib.request.Request(
+        f"https://api.github.com/repos/{repo}/git/refs",
+        data=json.dumps({"ref": f"refs/heads/lock/{task_id}", "sha": sha}).encode(),
+        headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json", "User-Agent": "YUNA-A1"},
+        method="POST",
+    )
+    try:
+        urllib.request.urlopen(req, timeout=15)
+        return True
+    except urllib.error.HTTPError as e:
+        if e.code == 422:
+            raise RuntimeError(f"Git ref lock held: lock/{task_id}")
+        raise
 
 def acquire_lock(task_id, run_id, ttl_sec=900, lock_dir="out/A1/locks"):
     os.makedirs(lock_dir, exist_ok=True)
