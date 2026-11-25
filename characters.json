@@ -1,10 +1,10 @@
 {
   "MASCOT": {
     "type": "mascot",
-    "body_color": "white",
-    "dress_style": "casual",
-    "dress_color": "blue",
-    "expression": "neutral",
+    "body_color": "#FFFFFF",
+    "dress_style": "tshirt",
+    "dress_color": "#0000FF",
+    "expression": "varies",
     "hat": null,
     "hat_color": null,
     "mustache": false,

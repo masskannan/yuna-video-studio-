@@ -1,6 +1,6 @@
 {
   "fps": 30,
-  "total_sec": 90,
+  "total_sec": 60,
   "reel_sec": 30,
   "mode": "cartoon",
   "use_manim": false,
@@ -10,36 +10,36 @@
       "part": 1,
       "start_sec": 0,
       "end_sec": 10,
-      "heading": "Morning pledge",
-      "accent": "Tamil"
+      "heading": "Morning resolve",
+      "accent": "determined"
     },
     {
       "part": 2,
       "start_sec": 10,
       "end_sec": 20,
       "heading": "Exercise plan",
-      "accent": "Tamil"
+      "accent": "energetic"
     },
     {
       "part": 3,
       "start_sec": 20,
       "end_sec": 30,
-      "heading": "Alarm rings",
-      "accent": "Tamil"
+      "heading": "Alarm interruption",
+      "accent": "sleepy"
     },
     {
       "part": 4,
       "start_sec": 30,
       "end_sec": 45,
-      "heading": "Late wake‑up shock",
-      "accent": "Tamil"
+      "heading": "Late shock",
+      "accent": "shocked"
     },
     {
       "part": 5,
       "start_sec": 45,
       "end_sec": 60,
       "heading": "Optimistic ending",
-      "accent": "Tamil"
+      "accent": "smile"
     }
   ],
   "fx_mode": "SAFE",
