@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YUNA Agent Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "task_id",
+    "run_id",
+    "agent_id",
+    "fx_mode",
+    "budget",
+    "input",
+    "constraints"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "1.0"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,64}$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "agent_id": {
+      "enum": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5",
+        "A6",
+        "A7",
+        "A8",
+        "A9"
+      ]
+    },
+    "fx_mode": {
+      "enum": [
+        "SAFE",
+        "HYBRID",
+        "PRO"
+      ]
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timeout_seconds",
+        "max_retries"
+      ],
+      "properties": {
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        }
+      }
+    },
+    "input": {
+      "type": "object"
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cost_mode",
+        "allow_paid_api",
+        "allow_paid_runner",
+        "allow_production_write"
+      ],
+      "properties": {
+        "cost_mode": {
+          "const": "STRICT_ZERO"
+        },
+        "allow_paid_api": {
+          "const": false
+        },
+        "allow_paid_runner": {
+          "const": false
+        },
+        "allow_production_write": {
+          "const": false
+        }
+      }
+    }
+  }
+}

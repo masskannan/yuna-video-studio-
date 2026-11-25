@@ -1,0 +1,14 @@
+{
+  "version": "2.4",
+  "baseline_tag": "v2.3-safe",
+  "baseline_sha": "deeaa09ba4ce1a831374a8d33be4e5bc0569ce90",
+  "fx_mode_default": "SAFE",
+  "remotion_version": "4.0.250",
+  "lufs_target": -14.0,
+  "tp_target": -1.5,
+  "file_hashes": {
+    "src/MainMovie.tsx": "e5c2c14121b26e9e3591a862a69a1cf0b41d0bf3d0f821ba3264a7333a3e29dd",
+    "scripts/verify_merge.py": "ca4141d7544552f335c77db7297bbd6270e9c8cc0431037e86033007ce0728d5",
+    "scripts/plan_chunks.py": "098874ded4c20cd4c45691436e70cbbe431572739480ffa348c5e799c2c0a788"
+  }
+}
