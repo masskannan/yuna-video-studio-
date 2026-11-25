@@ -1,45 +1,31 @@
 {
   "fps": 30,
-  "total_sec": 60,
+  "total_sec": 90,
   "reel_sec": 30,
   "mode": "cartoon",
   "use_manim": false,
   "use_blender": false,
   "scenes": [
     {
-      "part": 1,
+      "part": "intro",
       "start_sec": 0,
       "end_sec": 10,
-      "heading": "Morning resolve",
-      "accent": "determined"
+      "heading": "Opening",
+      "accent": "light"
     },
     {
-      "part": 2,
+      "part": "main",
       "start_sec": 10,
-      "end_sec": 20,
-      "heading": "Exercise plan",
-      "accent": "energetic"
+      "end_sec": 70,
+      "heading": "The Promise",
+      "accent": "dramatic"
     },
     {
-      "part": 3,
-      "start_sec": 20,
-      "end_sec": 30,
-      "heading": "Alarm interruption",
-      "accent": "sleepy"
-    },
-    {
-      "part": 4,
-      "start_sec": 30,
-      "end_sec": 45,
-      "heading": "Late shock",
-      "accent": "shocked"
-    },
-    {
-      "part": 5,
-      "start_sec": 45,
-      "end_sec": 60,
-      "heading": "Optimistic ending",
-      "accent": "smile"
+      "part": "outro",
+      "start_sec": 70,
+      "end_sec": 90,
+      "heading": "Conclusion",
+      "accent": "funny"
     }
   ],
   "fx_mode": "SAFE",

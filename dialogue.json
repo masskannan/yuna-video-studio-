@@ -1,42 +1,10 @@
 [
   {
-    "speaker": "MASCOT",
+    "speaker": "YUNA",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.95,
     "color": "#38BDF8",
-    "sfx": "none",
-    "text": "இனிமேல் தினமும் சீக்கிரம் எழுந்திருப்பேன்!"
-  },
-  {
-    "speaker": "MASCOT",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "none",
-    "text": "காலை 5 மணிக்கு உடற்பயிற்சி செய்வேன்!"
-  },
-  {
-    "speaker": "MASCOT",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "alarm",
-    "text": "ஐயோ! இன்னும் கொஞ்சம் தூங்குறேன்!"
-  },
-  {
-    "speaker": "MASCOT",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "none",
-    "text": "அடடா! மதியமே ஆகிடுச்சா?"
-  },
-  {
-    "speaker": "MASCOT",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "none",
-    "text": "பரவாயில்லை... நாளையிலிருந்து கண்டிப்பா மாறிடுவேன்!"
+    "sfx": "whoosh",
+    "text": "நாளையிலிருந்து மாறப்போறேன்... ஆனா அந்த நாளை மட்டும் வரவே மாட்டேங்குது! 😂"
   }
 ]

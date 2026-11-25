@@ -1,14 +1,14 @@
 {
-  "MASCOT": {
-    "type": "mascot",
-    "body_color": "#FFFFFF",
-    "dress_style": "tshirt",
-    "dress_color": "#0000FF",
-    "expression": "varies",
-    "hat": null,
+  "YUNA": {
+    "type": "human",
+    "body_color": "#FFDAB9",
+    "dress_style": "casual",
+    "dress_color": "#FF5733",
+    "expression": "smile",
+    "hat": false,
     "hat_color": null,
     "mustache": false,
-    "hair_color": null,
+    "hair_color": "#4B3621",
     "glasses": false
   }
 }
