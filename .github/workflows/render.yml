@@ -32,6 +32,8 @@ jobs:
       - id: flags
         name: Plan Pro Flags
         run: python3 scripts/plan_flags.py
+      - name: Cost Firewall & Baseline Lock
+        run: python3 -m pip install -q pyyaml && python3 scripts/cost_firewall.py && PYTHONPATH=scripts python3 scripts/test_level11.py
   voice-lane:
     outputs:
       matrix: ${{ steps.vplan.outputs.matrix }}
@@ -183,6 +185,8 @@ jobs:
           python3 scripts/verify_merge.py
           ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af apad -c:v copy -c:a aac -b:a 192k -shortest final/reel_9x16.mp4
           cp chunks/master-audio/captions.srt final/captions.srt || true
+      - name: Verify G01-G15 Gates & Social Pack
+        run: git fetch --tags -q && python3 -m pip install -q pyyaml && python3 scripts/verify_g0_g15.py && python3 scripts/social_pack.py
       - name: Send 480p Proxy to Telegram (if configured)
         env:
           BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
