@@ -1,10 +1,18 @@
 [
   {
-    "speaker": "MINI",
+    "speaker": "CHAR_GRANDMA",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.95,
-    "color": "#FF69B4",
-    "sfx": "whisper",
-    "text": "பாட்டி இல்லாத நேரத்துல மட்டும் திறந்து பார்த்தா என்ன ஆகப்போகுது?"
+    "color": "#38BDF8",
+    "sfx": "whoosh",
+    "text": "இந்தப் போட்டோ எடுத்த நாள்தான் உன் தாத்தா என்னை முதன"
+  },
+  {
+    "speaker": "CHAR_MINI",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 1,
+    "color": "#FFAA00",
+    "sfx": "sparkle",
+    "text": "Wow!"
   }
 ]

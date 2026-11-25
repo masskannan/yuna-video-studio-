@@ -2,16 +2,16 @@
   "fps": 30,
   "total_sec": 90,
   "reel_sec": 30,
-  "mode": "cartoon",
+  "mode": "cinema",
   "use_manim": false,
   "use_blender": false,
   "scenes": [
     {
-      "part": 1,
-      "start_sec": 9,
-      "end_sec": 15.5,
-      "heading": "Mini's Curious Peek",
-      "accent": "playful"
+      "part": "Scene 3",
+      "start_sec": 30,
+      "end_sec": 45,
+      "heading": "Grandmother shares memory",
+      "accent": "Tamil"
     }
   ],
   "fx_mode": "SAFE",
