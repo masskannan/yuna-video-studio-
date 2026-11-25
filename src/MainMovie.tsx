@@ -1,3 +1,4 @@
+import { FxLayer } from "./fx/FxLayer";
 import { SplitPip } from "./modes/SplitPip";
 import { CounterHook } from "./modes/CounterHook";
 import { SafeZoneGuide } from "./SafeZoneGuide";
@@ -157,6 +158,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
       <OverlayLayer />
       <Captions />
       <SafeZoneGuide />
+          <FxLayer fxMode={(timeline.fx_mode as any) ?? "SAFE"} scenes={timeline.scenes} />
     </AbsoluteFill>
   );
 };

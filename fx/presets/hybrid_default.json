@@ -1,0 +1,25 @@
+{
+  "fx_mode": "HYBRID",
+  "effects": {
+    "cinematic_letterbox": {
+      "enabled": true,
+      "bar_pct": 0.08
+    },
+    "lower_third_title": {
+      "enabled": true,
+      "label": "YUNA Studio"
+    },
+    "safe_zone_autoclamp": {
+      "enabled": true
+    },
+    "svg_charts": {
+      "enabled": false
+    },
+    "countdown_ring": {
+      "enabled": false
+    },
+    "weather_speed_lines": {
+      "enabled": false
+    }
+  }
+}

@@ -1,4 +1,47 @@
 {
   "version": "2.3",
-  "assets": {}
+  "assets": {
+    "bgm": {
+      "asset_id": "bgm",
+      "type": "audio",
+      "path": "assets/audio/bgm.mp3",
+      "sha256": "59297aaa11788b46db90794f953dcd7205ba3b9b6c1053017a8939ae781f2dc5",
+      "validated": true
+    },
+    "boing": {
+      "asset_id": "boing",
+      "type": "audio",
+      "path": "assets/sfx/boing.wav",
+      "sha256": "71b4058467ce639f4d87f590338ab588bd5d9f2d68afdaace93c48e5b832afc3",
+      "validated": true
+    },
+    "click": {
+      "asset_id": "click",
+      "type": "audio",
+      "path": "assets/sfx/click.wav",
+      "sha256": "3808d9b4d226dfde8c73cb1db30b2dd1c096fe16a50a6e34139fa3dae112f722",
+      "validated": true
+    },
+    "ding": {
+      "asset_id": "ding",
+      "type": "audio",
+      "path": "assets/sfx/ding.wav",
+      "sha256": "955a6be00a92c36248e3496f72716e5fd97b0c402c22b3558f95e39a29e8c8da",
+      "validated": true
+    },
+    "pop": {
+      "asset_id": "pop",
+      "type": "audio",
+      "path": "assets/sfx/pop.wav",
+      "sha256": "d01a8a6d1570fbf9bde31ce6de8380eb4133e952d76a9a7a1177de4572e4b204",
+      "validated": true
+    },
+    "whoosh": {
+      "asset_id": "whoosh",
+      "type": "audio",
+      "path": "assets/sfx/whoosh.wav",
+      "sha256": "3600b2c82f28372652b6dd6fec6d53566d6596957bc7b344096940e39995586e",
+      "validated": true
+    }
+  }
 }
