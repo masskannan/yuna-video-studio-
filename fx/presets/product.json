@@ -1,0 +1,14 @@
+{
+  "fx_mode": "HYBRID",
+  "effects": {
+    "price_slash_offer": {
+      "enabled": true
+    },
+    "five_star_reviews": {
+      "enabled": true
+    },
+    "safe_zone_autoclamp": {
+      "enabled": true
+    }
+  }
+}

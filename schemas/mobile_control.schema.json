@@ -1,0 +1,14 @@
+{
+  "version": "2.3",
+  "allowed_modes": [
+    "SAFE",
+    "HYBRID",
+    "PRO"
+  ],
+  "dispatch_inputs": [
+    "fx_mode",
+    "only_chunk",
+    "preset"
+  ],
+  "secrets_backend_only": true
+}

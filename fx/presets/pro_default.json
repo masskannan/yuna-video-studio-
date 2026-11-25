@@ -1,0 +1,17 @@
+{
+  "fx_mode": "PRO",
+  "effects": {
+    "cinematic_letterbox": {
+      "enabled": true
+    },
+    "lower_third_title": {
+      "enabled": true
+    },
+    "film_grain_halation": {
+      "enabled": true
+    },
+    "safe_zone_autoclamp": {
+      "enabled": true
+    }
+  }
+}

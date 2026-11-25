@@ -1,0 +1,14 @@
+{
+  "fx_mode": "HYBRID",
+  "effects": {
+    "podcast_speaking_glow": {
+      "enabled": true
+    },
+    "audio_waveform_glow": {
+      "enabled": true
+    },
+    "lower_third_title": {
+      "enabled": true
+    }
+  }
+}

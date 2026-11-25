@@ -1,0 +1,14 @@
+{
+  "fx_mode": "HYBRID",
+  "effects": {
+    "animated_code_typing": {
+      "enabled": true
+    },
+    "lower_third_title": {
+      "enabled": true
+    },
+    "cursor_ripple_drag": {
+      "enabled": true
+    }
+  }
+}
