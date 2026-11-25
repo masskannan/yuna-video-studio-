@@ -16,8 +16,8 @@ import { UiUxOverlay } from "./modes/UiUxOverlay";
 const timeline = timelineRaw as Record<string, any>;
 const brand = brandRaw as Record<string, any>;
 const characters = charsRaw as Record<string, CharConfig>;
-const words = (wordsRaw as any[]) || [];
-const lipsync = (lipsyncRaw as any[]) || [];
+const words = ((wordsRaw as any[]) || []).map((w) => Array.isArray(w) ? { start: Number(w[0]), end: Number(w[1]), word: String(w[2]), speaker: w[3], color: w[4] } : w);
+const lipsync = ((lipsyncRaw as any[]) || []).map((l) => Array.isArray(l) ? { start: Number(l[0]), end: Number(l[1]), mouth: String(l[2]), speaker: String(l[3] || 'YUNA') } : l);
 const BG_TINTS = ["#171333", "#261136", "#0D2B2E", "#2B1612", "#1A2238", "#2E1A2B"];
 
 type SubScene = { part: number; heading: string; accent: string; startFrame: number; endFrame: number; bgTop: string; };

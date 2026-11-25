@@ -178,9 +178,9 @@ def write_lipsync(words, out_path):
     for idx, w in enumerate(words):
         st, en = float(w["start"]), float(w["end"])
         mid = (st + en) / 2.0
-        frames.append({"start": round(st, 3), "end": round(mid, 3), "mouth": shapes[idx % len(shapes)], "speaker": w.get("speaker", "YUNA")})
-        frames.append({"start": round(mid, 3), "end": round(en, 3), "mouth": shapes[(idx + 2) % len(shapes)], "speaker": w.get("speaker", "YUNA")})
-    json.dump(frames, open(out_path, "w", encoding="utf-8"), ensure_ascii=False)
+        frames.append([round(st, 3), round(mid, 3), shapes[idx % len(shapes)], w.get("speaker", "YUNA")])
+        frames.append([round(mid, 3), round(en, 3), shapes[(idx + 2) % len(shapes)], w.get("speaker", "YUNA")])
+    json.dump(frames, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
 
 def write_srt(words):
     lines, idx = [], 1
@@ -226,7 +226,8 @@ def main():
     proc_dur = get_duration(VOICE_WAV)
     target = max(proc_dur, get_timeline_sec())
 
-    json.dump(all_words, open(WORDS_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+    packed_words = [[w["start"], w["end"], w["word"], w["speaker"], w["color"]] for w in all_words]
+    json.dump(packed_words, open(WORDS_JSON, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
     json.dump(line_timings, open(LINE_TIMINGS_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
     write_srt(all_words)
     write_lipsync(all_words, os.path.join(OUT_DIR, 'lipsync.json'))

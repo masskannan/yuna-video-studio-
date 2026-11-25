@@ -69,11 +69,19 @@ def main():
         "You are YUNA Video Studio Director. Convert the user's script/prompt into valid JSON with keys: "
         "'timeline' (fps=30, total_sec, reel_sec, mode in cinema|cartoon|ui_ux, use_manim, use_blender, scenes list with part,start_sec,end_sec,heading,accent), "
         "'characters' (dict of speakers with type character|worm, body_color, dress_style hoodie|suit|casual|none, dress_color, expression happy|angry|surprised|neutral, hat none|cap|crown|beanie, hat_color, mustache none|handlebar|thick|pencil, hair_color, glasses none|round|shades), "
-        "'dialogue' (list of {speaker, voice, pitch 0.75-1.35, color hex, sfx ''|pop|whoosh|click|ding|boing, text}). "
+        "'dialogue_pipe' (list of compact pipe strings: 'SPEAKER|VOICE|PITCH|COLOR|SFX|TEXT', e.g. 'YUNA|ta-IN-ValluvarNeural|0.93|#38BDF8|whoosh|Hello'). "
         "Stay 100% faithful to the user's script."
     )
     out = call_groq(sys_msg, f"Current timeline: {backups.get('timeline.json','{}')}\nCurrent characters: {backups.get('characters.json','{}')}\nScript/Prompt:\n{prompt}")
     try:
+        if "dialogue_pipe" in out and isinstance(out["dialogue_pipe"], list):
+            parsed = []
+            for row in out["dialogue_pipe"]:
+                parts = [p.strip() for p in str(row).split("|", 5)]
+                if len(parts) == 6:
+                    parsed.append({"speaker": parts[0], "voice": parts[1], "pitch": float(parts[2] or 1.0), "color": parts[3], "sfx": parts[4], "text": parts[5]})
+            if parsed:
+                out["dialogue"] = parsed
         for k in ("timeline", "characters", "dialogue"):
             if k in out:
                 json.dump(out[k], open(f"{k}.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)

@@ -3,15 +3,13 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import brand from "../brand.json";
 import wordsRaw from "./words.json";
 
-type WordItem = {
-  word: string;
-  start: number;
-  end: number;
-  speaker?: string;
-  color?: string;
-};
+type WordItem = { word: string; start: number; end: number; speaker?: string; color?: string };
 
-const words = (wordsRaw as WordItem[]) || [];
+const words: WordItem[] = ((wordsRaw as any[]) || []).map((w) =>
+  Array.isArray(w)
+    ? { start: Number(w[0]), end: Number(w[1]), word: String(w[2]), speaker: w[3], color: w[4] }
+    : (w as WordItem)
+);
 
 export const Captions: React.FC = () => {
   const frame = useCurrentFrame();
@@ -26,14 +24,11 @@ export const Captions: React.FC = () => {
   let activeGroupIdx = -1;
   for (let i = 0; i < words.length; i += CHUNK_SIZE) {
     const grp = words.slice(i, i + CHUNK_SIZE);
-    const start = grp[0].start;
-    const end = grp[grp.length - 1].end + 0.15;
-    if (time >= start && time <= end) {
+    if (time >= grp[0].start && time <= grp[grp.length - 1].end + 0.15) {
       activeGroupIdx = i;
       break;
     }
   }
-
   if (activeGroupIdx === -1) return null;
   const group = words.slice(activeGroupIdx, activeGroupIdx + CHUNK_SIZE);
   const activeWord = group.find((w) => time >= w.start && time <= w.end + 0.05) || group[0];
@@ -41,65 +36,18 @@ export const Captions: React.FC = () => {
   const speakerColor = activeWord?.color || fallbackColor;
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: isVertical ? 60 : 120,
-        right: isVertical ? 60 : 120,
-        bottom: isVertical ? 480 : 90,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        zIndex: 50,
-      }}
-    >
+    <div style={{ position: "absolute", left: isVertical ? 60 : 120, right: isVertical ? 60 : 120, bottom: isVertical ? 480 : 90, display: "flex", flexDirection: "column", alignItems: "center", zIndex: 50 }}>
       {speakerName ? (
-        <div
-          style={{
-            marginBottom: 8,
-            padding: "4px 14px",
-            borderRadius: 999,
-            backgroundColor: speakerColor,
-            color: "#020617",
-            fontFamily: "'Noto Sans Tamil', sans-serif",
-            fontWeight: 800,
-            fontSize: isVertical ? 24 : 20,
-            letterSpacing: 0.6,
-          }}
-        >
+        <div style={{ marginBottom: 8, padding: "4px 14px", borderRadius: 999, backgroundColor: speakerColor, color: "#020617", fontFamily: "'Noto Sans Tamil', sans-serif", fontWeight: 800, fontSize: isVertical ? 24 : 20, letterSpacing: 0.6 }}>
           {speakerName}
         </div>
       ) : null}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: isVertical ? 14 : 16,
-          padding: isVertical ? "18px 26px" : "14px 28px",
-          backgroundColor: "rgba(0, 0, 0, 0.72)",
-          borderRadius: 18,
-          fontFamily: "'Noto Sans Tamil', sans-serif",
-          fontWeight: 700,
-          fontSize: isVertical ? 52 : 44,
-          lineHeight: 1.35,
-          textAlign: "center",
-        }}
-      >
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: isVertical ? 14 : 16, padding: isVertical ? "18px 26px" : "14px 28px", backgroundColor: "rgba(0, 0, 0, 0.72)", borderRadius: 18, fontFamily: "'Noto Sans Tamil', sans-serif", fontWeight: 700, fontSize: isVertical ? 52 : 44, lineHeight: 1.35, textAlign: "center" }}>
         {group.map((w, idx) => {
           const isActive = time >= w.start && time <= w.end + 0.05;
           const c = w.color || fallbackColor;
           return (
-            <span
-              key={`${activeGroupIdx}-${idx}`}
-              style={{
-                color: isActive ? c : "#FFFFFF",
-                transform: isActive ? "scale(1.08)" : "scale(1)",
-                textShadow: isActive ? `0 0 18px ${c}66` : "0 2px 6px rgba(0,0,0,0.9)",
-                display: "inline-block",
-              }}
-            >
+            <span key={`${activeGroupIdx}-${idx}`} style={{ color: isActive ? c : "#FFFFFF", transform: isActive ? "scale(1.08)" : "scale(1)", textShadow: isActive ? `0 0 18px ${c}66` : "0 2px 6px rgba(0,0,0,0.9)", display: "inline-block" }}>
               {w.word}
             </span>
           );
