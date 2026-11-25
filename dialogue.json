@@ -1,18 +1,66 @@
 [
   {
-    "speaker": "CHAR_GRANDMA",
+    "speaker": "YUNA",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.95,
     "color": "#38BDF8",
     "sfx": "whoosh",
-    "text": "இந்தப் போட்டோ எடுத்த நாள்தான் உன் தாத்தா என்னை முதன"
+    "text": "Welcome to our animation mastery guide."
   },
   {
-    "speaker": "CHAR_MINI",
+    "speaker": "YUNA",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1,
-    "color": "#FFAA00",
-    "sfx": "sparkle",
-    "text": "Wow!"
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "",
+    "text": "In this video we’ll explore essential animation principles."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "",
+    "text": "First, character animation ensures fluid movement."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "",
+    "text": "Facial animation brings emotions; eye blinking adds realism."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "",
+    "text": "Lip sync matches speech, while hand gestures convey intent."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "",
+    "text": "Avoid stiff poses and random movements for natural flow."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "",
+    "text": "Remember physics consistency and avoid distorted hands."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "",
+    "text": "Thanks for watching, apply these tips and animate with confidence!"
   }
 ]

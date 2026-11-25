@@ -2,16 +2,30 @@
   "fps": 30,
   "total_sec": 90,
   "reel_sec": 30,
-  "mode": "cinema",
+  "mode": "cartoon",
   "use_manim": false,
   "use_blender": false,
   "scenes": [
     {
-      "part": "Scene 3",
+      "part": 1,
+      "start_sec": 0,
+      "end_sec": 30,
+      "heading": "Introduction",
+      "accent": "energetic"
+    },
+    {
+      "part": 2,
       "start_sec": 30,
-      "end_sec": 45,
-      "heading": "Grandmother shares memory",
-      "accent": "Tamil"
+      "end_sec": 60,
+      "heading": "Key Animation Principles",
+      "accent": "informative"
+    },
+    {
+      "part": 3,
+      "start_sec": 60,
+      "end_sec": 90,
+      "heading": "Conclusion & Tips",
+      "accent": "motivational"
     }
   ],
   "fx_mode": "SAFE",
