@@ -2,15 +2,36 @@
   "fps": 30,
   "total_sec": 90,
   "reel_sec": 30,
-  "mode": "cinema",
+  "mode": "cartoon",
   "use_manim": false,
   "use_blender": false,
   "scenes": [
     {
-      "part": 1,
+      "part": "Intro",
       "start_sec": 0,
-      "end_sec": 30,
-      "heading": "Greeting",
+      "end_sec": 15,
+      "heading": "மினியின் அறிமுகம்",
+      "accent": "bright"
+    },
+    {
+      "part": "Mystery",
+      "start_sec": 15,
+      "end_sec": 45,
+      "heading": "மர்மமான மிட்டாய் டப்பா",
+      "accent": "suspense"
+    },
+    {
+      "part": "Twist",
+      "start_sec": 45,
+      "end_sec": 70,
+      "heading": "முடிவு திருப்பம்",
+      "accent": "surprise"
+    },
+    {
+      "part": "Conclusion",
+      "start_sec": 70,
+      "end_sec": 90,
+      "heading": "முடிவு",
       "accent": "warm"
     }
   ],

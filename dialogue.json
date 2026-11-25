@@ -1,10 +1,90 @@
 [
   {
-    "speaker": "YUNA",
-    "voice": "en-US-JennyNeural",
-    "pitch": 1,
+    "speaker": "Narrator",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
     "color": "#38BDF8",
     "sfx": "whoosh",
-    "text": "Hi there! Welcome to our short video."
+    "text": "மினியின் உலகில் ஒரு சிறிய மர்மம் காத்திருக்கிறது..."
+  },
+  {
+    "speaker": "Mini",
+    "voice": "ta-IN-PriyaNeural",
+    "pitch": 1,
+    "color": "#FF69B4",
+    "sfx": "none",
+    "text": "அம்மா, இந்த மிட்டாய் டப்பா எங்கே இருந்து வந்தது?"
+  },
+  {
+    "speaker": "Grandma",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.9,
+    "color": "#8B4513",
+    "sfx": "ding",
+    "text": "அது பழைய கதைகளில் மட்டுமே சொல்கிறார்கள், ஆனால் இப்போது நம்மிடம் இருக்கிறது!"
+  },
+  {
+    "speaker": "Narrator",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "none",
+    "text": "மினி டப்பாவைத் திறக்கும்போது, ஒளி வெடித்து..."
+  },
+  {
+    "speaker": "Mini",
+    "voice": "ta-IN-PriyaNeural",
+    "pitch": 1,
+    "color": "#FF69B4",
+    "sfx": "sparkle",
+    "text": "வாவ்! இங்கே ஒரு சிறிய பிரபஞ்சம்!"
+  },
+  {
+    "speaker": "Grandma",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.9,
+    "color": "#8B4513",
+    "sfx": "none",
+    "text": "அது நம் குடும்பத்தின் மறைந்த நினைவுகள்!"
+  },
+  {
+    "speaker": "Narrator",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "suspense",
+    "text": "ஆனால் டப்பா ஒரு ரகசியம் வைத்திருக்கிறது..."
+  },
+  {
+    "speaker": "Mini",
+    "voice": "ta-IN-PriyaNeural",
+    "pitch": 1,
+    "color": "#FF69B4",
+    "sfx": "none",
+    "text": "நான் அதை கண்டுபிடிக்க வேண்டும்!"
+  },
+  {
+    "speaker": "Narrator",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "twist",
+    "text": "டப்பாவின் உள்ளே ஒரு சிறிய பொம்மை, மினியின் சொந்த எதிர்காலம்!"
+  },
+  {
+    "speaker": "Mini",
+    "voice": "ta-IN-PriyaNeural",
+    "pitch": 1,
+    "color": "#FF69B4",
+    "sfx": "cheer",
+    "text": "அது நம்மை எல்லோரையும் மகிழ்ச்சியுடன் சேர்க்கும்!"
+  },
+  {
+    "speaker": "Narrator",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.95,
+    "color": "#38BDF8",
+    "sfx": "none",
+    "text": "இவ்வாறு மினியின் மர்மமான மிட்டாய் டப்பா குடும்பத்தின் பந்தத்தை வலுப்படுத்தியது."
   }
 ]

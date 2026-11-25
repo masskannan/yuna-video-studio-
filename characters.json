@@ -1,14 +1,38 @@
 {
-  "YUNA": {
-    "type": "avatar",
-    "body_color": "#FFDAB9",
-    "dress_style": "casual",
-    "dress_color": "#FF69B4",
-    "expression": "smile",
+  "Mini": {
+    "type": "doll",
+    "body_color": "#F5CBA7",
+    "dress_style": "traditional",
+    "dress_color": "#FF5733",
+    "expression": "curious",
     "hat": false,
-    "hat_color": null,
+    "hat_color": "",
     "mustache": false,
-    "hair_color": "#000000",
+    "hair_color": "#8B4513",
+    "glasses": false
+  },
+  "Grandma": {
+    "type": "doll",
+    "body_color": "#D2B48C",
+    "dress_style": "saree",
+    "dress_color": "#C0392B",
+    "expression": "wise",
+    "hat": false,
+    "hat_color": "",
+    "mustache": false,
+    "hair_color": "#4B2E83",
+    "glasses": true
+  },
+  "Narrator": {
+    "type": "voiceover",
+    "body_color": "",
+    "dress_style": "",
+    "dress_color": "",
+    "expression": "",
+    "hat": false,
+    "hat_color": "",
+    "mustache": false,
+    "hair_color": "",
     "glasses": false
   }
 }
