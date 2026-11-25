@@ -81,33 +81,74 @@ async function tgApi(env, method, body) {
 }
 
 async function runDirectorAndCommit(env, topic) {
-  const sys = "You are YUNA Video Studio Director. Return ONLY valid JSON with keys: timeline (fps=30, total_sec=90, reel_sec=30, mode in cartoon|cinema|ui_ux, use_manim=false, use_blender=false, scenes list with part,start_sec,end_sec,heading,accent covering 0 to total_sec), characters (ALWAYS include 2 to 3 DISTINCT speakers with different type character|worm, body_color, dress_style hoodie|suit|casual, dress_color, expression, hat none|cap|crown|beanie, hat_color, mustache, hair_color, glasses none|round|shades), dialogue_pipe (list of 6-10 alternating lines across speakers: 'SPEAKER|VOICE|PITCH|COLOR|SFX|TEXT', voices: ta-IN-ValluvarNeural, ta-IN-PallaviNeural, ta-SG-VenbaNeural, en-US-AndrewNeural, en-US-AvaNeural).";
-  let out = null;
-  for (const model of ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"]) {
-    const gr = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+  const VOICES = ["ta-IN-ValluvarNeural","ta-IN-PallaviNeural","ta-SG-VenbaNeural","en-US-AndrewNeural","en-US-AvaNeural","en-IN-PrabhatNeural","en-IN-NeerjaNeural"];
+  let cleanScript = topic;
+  try {
+    const optRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: { "Authorization": `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
-      body: JSON.stringify({ model, response_format: { type: "json_object" }, temperature: 0.2, messages: [{ role: "system", content: sys }, { role: "user", content: `Topic/Script:\n${topic}` }] })
+      body: JSON.stringify({ model: "llama-3.3-70b-versatile", temperature: 0.3, max_tokens: 600, messages: [
+        { role: "system", content: "You are a Script Optimizer Agent. Convert ANY raw ChatGPT/Gemini article, notes, or topic into a crisp 90-second 2-or-3-character dialogue script (max 160 words, 6-10 short alternating lines). Strip markdown/URLs/hashtags. Keep the same language (Tamil or English). Format: SPEAKER: line." },
+        { role: "user", content: topic }
+      ] })
     });
-    if (gr.ok) { const gd = await gr.json(); out = JSON.parse(gd.choices[0].message.content); break; }
+    if (optRes.ok) { const od = await optRes.json(); const t = od.choices?.[0]?.message?.content?.trim(); if (t) cleanScript = t; }
+  } catch (_) {}
+  const sys = "You are YUNA Video Studio Director. Return ONLY valid JSON with keys: timeline (fps=30, total_sec=90, reel_sec=30, mode in cartoon|cinema|ui_ux, scenes list of 3 scenes part 1..3 covering 0..total_sec with heading,accent), characters (ALWAYS 2 to 3 DISTINCT speakers with different type character|worm, body_color, dress_style hoodie|suit|casual, dress_color, expression, hat none|cap|crown|beanie, hat_color, mustache, hair_color, glasses none|round|shades), dialogue_pipe (6-10 alternating lines: 'SPEAKER|VOICE|PITCH|COLOR|SFX|TEXT', voices ONLY from: ta-IN-ValluvarNeural, ta-IN-PallaviNeural, ta-SG-VenbaNeural, en-US-AndrewNeural, en-US-AvaNeural, en-IN-PrabhatNeural, en-IN-NeerjaNeural).";
+  let out = null, lastErr = "unknown";
+  for (const model of ["openai/gpt-oss-120b", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"]) {
+    try {
+      const gr = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
+        body: JSON.stringify({ model, response_format: { type: "json_object" }, temperature: 0.2, messages: [{ role: "system", content: sys }, { role: "user", content: `Optimized Script:\n${cleanScript}` }] })
+      });
+      if (!gr.ok) { lastErr = `${model}:${gr.status}`; continue; }
+      const gd = await gr.json();
+      let raw = (gd.choices?.[0]?.message?.content || "").trim().replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
+      out = JSON.parse(raw);
+      if (out && out.timeline) break;
+    } catch (e) { lastErr = String(e); }
   }
-  if (!out || !out.timeline) throw new Error("Groq director failed");
+  if (!out || !out.timeline) throw new Error("Groq director failed: " + lastErr);
   out.timeline.fx_mode = "SAFE";
   out.timeline.fps = 30;
-  out.timeline.chunk_sec = out.timeline.chunk_sec || 60;
+  out.timeline.chunk_sec = 60;
   out.timeline.use_manim = false;
   out.timeline.use_blender = false;
+  const tsec = Math.min(300, Math.max(30, parseInt(out.timeline.total_sec || 90, 10) || 90));
+  out.timeline.total_sec = tsec;
+  out.timeline.reel_sec = Math.min(45, Math.max(15, parseInt(out.timeline.reel_sec || 30, 10) || 30));
+  if (!Array.isArray(out.timeline.scenes) || !out.timeline.scenes.length) {
+    const s = Math.floor(tsec / 3);
+    out.timeline.scenes = [{ part: 1, start_sec: 0, end_sec: s, heading: "Part 1: Hook", accent: "#38BDF8" }, { part: 2, start_sec: s, end_sec: s * 2, heading: "Part 2: Core", accent: "#A855F7" }, { part: 3, start_sec: s * 2, end_sec: tsec, heading: "Part 3: Takeaway", accent: "#22C55E" }];
+  } else {
+    out.timeline.scenes[0].start_sec = 0;
+    out.timeline.scenes[out.timeline.scenes.length - 1].end_sec = tsec;
+  }
   if (Array.isArray(out.dialogue_pipe)) {
-    const parsed = out.dialogue_pipe.map(r => String(r).split("|", 6).map(x => x.trim())).filter(p => p.length === 6).map(p => ({ speaker: p[0], voice: p[1], pitch: parseFloat(p[2] || "1") || 1.0, color: p[3], sfx: p[4], text: p[5] }));
+    const parsed = out.dialogue_pipe.map(r => String(r).split("|", 6).map(x => x.trim())).filter(p => p.length === 6 && p[5]).map(p => ({ speaker: p[0] || "YUNA", voice: VOICES.includes(p[1]) ? p[1] : "ta-IN-ValluvarNeural", pitch: Math.min(1.25, Math.max(0.75, parseFloat(p[2] || "1") || 1.0)), color: /^#[0-9A-Fa-f]{6}$/.test(p[3]) ? p[3] : "#38BDF8", sfx: p[4] || "none", text: p[5] }));
     if (parsed.length) out.dialogue = parsed;
   }
+  if (!Array.isArray(out.dialogue) || !out.dialogue.length) {
+    out.dialogue = [{ speaker: "KANNAN", voice: "ta-IN-ValluvarNeural", pitch: 1.0, color: "#38BDF8", sfx: "whoosh", text: cleanScript.slice(0, 140) }, { speaker: "YUNA", voice: "ta-IN-PallaviNeural", pitch: 1.05, color: "#A855F7", sfx: "none", text: "Let us explore this step by step!" }];
+  } else {
+    out.dialogue = out.dialogue.map(d => ({ speaker: String(d.speaker || "YUNA"), voice: VOICES.includes(d.voice) ? d.voice : "ta-IN-ValluvarNeural", pitch: Math.min(1.25, Math.max(0.75, parseFloat(d.pitch || 1) || 1.0)), color: /^#[0-9A-Fa-f]{6}$/.test(d.color || "") ? d.color : "#38BDF8", sfx: d.sfx || "none", text: String(d.text || "").slice(0, 300) }));
+  }
+  out.characters = (out.characters && typeof out.characters === "object") ? out.characters : {};
+  const defaults = [
+    { type: "character", body_color: "#38BDF8", dress_style: "suit", dress_color: "#0F172A", expression: "happy", hat: "none", hat_color: "#F59E0B", mustache: "none", hair_color: "#1E293B", glasses: "round" },
+    { type: "character", body_color: "#A855F7", dress_style: "hoodie", dress_color: "#312E81", expression: "surprised", hat: "cap", hat_color: "#22C55E", mustache: "none", hair_color: "#0F172A", glasses: "none" }
+  ];
+  let di = 0;
+  for (const d of out.dialogue) { if (!out.characters[d.speaker]) out.characters[d.speaker] = defaults[di++ % 2]; }
+  if (Object.keys(out.characters).length < 2) out.characters["YUNA_COHOST"] = defaults[1];
   const ref = await (await gh("/git/ref/heads/main", env)).json();
   const baseSha = ref.object.sha;
   const baseCommit = await (await gh(`/git/commits/${baseSha}`, env)).json();
-  const files = {};
-  for (const k of ["timeline", "characters", "dialogue"]) if (out[k]) files[`${k}.json`] = JSON.stringify(out[k], null, 2) + "\n";
+  const files = { "timeline.json": JSON.stringify(out.timeline, null, 2) + "\n", "characters.json": JSON.stringify(out.characters, null, 2) + "\n", "dialogue.json": JSON.stringify(out.dialogue, null, 2) + "\n" };
   const treeRes = await (await gh("/git/trees", env, { method: "POST", body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: Object.entries(files).map(([path, content]) => ({ path, mode: "100644", type: "blob", content })) }) })).json();
-  const newCommit = await (await gh("/git/commits", env, { method: "POST", body: JSON.stringify({ message: `feat(director): ${topic.slice(0, 60)}`, tree: treeRes.sha, parents: [baseSha] }) })).json();
+  const newCommit = await (await gh("/git/commits", env, { method: "POST", body: JSON.stringify({ message: `feat(director): ${topic.slice(0, 50).replace(/\s+/g, " ")}`, tree: treeRes.sha, parents: [baseSha] }) })).json();
   const patchRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
   return { ok: patchRes.ok, sha: (newCommit.sha || "").slice(0, 7) };
 }
@@ -160,41 +201,45 @@ export default {
         return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json" } });
       }
       if (url.pathname === "/api/tg/webhook" && req.method === "POST") {
-        const upd = await req.json().catch(() => ({}));
-        const cb = upd.callback_query;
-        if (cb) {
-          const cid = String(cb.message?.chat?.id || "");
-          if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
-          if (cb.data === "approve") {
-            const r = await gh("/actions/runs?per_page=1", env);
-            const run = ((await r.json()).workflow_runs || [])[0];
-            const tag = `approved-${run ? run.id : Date.now()}`;
-            await gh("/releases", env, { method: "POST", body: JSON.stringify({ tag_name: tag, name: `Approved ${tag}`, target_commitish: "main" }) });
-            await tgApi(env, "sendMessage", { chat_id: cid, text: `Approved & Tagged: ${tag}` });
+        try {
+          const upd = await req.json().catch(() => ({}));
+          const cb = upd.callback_query;
+          if (cb) {
+            const cid = String(cb.message?.chat?.id || "");
+            if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
+            if (cb.data === "approve") {
+              const r = await gh("/actions/runs?per_page=1", env);
+              const run = ((await r.json()).workflow_runs || [])[0];
+              const tag = `approved-${run ? run.id : Date.now()}`;
+              await gh("/releases", env, { method: "POST", body: JSON.stringify({ tag_name: tag, name: `Approved ${tag}`, target_commitish: "main" }) });
+              await tgApi(env, "sendMessage", { chat_id: cid, text: `Approved & Tagged: ${tag}` });
+            }
+            await tgApi(env, "answerCallbackQuery", { callback_query_id: cb.id });
+            return new Response("ok");
           }
-          await tgApi(env, "answerCallbackQuery", { callback_query_id: cb.id });
-          return new Response("ok");
+          const msg = upd.message;
+          const cid = String(msg?.chat?.id || "");
+          if (!cid || !env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
+          const txt = String(msg?.text || "").trim();
+          if (!txt) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Please send text/script (voice or media is not supported yet)." }); return new Response("ok"); }
+          if (txt === "/start" || txt === "/help") {
+            await tgApi(env, "sendMessage", { chat_id: cid, text: "YUNA Video Studio Ready! Paste ANY topic or ChatGPT/Gemini content, or send /status." });
+            return new Response("ok");
+          }
+          if (txt === "/status") {
+            const r = await gh("/actions/runs?per_page=1", env);
+            const run = ((await r.json()).workflow_runs || [])[0] || {};
+            await tgApi(env, "sendMessage", { chat_id: cid, text: `Run ${run.id || "-"}: ${run.status || "none"} (${run.conclusion || "running"})` });
+            return new Response("ok");
+          }
+          const topic = txt.replace(/^\/(video|script)\s*/i, "").trim().slice(0, 4000);
+          if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Please send your topic or paste your ChatGPT/Gemini content directly!" }); return new Response("ok"); }
+          await tgApi(env, "sendMessage", { chat_id: cid, text: "Stage 1: Optimizing script (2-3 characters) & Stage 2: Starting 5G parallel render..." });
+          const res = await runDirectorAndCommit(env, topic);
+          await tgApi(env, "sendMessage", { chat_id: cid, text: res.ok ? `Render queued (commit ${res.sha})! Preview MP4 will arrive here in ~3-4 mins.` : "GitHub commit failed!" });
+        } catch (err) {
+          if (env.TG_CHAT_ID) await tgApi(env, "sendMessage", { chat_id: String(env.TG_CHAT_ID), text: `Director error: ${String(err).slice(0, 200)}` }).catch(() => {});
         }
-        const msg = upd.message;
-        const cid = String(msg?.chat?.id || "");
-        const txt = String(msg?.text || "").trim();
-        if (!cid || !txt) return new Response("ok");
-        if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
-        if (txt === "/start" || txt === "/help") {
-          await tgApi(env, "sendMessage", { chat_id: cid, text: "YUNA Video Studio Ready! Send any topic/script to render a video, or /status to check." });
-          return new Response("ok");
-        }
-        if (txt === "/status") {
-          const r = await gh("/actions/runs?per_page=1", env);
-          const run = ((await r.json()).workflow_runs || [])[0] || {};
-          await tgApi(env, "sendMessage", { chat_id: cid, text: `Run ${run.id || "-"}: ${run.status || "none"} (${run.conclusion || "running"})` });
-          return new Response("ok");
-        }
-        const topic = txt.replace(/^\/(video|script)\s*/i, "").trim().slice(0, 4000);
-        if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Please send your topic or paste your ChatGPT script directly!" }); return new Response("ok"); }
-        await tgApi(env, "sendMessage", { chat_id: cid, text: `Generating script & starting render for:\n"${topic}"...` });
-        const res = await runDirectorAndCommit(env, topic);
-        await tgApi(env, "sendMessage", { chat_id: cid, text: res.ok ? `Render queued (commit ${res.sha})! Preview MP4 will arrive here in ~3-4 mins.` : "Commit failed!" });
         return new Response("ok");
       }
       if (!checkPin(req, url, env)) {
