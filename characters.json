@@ -1,14 +1,14 @@
 {
-  "YUNA": {
-    "type": "human",
-    "body_color": "#FFDAB9",
-    "dress_style": "casual",
-    "dress_color": "#FFFFFF",
-    "expression": "smile",
-    "hat": false,
+  "MOTU": {
+    "type": "mascot",
+    "body_color": "white",
+    "dress_style": "none",
+    "dress_color": "none",
+    "expression": "neutral",
+    "hat": null,
     "hat_color": null,
     "mustache": false,
-    "hair_color": "#000000",
+    "hair_color": null,
     "glasses": false
   }
 }

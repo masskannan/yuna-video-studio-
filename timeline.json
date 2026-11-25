@@ -9,23 +9,44 @@
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 30,
-      "heading": "Introduction",
-      "accent": "energetic"
+      "end_sec": 10,
+      "heading": "Intro",
+      "accent": "light"
     },
     {
       "part": 2,
-      "start_sec": 30,
-      "end_sec": 60,
-      "heading": "Key Animation Principles",
-      "accent": "informative"
+      "start_sec": 10,
+      "end_sec": 20,
+      "heading": "Decision",
+      "accent": "light"
     },
     {
       "part": 3,
-      "start_sec": 60,
-      "end_sec": 90,
-      "heading": "Conclusion & Tips",
-      "accent": "motivational"
+      "start_sec": 20,
+      "end_sec": 30,
+      "heading": "Plan",
+      "accent": "light"
+    },
+    {
+      "part": 4,
+      "start_sec": 30,
+      "end_sec": 40,
+      "heading": "Execution",
+      "accent": "light"
+    },
+    {
+      "part": 5,
+      "start_sec": 40,
+      "end_sec": 50,
+      "heading": "Twist",
+      "accent": "light"
+    },
+    {
+      "part": 6,
+      "start_sec": 50,
+      "end_sec": 60,
+      "heading": "Conclusion",
+      "accent": "light"
     }
   ],
   "fx_mode": "SAFE",

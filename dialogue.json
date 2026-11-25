@@ -1,66 +1,50 @@
 [
   {
-    "speaker": "YUNA",
+    "speaker": "MotU",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "whoosh",
-    "text": "Welcome to our animation mastery guide."
+    "pitch": 1,
+    "color": "#FFFFFF",
+    "sfx": "blink",
+    "text": "நான் ஒரு முக்கியமான முடிவு எடுத்திருக்கேன்! இனி"
   },
   {
-    "speaker": "YUNA",
+    "speaker": "MotU",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "",
-    "text": "In this video we’ll explore essential animation principles."
+    "pitch": 1,
+    "color": "#FFFFFF",
+    "sfx": "none",
+    "text": "அடுத்தது என்ன செய்ய வேண்டும் என்று யோசிக்கிறேன்."
   },
   {
-    "speaker": "YUNA",
+    "speaker": "MotU",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "",
-    "text": "First, character animation ensures fluid movement."
+    "pitch": 1,
+    "color": "#FFFFFF",
+    "sfx": "laugh",
+    "text": "அது மிகவும் சுவாரஸ்யம்!"
   },
   {
-    "speaker": "YUNA",
+    "speaker": "MotU",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "",
-    "text": "Facial animation brings emotions; eye blinking adds realism."
+    "pitch": 1,
+    "color": "#FFFFFF",
+    "sfx": "none",
+    "text": "இப்போது எல்லாம் தயாராக உள்ளது."
   },
   {
-    "speaker": "YUNA",
+    "speaker": "MotU",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "",
-    "text": "Lip sync matches speech, while hand gestures convey intent."
+    "pitch": 1,
+    "color": "#FFFFFF",
+    "sfx": "surprise",
+    "text": "ஆஹா! ஒரு ஆச்சரியம்!"
   },
   {
-    "speaker": "YUNA",
+    "speaker": "MotU",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "",
-    "text": "Avoid stiff poses and random movements for natural flow."
-  },
-  {
-    "speaker": "YUNA",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "",
-    "text": "Remember physics consistency and avoid distorted hands."
-  },
-  {
-    "speaker": "YUNA",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
-    "color": "#38BDF8",
-    "sfx": "",
-    "text": "Thanks for watching, apply these tips and animate with confidence!"
+    "pitch": 1,
+    "color": "#FFFFFF",
+    "sfx": "cheer",
+    "text": "நன்றி, நண்பர்களே! முடிந்தது."
   }
 ]
