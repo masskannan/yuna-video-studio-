@@ -79,8 +79,8 @@ export default {
     try {
       const url = new URL(req.url);
       if (url.pathname === "/") {
-        
-      
+        return new Response(htmlPage(), { headers: { "Content-Type": "text/html; charset=utf-8" } });
+      }
       if (url.pathname === "/manifest.json") return new Response(JSON.stringify({ name: "YUNA Studio", short_name: "YUNA", start_url: "/office", display: "standalone", background_color: "#070913", theme_color: "#38BDF8" }), { headers: { "content-type": "application/manifest+json" } });
       if (url.pathname === "/sw.js") return new Response("self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));", { headers: { "content-type": "application/javascript" } });
       if (url.pathname === "/office") {
@@ -98,12 +98,12 @@ export default {
           { desk: "5. Merge + -14 LUFS", status: run.conclusion || "pending" },
           { desk: "6. Social + APK", status: "ready" }
         ];
-        return new Response("data: " + JSON.stringify({ run_id: run.id, desks }) + "\n\n", { headers: { "content-type": "text/event-stream", "cache-control": "no-cache" } });
+        return new Response("retry: 15000\ndata: " + JSON.stringify({ run_id: run.id, desks }) + "\n\n", { headers: { "content-type": "text/event-stream", "cache-control": "no-cache" } });
       }
       if (url.pathname === "/api/apk/dispatch" && req.method === "POST") {
         const b = await req.json();
         const mode = ["SAFE", "HYBRID", "PRO"].includes(b.fx_mode) ? b.fx_mode : "SAFE";
-        const res = await gh("/actions/workflows/render.yml/dispatches", env, "POST", { ref: "main", inputs: { only_chunk: String(b.only_chunk || "") } });
+        const res = await gh("/actions/workflows/render.yml/dispatches", env, { method: "POST", body: JSON.stringify({ ref: "main", inputs: { only_chunk: String(b.only_chunk || "") } }) });
         return new Response(JSON.stringify({ ok: res.ok, fx_mode: mode }), { status: res.ok ? 200 : 502, headers: { "content-type": "application/json" } });
       }
       if (url.pathname === "/api/ig/webhook") {
@@ -120,8 +120,6 @@ export default {
           });
         }
         return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json" } });
-      }
-      return new Response(htmlPage(), { headers: { "Content-Type": "text/html; charset=utf-8" } });
       }
       if (!checkPin(req, url, env)) {
         return Response.json({ error: "Invalid PIN" }, { status: 401 });
