@@ -80,6 +80,38 @@ async function tgApi(env, method, body) {
   });
 }
 
+async function runDirectorAndCommit(env, topic) {
+  const sys = "You are YUNA Video Studio Director. Return ONLY valid JSON with keys: timeline (fps=30, total_sec=90, reel_sec=30, mode in cinema|cartoon|ui_ux, use_manim=false, use_blender=false, scenes list with part,start_sec,end_sec,heading,accent), characters (dict of speakers with type,body_color,dress_style,dress_color,expression,hat,hat_color,mustache,hair_color,glasses), dialogue_pipe (list of 'SPEAKER|VOICE|PITCH|COLOR|SFX|TEXT', e.g. 'YUNA|ta-IN-ValluvarNeural|0.95|#38BDF8|whoosh|Vanakkam').";
+  let out = null;
+  for (const model of ["openai/gpt-oss-120b", "llama-3.3-70b-versatile"]) {
+    const gr = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
+      body: JSON.stringify({ model, response_format: { type: "json_object" }, temperature: 0.2, messages: [{ role: "system", content: sys }, { role: "user", content: `Topic/Script:\n${topic}` }] })
+    });
+    if (gr.ok) { const gd = await gr.json(); out = JSON.parse(gd.choices[0].message.content); break; }
+  }
+  if (!out || !out.timeline) throw new Error("Groq director failed");
+  out.timeline.fx_mode = "SAFE";
+  out.timeline.fps = 30;
+  out.timeline.chunk_sec = out.timeline.chunk_sec || 60;
+  out.timeline.use_manim = false;
+  out.timeline.use_blender = false;
+  if (Array.isArray(out.dialogue_pipe)) {
+    const parsed = out.dialogue_pipe.map(r => String(r).split("|", 6).map(x => x.trim())).filter(p => p.length === 6).map(p => ({ speaker: p[0], voice: p[1], pitch: parseFloat(p[2] || "1") || 1.0, color: p[3], sfx: p[4], text: p[5] }));
+    if (parsed.length) out.dialogue = parsed;
+  }
+  const ref = await (await gh("/git/ref/heads/main", env)).json();
+  const baseSha = ref.object.sha;
+  const baseCommit = await (await gh(`/git/commits/${baseSha}`, env)).json();
+  const files = {};
+  for (const k of ["timeline", "characters", "dialogue"]) if (out[k]) files[`${k}.json`] = JSON.stringify(out[k], null, 2) + "\n";
+  const treeRes = await (await gh("/git/trees", env, { method: "POST", body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: Object.entries(files).map(([path, content]) => ({ path, mode: "100644", type: "blob", content })) }) })).json();
+  const newCommit = await (await gh("/git/commits", env, { method: "POST", body: JSON.stringify({ message: `feat(director): ${topic.slice(0, 60)}`, tree: treeRes.sha, parents: [baseSha] }) })).json();
+  const patchRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
+  return { ok: patchRes.ok, sha: (newCommit.sha || "").slice(0, 7) };
+}
+
 export default {
   async fetch(req, env) {
     try {
@@ -159,10 +191,9 @@ export default {
           return new Response("ok");
         }
         const topic = txt.replace(/^\/video\s*/i, "").trim().slice(0, 500);
-        const res = await gh("/actions/workflows/render.yml/dispatches", env, {
-          method: "POST", body: JSON.stringify({ ref: "main", inputs: { topic } })
-        });
-        await tgApi(env, "sendMessage", { chat_id: cid, text: res.ok ? `Rendering started for:\n"${topic}"\nPreview MP4 will arrive here in ~3-4 mins.` : `Dispatch failed: HTTP ${res.status}` });
+        await tgApi(env, "sendMessage", { chat_id: cid, text: `Generating script & starting render for:\n"${topic}"...` });
+        const res = await runDirectorAndCommit(env, topic);
+        await tgApi(env, "sendMessage", { chat_id: cid, text: res.ok ? `Render queued (commit ${res.sha})! Preview MP4 will arrive here in ~3-4 mins.` : "Commit failed!" });
         return new Response("ok");
       }
       if (!checkPin(req, url, env)) {
