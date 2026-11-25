@@ -79,7 +79,46 @@ export default {
     try {
       const url = new URL(req.url);
       if (url.pathname === "/") {
-        return new Response(htmlPage(), { headers: { "Content-Type": "text/html; charset=utf-8" } });
+        
+      if (url.pathname === "/office") {
+        const html = `<!doctype html><html><body style="background:#0f172a;color:#f8fafc;font-family:sans-serif;padding:24px"><h2>YUNA Virtual AI Office (6 Desks)</h2><div id="desks" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px"></div><script>const es=new EventSource('/api/stream'+location.search);es.onmessage=e=>{const j=JSON.parse(e.data);document.getElementById('desks').innerHTML=(j.desks||[]).map(d=>'<div style="padding:14px;border-radius:12px;background:#1e293b"><b>'+d.desk+'</b><div>'+d.status+'</div></div>').join('');};</script></body></html>`;
+        return new Response(html, { headers: { "content-type": "text/html; charset=utf-8" } });
+      }
+      if (url.pathname === "/api/stream") {
+        const r = await gh("/actions/runs?per_page=1", env);
+        const run = (await r.json()).workflow_runs?.[0] || {};
+        const desks = [
+          { desk: "1. Director (Groq)", status: run.status || "idle" },
+          { desk: "2. Voice + Beats", status: run.status || "idle" },
+          { desk: "3. Manim / Blender", status: "conditional" },
+          { desk: "4. Remotion 4.0.250", status: run.conclusion || run.status || "idle" },
+          { desk: "5. Merge + -14 LUFS", status: run.conclusion || "pending" },
+          { desk: "6. Social + APK", status: "ready" }
+        ];
+        return new Response("data: " + JSON.stringify({ run_id: run.id, desks }) + "\n\n", { headers: { "content-type": "text/event-stream", "cache-control": "no-cache" } });
+      }
+      if (url.pathname === "/api/apk/dispatch" && req.method === "POST") {
+        const b = await req.json();
+        const mode = ["SAFE", "HYBRID", "PRO"].includes(b.fx_mode) ? b.fx_mode : "SAFE";
+        const res = await gh("/actions/workflows/render.yml/dispatches", env, "POST", { ref: "main", inputs: { only_chunk: String(b.only_chunk || "") } });
+        return new Response(JSON.stringify({ ok: res.ok, fx_mode: mode }), { status: res.ok ? 200 : 502, headers: { "content-type": "application/json" } });
+      }
+      if (url.pathname === "/api/ig/webhook") {
+        if (req.method === "GET") {
+          if (url.searchParams.get("hub.verify_token") === env.IG_VERIFY_TOKEN) return new Response(url.searchParams.get("hub.challenge") || "ok");
+          return new Response("Forbidden", { status: 403 });
+        }
+        const ev = await req.json().catch(() => ({}));
+        const cid = ev?.entry?.[0]?.changes?.[0]?.value?.id;
+        if (cid && env.IG_USER_ID && env.IG_ACCESS_TOKEN) {
+          await fetch(`https://graph.facebook.com/v21.0/${env.IG_USER_ID}/messages?access_token=${env.IG_ACCESS_TOKEN}`, {
+            method: "POST", headers: { "content-type": "application/json" },
+            body: JSON.stringify({ recipient: { comment_id: cid }, message: { text: "Check your DM for the YUNA Studio link!" } })
+          });
+        }
+        return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json" } });
+      }
+      return new Response(htmlPage(), { headers: { "Content-Type": "text/html; charset=utf-8" } });
       }
       if (!checkPin(req, url, env)) {
         return Response.json({ error: "Invalid PIN" }, { status: 401 });
