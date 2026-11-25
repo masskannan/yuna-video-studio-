@@ -74,6 +74,12 @@ function checkPin(req, url, env) {
   return p === env.STUDIO_PIN;
 }
 
+async function tgApi(env, method, body) {
+  return fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/${method}`, {
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body)
+  });
+}
+
 export default {
   async fetch(req, env) {
     try {
@@ -120,6 +126,44 @@ export default {
           });
         }
         return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json" } });
+      }
+      if (url.pathname === "/api/tg/webhook" && req.method === "POST") {
+        const upd = await req.json().catch(() => ({}));
+        const cb = upd.callback_query;
+        if (cb) {
+          const cid = String(cb.message?.chat?.id || "");
+          if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
+          if (cb.data === "approve") {
+            const r = await gh("/actions/runs?per_page=1", env);
+            const run = ((await r.json()).workflow_runs || [])[0];
+            const tag = `approved-${run ? run.id : Date.now()}`;
+            await gh("/releases", env, { method: "POST", body: JSON.stringify({ tag_name: tag, name: `Approved ${tag}`, target_commitish: "main" }) });
+            await tgApi(env, "sendMessage", { chat_id: cid, text: `Approved & Tagged: ${tag}` });
+          }
+          await tgApi(env, "answerCallbackQuery", { callback_query_id: cb.id });
+          return new Response("ok");
+        }
+        const msg = upd.message;
+        const cid = String(msg?.chat?.id || "");
+        const txt = String(msg?.text || "").trim();
+        if (!cid || !txt) return new Response("ok");
+        if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
+        if (txt === "/start" || txt === "/help") {
+          await tgApi(env, "sendMessage", { chat_id: cid, text: "YUNA Video Studio Ready! Send any topic/script to render a video, or /status to check." });
+          return new Response("ok");
+        }
+        if (txt === "/status") {
+          const r = await gh("/actions/runs?per_page=1", env);
+          const run = ((await r.json()).workflow_runs || [])[0] || {};
+          await tgApi(env, "sendMessage", { chat_id: cid, text: `Run ${run.id || "-"}: ${run.status || "none"} (${run.conclusion || "running"})` });
+          return new Response("ok");
+        }
+        const topic = txt.replace(/^\/video\s*/i, "").trim().slice(0, 500);
+        const res = await gh("/actions/workflows/render.yml/dispatches", env, {
+          method: "POST", body: JSON.stringify({ ref: "main", inputs: { topic } })
+        });
+        await tgApi(env, "sendMessage", { chat_id: cid, text: res.ok ? `Rendering started for:\n"${topic}"\nPreview MP4 will arrive here in ~3-4 mins.` : `Dispatch failed: HTTP ${res.status}` });
+        return new Response("ok");
       }
       if (!checkPin(req, url, env)) {
         return Response.json({ error: "Invalid PIN" }, { status: 401 });

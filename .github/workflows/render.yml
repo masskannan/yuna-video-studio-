@@ -6,6 +6,10 @@ on:
     paths: ['src/**', 'scripts/**', '*.json', 'narration.txt']
   workflow_dispatch:
     inputs:
+      topic:
+        description: 'Optional topic/prompt for director.py'
+        required: false
+        default: ''
       only_chunk:
         description: 'Optional single chunk ID to re-render (e.g. 000)'
         required: false
@@ -24,10 +28,23 @@ jobs:
       matrix: ${{ steps.p.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
+      - name: Generate Project from Topic (if provided)
+        if: ${{ github.event.inputs.topic != '' }}
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python3 scripts/director.py "${{ github.event.inputs.topic }}"
       - id: p
         env:
           ONLY_CHUNK: ${{ github.event.inputs.only_chunk || '' }}
         run: python3 scripts/plan_chunks.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: project-json
+          path: |
+            timeline.json
+            characters.json
+            dialogue.json
+          retention-days: 1
 
       - id: flags
         name: Plan Pro Flags
@@ -40,6 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: project-json
       - name: Cache Voice Lines
         uses: actions/cache@v4
         with:
@@ -69,6 +89,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: project-json
       - uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -85,6 +108,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: project-json
       - name: Render Blender EEVEE
         run: sudo apt-get update && sudo apt-get install -y blender xvfb && mkdir -p out_pro && xvfb-run -a blender --background --python scenes/blender_scene.py || true
       - uses: actions/upload-artifact@v4
@@ -101,6 +127,9 @@ jobs:
       matrix: ${{ fromJson(needs.voice-lane.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: project-json
       - uses: actions/download-artifact@v4
         with:
           name: master-audio
@@ -145,6 +174,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
+          name: project-json
+      - uses: actions/download-artifact@v4
+        with:
           name: master-audio
           path: chunks/master-audio
       - run: cp chunks/master-audio/words.json src/words.json && ([ -f chunks/master-audio/manifest.json ] && cp chunks/master-audio/manifest.json src/manifest.json || true) && ([ -f chunks/master-audio/lipsync.json ] && cp chunks/master-audio/lipsync.json src/lipsync.json || true)
@@ -177,6 +209,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
+          name: project-json
+      - uses: actions/download-artifact@v4
+        with:
           path: chunks
       - name: Quality Gate, Mux Audio & Build 480p Proxy
         run: |
@@ -192,7 +227,8 @@ jobs:
           BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "caption=YUNA 480p Proxy Ready — Play & Approve" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "caption=YUNA 480p Preview (16:9)" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          [ -f final/reel_9x16.mp4 ] && curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "caption=YUNA 9:16 Reel Ready" -F 'reply_markup={"inline_keyboard":[[{"text":"✅ Approve & Tag","callback_data":"approve"}]]}' "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
       - name: Generate A/B Thumbnails
         run: |
           sudo apt-get update && sudo apt-get install -y fonts-noto-core fonts-lohit-taml python3-pil libraqm0
