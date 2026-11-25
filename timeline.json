@@ -2,16 +2,30 @@
   "fps": 30,
   "total_sec": 90,
   "reel_sec": 30,
-  "mode": "cartoon",
+  "mode": "cinema",
   "use_manim": false,
   "use_blender": false,
   "scenes": [
     {
-      "part": 1,
+      "part": "Intro",
       "start_sec": 0,
-      "end_sec": 5,
-      "heading": "Opening",
-      "accent": "none"
+      "end_sec": 30,
+      "heading": "Welcome to YUNA Studio",
+      "accent": "en-US"
+    },
+    {
+      "part": "Features",
+      "start_sec": 30,
+      "end_sec": 60,
+      "heading": "Our Cutting-Edge Tools",
+      "accent": "en-US"
+    },
+    {
+      "part": "CallToAction",
+      "start_sec": 60,
+      "end_sec": 90,
+      "heading": "Join Us Today",
+      "accent": "en-US"
     }
   ],
   "fx_mode": "SAFE",

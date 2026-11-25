@@ -1,10 +1,50 @@
 [
   {
     "speaker": "YUNA",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.95,
+    "voice": "en-US-JennyNeural",
+    "pitch": 1,
     "color": "#38BDF8",
     "sfx": "whoosh",
-    "text": "Tomorrow Never Comes!😂"
+    "text": "Welcome to YUNA Video Studio, where imagination meets technology."
+  },
+  {
+    "speaker": "Guest",
+    "voice": "en-US-GuyNeural",
+    "pitch": 0.95,
+    "color": "#FFFFFF",
+    "sfx": "none",
+    "text": "We empower creators with AI-driven tools."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "en-US-JennyNeural",
+    "pitch": 1,
+    "color": "#38BDF8",
+    "sfx": "none",
+    "text": "Our platform offers seamless 3D rendering, animation, and real-time collaboration."
+  },
+  {
+    "speaker": "Guest",
+    "voice": "en-US-GuyNeural",
+    "pitch": 0.95,
+    "color": "#FFFFFF",
+    "sfx": "none",
+    "text": "From cinema-quality visuals to interactive UI/UX designs."
+  },
+  {
+    "speaker": "YUNA",
+    "voice": "en-US-JennyNeural",
+    "pitch": 1,
+    "color": "#38BDF8",
+    "sfx": "whoosh",
+    "text": "Join us today and bring your stories to life."
+  },
+  {
+    "speaker": "Guest",
+    "voice": "en-US-GuyNeural",
+    "pitch": 0.95,
+    "color": "#FFFFFF",
+    "sfx": "none",
+    "text": "Visit yuna.studio and start your free trial now."
   }
 ]
