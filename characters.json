@@ -1,26 +1,14 @@
 {
   "YUNA": {
-    "type": "character",
-    "body_color": "#FDE68A",
-    "dress_style": "hoodie",
-    "dress_color": "#0284C7",
-    "expression": "happy",
-    "hat": "cap",
-    "hat_color": "#EF4444",
-    "mustache": "handlebar",
-    "hair_color": "#1E293B",
-    "glasses": "round"
-  },
-  "KAVI": {
-    "type": "character",
-    "body_color": "#FDBA74",
+    "type": "avatar",
+    "body_color": "#FFDAB9",
     "dress_style": "casual",
-    "dress_color": "#CA8A04",
-    "expression": "happy",
-    "hat": "none",
-    "hat_color": "#FACC15",
-    "mustache": "none",
-    "hair_color": "#0F172A",
-    "glasses": "none"
+    "dress_color": "#FF69B4",
+    "expression": "smile",
+    "hat": false,
+    "hat_color": null,
+    "mustache": false,
+    "hair_color": "#000000",
+    "glasses": false
   }
 }

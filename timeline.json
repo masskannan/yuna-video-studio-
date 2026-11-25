@@ -1,33 +1,19 @@
 {
-  "title": "YUNA Pro Studio Test",
   "fps": 30,
-  "chunk_sec": 30,
-  "total_sec": 60,
-  "reel_sec": 35,
-  "lang": "ta",
+  "total_sec": 90,
+  "reel_sec": 30,
+  "mode": "cinema",
+  "use_manim": false,
+  "use_blender": false,
   "scenes": [
     {
       "part": 1,
       "start_sec": 0,
       "end_sec": 30,
-      "heading": "முதல் ப்ரொஃபஷனல் AI வீடியோ",
-      "accent": "#38BDF8"
-    },
-    {
-      "part": 2,
-      "start_sec": 30,
-      "end_sec": 60,
-      "heading": "30s Micro-Chunk + -14 LUFS Voice",
-      "accent": "#22C55E"
+      "heading": "Greeting",
+      "accent": "warm"
     }
   ],
-  "mode": "cartoon",
-  "use_manim": false,
-  "use_blender": false,
-  "enable_overlays": true,
-  "safe_zone_preview": false,
-  "bgm": "default",
-  "grade": "none",
-  "hook_text": "",
-  "counters": []
+  "fx_mode": "SAFE",
+  "chunk_sec": 60
 }
