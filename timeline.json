@@ -1,36 +1,36 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 47,
-  "mode": "cartoon",
-  "grade": "cyber",
+  "reel_sec": 45,
+  "mode": "cinema",
+  "grade": "none",
   "fx_mode": "HYBRID",
   "render_target": "reel",
-  "use_manim": false,
-  "use_blender": false,
+  "use_manim": true,
+  "use_blender": true,
   "scenes": [
     {
       "part": 1,
       "start_sec": 0,
       "end_sec": 14,
-      "setting": "tea_shop",
+      "setting": "village_street",
       "time_of_day": "morning",
-      "location": "TEA STALL",
+      "location": "YUNA STUDIO",
       "pose": "listen_ear",
       "prop": "camera",
       "char_pos": "around",
       "metaphor": "card_rain",
       "topics": [
-        "UPI Stuck",
-        "Network Slow",
-        "Server Busy"
+        "AI",
+        "Career",
+        "Skills"
       ],
       "metaphor_items": [
-        "Gateway",
-        "Timeout",
-        "Reverse"
+        "Hook Card",
+        "Myth Card",
+        "Question Card"
       ],
-      "heading": "UPI PAYMENT STUCK",
+      "heading": "Boss vs Fresher: AI காலத்தில் வேலை தப்பிக்க 3 முக்கிய Skills!",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
@@ -39,50 +39,50 @@
       "start_sec": 14,
       "end_sec": 28,
       "setting": "tea_shop",
-      "time_of_day": "sunset",
-      "location": "TEA STALL",
+      "time_of_day": "morning",
+      "location": "TECH HUB",
       "pose": "wave",
       "prop": "none",
-      "char_pos": "left",
+      "char_pos": "right",
       "metaphor": "bus_balancer",
       "topics": [
-        "3 Days",
-        "Free Tea?",
-        "Technical Delay"
+        "Automation",
+        "Upskilling",
+        "Soft Skills"
       ],
       "metaphor_items": [
-        "Auto Refund",
-        "Gateway Delay",
-        "Bank Window"
+        "YUNA EXPRESS",
+        "Lane 1: Coding",
+        "Lane 2: Data",
+        "Lane 3: Communication"
       ],
-      "heading": "REFUND PROCESS",
-      "accent": "#F59E0B",
-      "bgTop": "#1E1B4B"
+      "heading": "Fast Debate & Concrete Metaphor",
+      "accent": "#38BDF8",
+      "bgTop": "#0F172A"
     },
     {
       "part": 3,
       "start_sec": 28,
-      "end_sec": 47,
-      "setting": "tea_shop",
-      "time_of_day": "night",
-      "location": "TEA STALL",
+      "end_sec": 45,
+      "setting": "house_room",
+      "time_of_day": "morning",
+      "location": "YUNA STUDIO",
       "pose": "arms_up",
       "prop": "headband",
-      "char_pos": "right",
+      "char_pos": "left",
       "metaphor": "payment_stamp",
       "topics": [
-        "API Failure",
-        "Safe LUCK",
-        "No Loss"
+        "Action Plan",
+        "Verification"
       ],
       "metaphor_items": [
-        "24 Hours",
-        "Verified",
-        "Safe Money"
+        "Step 1: Learn",
+        "Step 2: Apply",
+        "VERIFIED ✓"
       ],
-      "heading": "VERIFIED SAFE",
-      "accent": "#10B981",
-      "bgTop": "#064E3B"
+      "heading": "Twist & Loop Punchline",
+      "accent": "#38BDF8",
+      "bgTop": "#0F172A"
     }
   ]
 }

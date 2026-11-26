@@ -1,66 +1,10 @@
 [
   {
     "speaker": "KANNAN",
-    "text": "Anna! Morning-la kudutha tea-ku 500 rs UPI la stuck ayiduchu! IPPO ENGA?",
-    "sfx": "whoosh",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.96,
-    "meme": ""
-  },
-  {
-    "speaker": "YUNA",
-    "text": "Thambi ore tension! Network busy! Server romba slow-ah irukku pa!",
+    "text": "Boss vs Fresher: AI காலத்தில் வேலை தப்பிக்க 3 முக்கிய Skills!",
     "sfx": "pop",
-    "voice": "ta-IN-PallaviNeural",
-    "pitch": 1.06,
-    "meme": ""
-  },
-  {
-    "speaker": "BUGGY",
-    "text": "Alert! Server timeout. Unga UPI amount automatic-ah 3 days-la reverse aagum!",
-    "sfx": "ding",
-    "voice": "ta-SG-VenbaNeural",
-    "pitch": 1.14,
-    "meme": ""
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "Ennaathu 3 days-ah? Appo indha morning tea free-ah? CHA?",
-    "sfx": "boing",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
-    "meme": ""
-  },
-  {
-    "speaker": "YUNA",
-    "text": "Free illa thambi! Adhu oru technical gateway delay!",
-    "sfx": "click",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 1.06,
-    "meme": ""
-  },
-  {
-    "speaker": "BUGGY",
-    "text": "Correct! API failure-ku bank 24 hours window kuduthurukku!",
-    "sfx": "ding",
-    "voice": "ta-SG-VenbaNeural",
-    "pitch": 1.14,
-    "meme": ""
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "Oh! Appo adha solla vendiyathu thanae! IPPO LUCK!",
-    "sfx": "whoosh",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.96,
-    "meme": ""
-  },
-  {
-    "speaker": "YUNA",
-    "text": "Adhane! Inga oru cup tea kuduthu waste aagala pa!",
-    "sfx": "pop",
-    "voice": "ta-IN-PallaviNeural",
-    "pitch": 1.06,
     "meme": ""
   }
 ]

@@ -8,7 +8,7 @@
     "hat": "none",
     "mustache": "none",
     "glasses": "none",
-    "voice": "ta-IN-ValluvarNeural"
+    "voice": "high_energy"
   },
   "YUNA": {
     "type": "character",
@@ -19,7 +19,7 @@
     "hat": "none",
     "mustache": "none",
     "glasses": "none",
-    "voice": "ta-IN-KaniNeural"
+    "voice": "witty_clears"
   },
   "BUGGY": {
     "name": "BUGGY",
