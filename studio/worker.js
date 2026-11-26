@@ -602,6 +602,39 @@ async function callGeminiFirst(env, messages, jsonMode = false) {
   return callAiPool(env, messages, jsonMode);
 }
 
+async function callGroqAgent(env, sys, usr) {
+  for (const gk of [env.GROQ_API_KEY, env.GROQ_API_KEY_2, env.GROQ_API_KEY_3].filter(Boolean)) {
+    try {
+      const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${gk}`, "content-type": "application/json" },
+        body: JSON.stringify({ model: "llama-3.3-70b-versatile", response_format: { type: "json_object" }, temperature: 0.25, messages: [{ role: "system", content: sys }, { role: "user", content: usr }] })
+      });
+      if (!r.ok) continue;
+      const d = await r.json();
+      const t = d?.choices?.[0]?.message?.content?.trim();
+      if (t) return JSON.parse(t);
+    } catch (_) {}
+  }
+  return null;
+}
+
+async function callNvidiaAgent(env, sys, usr) {
+  if (!env.NVIDIA_API_KEY) return null;
+  try {
+    const r = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${env.NVIDIA_API_KEY}`, "content-type": "application/json" },
+      body: JSON.stringify({ model: "meta/llama-3.3-70b-instruct", temperature: 0.25, max_tokens: 700, messages: [{ role: "system", content: sys + " Return ONLY valid JSON." }, { role: "user", content: usr }] })
+    });
+    if (!r.ok) return null;
+    const d = await r.json();
+    const raw = (d?.choices?.[0]?.message?.content || "").trim();
+    const m = raw.match(/\{[\s\S]*\}/);
+    return m ? JSON.parse(m[0]) : null;
+  } catch (_) { return null; }
+}
+
 async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false, opts = {}) {
   const bible = await loadCharBible(env);
   let scriptText = String(rawText || "").trim();
@@ -668,10 +701,25 @@ Return ONLY valid JSON:
 - timeline: { fps: 30, total_sec: "auto", reel_sec: 40, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, start_sec: 0, end_sec: 14, setting: "village_street", time_of_day: "morning", location: "YUNA STUDIO", pose: "listen_ear", prop: "camera", char_pos: "around", metaphor: "card_rain", topics: ["K1","K2","K3"], metaphor_items: ["Item 1","Item 2","Item 3"], heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
 - characters: dict of 2-3 speakers with distinct voices.
 - dialogue: ${isExactScript ? "ALL lines from the user exact script verbatim (DO NOT drop or rewrite)" : "8-10 strictly alternating punchy lines (TOTAL MAX 75 WORDS for Reel)"}, each { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing"${memeNames.length ? `, meme: ""|${memeNames.map(m => `"${m}"`).join("|")}` : ""} }.`;
-  const rawJson = await callGeminiFirst(env, [{ role: "system", content: sys }, { role: "user", content: scriptText.slice(0, 3500) }], true);
+  const usrSlice = scriptText.slice(0, 8000);
+  const a2Sys = 'You are Agent 2 (Visual & 3D Asset Director). Return ONLY JSON: { scenes_visual: [{ part: 1, gpu_prompt: "Pixar 3D environment no people no text...", metaphor: "card_rain|neon_topics|bus_balancer|hotel_menu|payment_stamp", metaphor_items: ["Item 1","Item 2","Item 3"] }] }.';
+  const a3Sys = 'You are Agent 3 (Audio & Packaging Director). Return ONLY JSON: { title: "Catchy Title", hashtags: ["#TamilTech","#Shorts"], sfx_mood: "tech|comedy|dramatic" }.';
+  const [p1Res, p2Res, p3Res] = await Promise.allSettled([
+    callGeminiFirst(env, [{ role: "system", content: sys }, { role: "user", content: usrSlice }], true),
+    callGroqAgent(env, a2Sys, usrSlice.slice(0, 2000)),
+    callNvidiaAgent(env, a3Sys, usrSlice.slice(0, 1500))
+  ]);
+  const rawJson = (p1Res.status === "fulfilled" && p1Res.value) ? p1Res.value : await callAiPool(env, [{ role: "system", content: sys }, { role: "user", content: usrSlice }], true);
+  const a2Vis = (p2Res.status === "fulfilled" && p2Res.value) ? (p2Res.value.scenes_visual || []) : [];
+  const a3Pkg = (p3Res.status === "fulfilled" && p3Res.value) ? p3Res.value : {};
   const cleaned = rawJson.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
   const parsed = JSON.parse(cleaned);
   const tl = parsed.timeline || {};
+  if (a3Pkg.title && !tl.title) tl.title = String(a3Pkg.title).slice(0, 90);
+  if (Array.isArray(a3Pkg.hashtags) && a3Pkg.hashtags.length) tl.hashtags = a3Pkg.hashtags.slice(0, 6);
+  if (Array.isArray(tl.scenes) && a2Vis.length) {
+    tl.scenes = tl.scenes.map((sc, idx) => ({ ...sc, gpu_prompt: sc.gpu_prompt || a2Vis[idx]?.gpu_prompt || "" }));
+  }
   tl.fps = 30;
   tl.total_sec = "auto";
   tl.fx_mode = "HYBRID";
