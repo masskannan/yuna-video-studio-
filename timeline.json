@@ -2,8 +2,8 @@
   "fps": 30,
   "total_sec": "auto",
   "reel_sec": 45,
-  "mode": "cartoon",
-  "grade": "none",
+  "mode": "cinema",
+  "grade": "warm",
   "fx_mode": "HYBRID",
   "render_target": "reel",
   "use_manim": false,
@@ -11,7 +11,7 @@
   "scenes": [
     {
       "part": 1,
-      "heading": "AI வேலைவாய்ப்பை மாற்றும்",
+      "heading": "AI வேலைவாய்ப்பு மாற்றம்",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     }
