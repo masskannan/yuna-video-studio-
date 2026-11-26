@@ -14,6 +14,7 @@ import { PodcastSpeakerGlow } from "./audio/PodcastAndBeat";
 import { BokehBackdrop } from "./motion/ParticlesAndBlur";
 import { SceneTransition } from "./transitions/SceneTransition";
 import { ComicSpeechBubble, ComicStarburst, ChalkHighlight } from "./cartoon/CartoonPack";
+import { CardRain40, NeonTopicRow, BusLoadBalancer, HotelMenuCard, PaymentStampCard } from "./MetaphorWidgets";
 
 export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "SAFE", scenes = []}) => {
   const frame = useCurrentFrame();
@@ -25,7 +26,18 @@ export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "
   const idx = Math.min(count - 1, Math.floor(frame / seg));
   const cur = scenes[idx] || {};
   const title = String(cur.heading || "YUNA Studio");
+  const metaphor = String(cur.metaphor || "");
   const on = { enabled: true };
+
+  const renderMetaphor = () => {
+    if (metaphor === "card_rain" || (!metaphor && idx === 0)) return <CardRain40 title={title.slice(0, 22)} />;
+    if (metaphor === "neon_topics" || (!metaphor && idx === 1)) return <NeonTopicRow />;
+    if (metaphor === "bus_balancer") return <BusLoadBalancer />;
+    if (metaphor === "hotel_menu") return <HotelMenuCard />;
+    if (metaphor === "payment_stamp") return <PaymentStampCard />;
+    return <NeonTopicRow />;
+  };
+
   return (
     <>
       <BokehBackdrop config={on} fxMode={fxMode} />
@@ -33,6 +45,7 @@ export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "
       <PodcastSpeakerGlow config={on} fxMode={fxMode} active={true} />
       <LowerThirdTitle config={on} fxMode={fxMode} aspect={aspect} title={title} />
       <SceneTransition config={on} fxMode={fxMode} startFrame={idx * seg} durationFrames={12} kind={idx % 2 === 0 ? "wipe" : "slide"} />
+      {renderMetaphor()}
       {idx === 0 ? (
         <>
           <SpeedLinesOverlay config={on} fxMode={fxMode} />
