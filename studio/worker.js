@@ -726,7 +726,6 @@ export default {
                 await gh("/contents/timeline.json", env, { method: "PUT", body: JSON.stringify({ message: "chore(retry): SAFE mode fallback", content: btoa(unescape(encodeURIComponent(JSON.stringify(tl, null, 2)))), sha: f.sha }) });
                 await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: "🛡️ <b>Retrying in SAFE Mode!</b>" });
               }
-              }
               await tgApi(env, "answerCallbackQuery", { callback_query_id: cb.id });
               return;
             }
