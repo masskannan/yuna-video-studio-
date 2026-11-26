@@ -252,7 +252,7 @@ async function runDirectorAndCommitV2(env, rawText, target = "both") {
   return { ok: upRes.ok, sha: String(ncData.sha || "").slice(0, 7), mode: tl.mode, grade: tl.grade, lines: dlg.length, target };
 }
 
-\1
+export default {
   async fetch(req, env, ctx) {
     try {
       const url = new URL(req.url);
