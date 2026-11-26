@@ -401,7 +401,7 @@ async function loadCharBible(env) {
   };
 }
 
-async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false) {
+async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false, opts = {}) {
   let scriptText = String(rawText || "").trim();
   if (scriptText.length > 2500) {
     scriptText = await callAiPool(env, [
@@ -410,7 +410,7 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
     ], false);
   }
   const sys = `Return ONLY valid JSON with keys: timeline, characters, dialogue.
-- timeline: { fps: 30, total_sec: "auto", reel_sec: 45, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
+- timeline: { fps: 30, total_sec: "auto", reel_sec: 55, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
 - characters: dict of 2-3 speakers (e.g. KANNAN, YUNA, BUGGY) with { type: "character"|"worm", body_color: "#38BDF8", dress_style: "suit"|"hoodie"|"casual"|"none", expression: "happy"|"angry"|"surprised"|"neutral", hat: "none"|"cap"|"crown"|"beanie", mustache: "none"|"handlebar"|"thick"|"pencil", glasses: "none"|"round"|"shades", voice: "ta-IN-ValluvarNeural"|"ta-IN-PallaviNeural"|"ta-SG-VenbaNeural"|"en-US-AndrewNeural"|"en-US-AvaNeural" }
 - dialogue: list of { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing" } (8-14 short lines).`;
   const rawJson = await callAiPool(env, [{ role: "system", content: sys }, { role: "user", content: scriptText.slice(0, 3500) }], true);
@@ -439,7 +439,13 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
     KANNAN: { type: "character", body_color: "#38BDF8", dress_style: "suit", expression: "happy", hat: "none", mustache: "none", glasses: "round", voice: "ta-IN-ValluvarNeural" },
     YUNA: { type: "character", body_color: "#A855F7", dress_style: "hoodie", expression: "surprised", hat: "cap", mustache: "none", glasses: "none", voice: "ta-IN-PallaviNeural" }
   };
-  const dlg = Array.isArray(parsed.dialogue) && parsed.dialogue.length ? parsed.dialogue : [{ speaker: Object.keys(chars)[0], text: scriptText.slice(0, 140), sfx: "pop" }];
+  const dlgRaw = Array.isArray(parsed.dialogue) && parsed.dialogue.length ? parsed.dialogue : [{ speaker: Object.keys(chars)[0], text: scriptText.slice(0, 140), sfx: "pop" }];
+  const castKeys = Object.keys(chars);
+  const dlg = dlgRaw.slice(0, 10).map((d, i) => ({
+    ...d,
+    speaker: castKeys.includes(d.speaker) ? d.speaker : castKeys[i % castKeys.length],
+    sfx: ["", "pop", "whoosh", "click", "ding", "boing"].includes(d.sfx) ? d.sfx : "pop"
+  }));
 
   let upRes = { ok: false }, ncData = {};
   for (let attempt = 0; attempt < 3; attempt++) {
