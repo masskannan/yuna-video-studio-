@@ -593,12 +593,34 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
     ? "Write natural conversational Hindi (Devanagari script) with spaced English tech nouns."
     : isEngOnly
     ? "Write crisp, punchy conversational English."
-    : "Write natural spoken Tamil (தமிழ் எழுத்துக்கள்) mixed ONLY with properly spaced uppercase/clear English tech nouns (UPI, API, Server). Keep grammar clean for Instagram Auto-Translate.";
-  const sys = `You are YUNA Video Studio Director. ${langRule}
-Cast: ${bible.main.name} (${bible.main.role || "Host"}: ${bible.main.personality || "Curious"}), ${bible.sub.name} (${bible.sub.role || "Co-Host"}: ${bible.sub.personality || "Witty"})${useCameo && bible.cameo ? `, ${bible.cameo.name} (${bible.cameo.role || "AI Robot"}: ${bible.cameo.personality || "Funny"})` : ""}.
-3-Beat Viral Arc: Line 1 = Hook Question/Myth (0-4s); Lines 2-6 = Fast Debate + Concrete Metaphor; Lines 7-9 = Mind-Blown Twist + Loop Punchline (NO boring 'Subscribe' ending).
-Return ONLY valid JSON with keys: timeline, characters, dialogue.
-- timeline: { fps: 30, total_sec: "auto", reel_sec: 40, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, start_sec: 0, end_sec: 14, setting: "village_street"|"tea_shop"|"house_room", time_of_day: "morning"|"sunset"|"night", location: "YUNA STUDIO"|"TEA STALL"|"MAIN STREET", pose: "listen_ear"|"wave"|"arms_up"|"hand_on_hip", prop: "camera"|"headband"|"none", char_pos: "around"|"left"|"right", metaphor: "card_rain"|"neon_topics"|"bus_balancer"|"hotel_menu"|"payment_stamp", topics: ["KEYWORD1","KEYWORD2","KEYWORD3"], metaphor_items: ["Point 1","Point 2","Point 3"], heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
+    : "Write natural spoken Tamil (தமிழ் எழுத்துக்கள்) mixed ONLY with spaced English tech nouns (UPI, API, Server). Keep grammar clean for Instagram Auto-Translate.";
+  const sys = `You are the Master Screenplay & Technical Director for YUNA Cloud Video Studio (Remotion 4.0.250 + Edge-TTS + 5-Band Safe Grid).
+${langRule}
+
+OUR ENGINE CAPABILITIES (USE THESE FULLY):
+1. Cast: ${bible.main.name} (${bible.main.role || "Host"}: ${bible.main.personality || "Curious"}), ${bible.sub.name} (${bible.sub.role || "Co-Host"}: ${bible.sub.personality || "Witty"})${useCameo && bible.cameo ? `, ${bible.cameo.name} (Floating Jetpack AI Robot with glowing cyan visor & megaphone)` : ""}.
+2. Environments & 2.5D Parallax:
+   - setting: "village_street" | "tea_shop" | "house_room"
+   - time_of_day: "morning" (sunbeams+birds) | "sunset" (string lights+lit windows) | "night" (stars+fireflies)
+   - location: Short top-left pill matching topic (e.g., "YUNA STUDIO", "TEA STALL", "TECH HUB")
+3. Character Choreography (Rig v6):
+   - pose: "listen_ear" (hand to ear + animated sound waves) | "wave" | "arms_up" | "hand_on_hip" | "point_up"
+   - prop: "camera" (DSLR on neck) | "headband" (red focus band) | "none"
+   - char_pos: "around" | "left" | "right"
+   - NOTE: Words ending with "!", "?" or ALL-CAPS trigger automatic Camera Punch/Shake!
+4. 5 Visual Metaphor Widgets (populate topics[] & metaphor_items[] with real topic data!):
+   - "card_rain": Falling concept cards (Hook)
+   - "neon_topics": Up to 5 glowing badges from topics[]
+   - "bus_balancer": Moving "YUNA EXPRESS" bus + 3 lane badges from metaphor_items[]
+   - "hotel_menu": "YUNA STUDIO BRIEF" checklist from metaphor_items[]
+   - "payment_stamp": 2-step summary + "VERIFIED ✓" stamp from metaphor_items[]
+5. 3-Beat Viral Arc:
+   - Scene 1 (morning, 0-12s): Hook Question/Myth (pose: "listen_ear", metaphor: "card_rain"|"neon_topics")
+   - Scene 2 (sunset, 12-28s): Fast Debate + Concrete Metaphor (pose: "wave", metaphor: "bus_balancer"|"hotel_menu")
+   - Scene 3 (night, 28-40s): Twist + Loop Punchline (pose: "arms_up", prop: "headband", metaphor: "payment_stamp") — NO boring "Subscribe" ending.
+
+Return ONLY valid JSON:
+- timeline: { fps: 30, total_sec: "auto", reel_sec: 40, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, start_sec: 0, end_sec: 14, setting: "village_street", time_of_day: "morning", location: "YUNA STUDIO", pose: "listen_ear", prop: "camera", char_pos: "around", metaphor: "card_rain", topics: ["K1","K2","K3"], metaphor_items: ["Item 1","Item 2","Item 3"], heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
 - characters: dict of 2-3 speakers with distinct voices.
 - dialogue: 8-10 strictly alternating punchy lines (TOTAL MAX 75 WORDS for Reel), each { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing"${memeNames.length ? `, meme: ""|${memeNames.map(m => `"${m}"`).join("|")}` : ""} }.`;
   const rawJson = await callGeminiFirst(env, [{ role: "system", content: sys }, { role: "user", content: scriptText.slice(0, 3500) }], true);
