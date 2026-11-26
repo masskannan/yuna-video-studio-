@@ -1,62 +1,66 @@
 [
   {
     "speaker": "KANNAN",
-    "text": "இன்று காலை என் UPI-யில் 500 ரூபாய் போயிட்டது, கடைக்காரருக்கு வரலையா? ஏன் தானாக திரும்ப வந்தது?",
+    "text": "Anna! Morning-la kudutha tea-ku 500 rs UPI la stuck ayiduchu! IPPO ENGA?",
     "sfx": "whoosh",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
     "meme": ""
   },
   {
     "speaker": "YUNA",
-    "text": "UPI refunds happen when the merchant’s bank rejects the transaction within 24 hours.",
+    "text": "Thambi ore tension! Network busy! Server romba slow-ah irukku pa!",
     "sfx": "pop",
+    "voice": "ta-IN-KaniNeural",
+    "pitch": 1.06,
     "meme": ""
   },
   {
     "speaker": "BUGGY",
-    "text": "Check your transaction history; a ‘reversal’ tag means the money never left your account.",
-    "sfx": "click",
-    "meme": ""
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "ஆமா, அதாவது என் பைசா ‘card rain’‑ல் மழை போல விழுந்து மீண்டும் வந்தது!",
+    "text": "Alert! Server timeout. Unga UPI amount automatic-ah 3 days-la reverse aagum!",
     "sfx": "ding",
-    "meme": ""
-  },
-  {
-    "speaker": "YUNA",
-    "text": "Think of the payment stamp card: each swipe stamps a record, and a failed swipe erases the stamp instantly.",
-    "sfx": "boing",
-    "meme": ""
-  },
-  {
-    "speaker": "BUGGY",
-    "text": "If you see ‘auto‑reversal’, no action needed—just wait for the balance to sync.",
-    "sfx": "pop",
+    "voice": "ta-SG-VenbaNeural",
+    "pitch": 1.14,
     "meme": ""
   },
   {
     "speaker": "KANNAN",
-    "text": "இப்போது மாலை, என் நண்பர் டீ ஸ்டாலில் 500 ரூபாய் செலுத்தினான், அதும் திரும்ப வந்தா?",
+    "text": "Ennaathu 3 days-ah? Appo indha morning tea free-ah? CHA?",
+    "sfx": "boing",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "YUNA",
+    "text": "Free illa thambi! Adhu oru technical gateway delay!",
+    "sfx": "click",
+    "voice": "ta-IN-KaniNeural",
+    "pitch": 1.06,
+    "meme": ""
+  },
+  {
+    "speaker": "BUGGY",
+    "text": "Correct! API failure-ku bank 24 hours window kuduthurukku!",
+    "sfx": "ding",
+    "voice": "ta-SG-VenbaNeural",
+    "pitch": 1.14,
+    "meme": ""
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "Oh! Appo adha solla vendiyathu thanae! IPPO LUCK!",
     "sfx": "whoosh",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
     "meme": ""
   },
   {
     "speaker": "YUNA",
-    "text": "Same rule applies: merchant didn’t capture the amount, so the system rolls it back.",
-    "sfx": "ding",
-    "meme": ""
-  },
-  {
-    "speaker": "BUGGY",
-    "text": "Enable push notifications; you’ll get a ‘refund received’ alert instantly.",
-    "sfx": "click",
-    "meme": ""
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "நன்றி! இப்போ இரவு, என் ஸ்மார்ட் கார்டில் எல்லா ஸ்டாம்புகளும் சரியாக இருக்குது, கவலை இல்லை!",
-    "sfx": "boing",
+    "text": "Adhane! Inga oru cup tea kuduthu waste aagala pa!",
+    "sfx": "pop",
+    "voice": "ta-IN-KaniNeural",
+    "pitch": 1.06,
     "meme": ""
   }
 ]

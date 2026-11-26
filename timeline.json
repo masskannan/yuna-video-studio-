@@ -1,9 +1,9 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 55,
-  "mode": "split_pip",
-  "grade": "warm",
+  "reel_sec": 47,
+  "mode": "cartoon",
+  "grade": "cyber",
   "fx_mode": "HYBRID",
   "render_target": "reel",
   "use_manim": false,
@@ -12,77 +12,77 @@
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 18,
-      "setting": "village_street",
+      "end_sec": 14,
+      "setting": "tea_shop",
       "time_of_day": "morning",
-      "location": "MAIN STREET",
-      "pose": "wave",
+      "location": "TEA STALL",
+      "pose": "listen_ear",
       "prop": "camera",
-      "char_pos": "left",
+      "char_pos": "around",
       "metaphor": "card_rain",
       "topics": [
-        "UPI",
-        "Refund",
-        "Payment Stamp"
+        "UPI Stuck",
+        "Network Slow",
+        "Server Busy"
       ],
       "metaphor_items": [
-        "₹500 disappears",
-        "Auto‑reversal trigger",
-        "Stamp card record"
+        "Gateway",
+        "Timeout",
+        "Reverse"
       ],
-      "heading": "UPI Refund Mystery",
+      "heading": "UPI PAYMENT STUCK",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 18,
-      "end_sec": 38,
+      "start_sec": 14,
+      "end_sec": 28,
       "setting": "tea_shop",
       "time_of_day": "sunset",
       "location": "TEA STALL",
-      "pose": "hand_on_hip",
-      "prop": "headband",
-      "char_pos": "right",
-      "metaphor": "neon_topics",
+      "pose": "wave",
+      "prop": "none",
+      "char_pos": "left",
+      "metaphor": "bus_balancer",
       "topics": [
-        "Merchant",
-        "Transaction Limit",
-        "Security"
+        "3 Days",
+        "Free Tea?",
+        "Technical Delay"
       ],
       "metaphor_items": [
-        "Merchant hold",
-        "Limit check",
-        "Secure token"
+        "Auto Refund",
+        "Gateway Delay",
+        "Bank Window"
       ],
-      "heading": "UPI Refund Mystery",
-      "accent": "#38BDF8",
-      "bgTop": "#0F172A"
+      "heading": "REFUND PROCESS",
+      "accent": "#F59E0B",
+      "bgTop": "#1E1B4B"
     },
     {
       "part": 3,
-      "start_sec": 38,
-      "end_sec": 55,
-      "setting": "house_room",
+      "start_sec": 28,
+      "end_sec": 47,
+      "setting": "tea_shop",
       "time_of_day": "night",
-      "location": "YUNA STUDIO",
-      "pose": "listen_ear",
-      "prop": "none",
-      "char_pos": "around",
-      "metaphor": "bus_balancer",
+      "location": "TEA STALL",
+      "pose": "arms_up",
+      "prop": "headband",
+      "char_pos": "right",
+      "metaphor": "payment_stamp",
       "topics": [
-        "Daily Summary",
-        "Balance Update",
-        "Future Tips"
+        "API Failure",
+        "Safe LUCK",
+        "No Loss"
       ],
       "metaphor_items": [
-        "Balance sync",
-        "Daily ledger",
-        "Smart reminders"
+        "24 Hours",
+        "Verified",
+        "Safe Money"
       ],
-      "heading": "UPI Refund Mystery",
-      "accent": "#38BDF8",
-      "bgTop": "#0F172A"
+      "heading": "VERIFIED SAFE",
+      "accent": "#10B981",
+      "bgTop": "#064E3B"
     }
   ]
 }

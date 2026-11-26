@@ -1,29 +1,25 @@
 {
   "KANNAN": {
-    "name": "KANNAN",
     "type": "character",
-    "body_color": "#38BDF8",
-    "dress_style": "suit",
+    "body_color": "#D99B66",
+    "dress_style": "casual",
+    "dress_color": "#0284C7",
     "expression": "happy",
     "hat": "none",
     "mustache": "none",
-    "glasses": "round",
-    "voice": "ta-IN-ValluvarNeural",
-    "role": "Curious Tech Host",
-    "personality": "Asks sharp everyday Tamil questions with high energy"
+    "glasses": "none",
+    "voice": "ta-IN-ValluvarNeural"
   },
   "YUNA": {
-    "name": "YUNA",
     "type": "character",
-    "body_color": "#A855F7",
-    "dress_style": "hoodie",
-    "expression": "surprised",
-    "hat": "cap",
+    "body_color": "#D99B66",
+    "dress_style": "casual",
+    "dress_color": "#0284C7",
+    "expression": "happy",
+    "hat": "none",
     "mustache": "none",
     "glasses": "none",
-    "voice": "ta-IN-PallaviNeural",
-    "role": "Smart AI Co-Host",
-    "personality": "Gives witty, clear 1-line facts and practical fixes"
+    "voice": "ta-IN-KaniNeural"
   },
   "BUGGY": {
     "name": "BUGGY",
