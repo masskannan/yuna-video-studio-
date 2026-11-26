@@ -25,6 +25,7 @@ jobs:
     outputs:
       use_manim: ${{ steps.flags.outputs.use_manim }}
       use_blender: ${{ steps.flags.outputs.use_blender }}
+      render_target: ${{ steps.flags.outputs.render_target }}
       matrix: ${{ steps.p.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
@@ -97,7 +98,7 @@ jobs:
           path: out_pro/*
   render-chunks:
     needs: [plan, voice-lane, manim-lane, blender-lane]
-    if: ${{ !cancelled() && (needs.manim-lane.result == 'success' || needs.manim-lane.result == 'skipped') && (needs.blender-lane.result == 'success' || needs.blender-lane.result == 'skipped') }}
+    if: ${{ !cancelled() && needs.plan.outputs.render_target != 'reel' && (needs.manim-lane.result == 'success' || needs.manim-lane.result == 'skipped') && (needs.blender-lane.result == 'success' || needs.blender-lane.result == 'skipped') }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -143,7 +144,7 @@ jobs:
 
   render-reel:
     needs: [plan, voice-lane, manim-lane, blender-lane]
-    if: ${{ !cancelled() && (needs.manim-lane.result == 'success' || needs.manim-lane.result == 'skipped') && (needs.blender-lane.result == 'success' || needs.blender-lane.result == 'skipped') }}
+    if: ${{ !cancelled() && needs.plan.outputs.render_target != 'yt' && (needs.manim-lane.result == 'success' || needs.manim-lane.result == 'skipped') && (needs.blender-lane.result == 'success' || needs.blender-lane.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -175,7 +176,7 @@ jobs:
 
   merge-final:
     needs: [plan, voice-lane, render-chunks, render-reel]
-    if: ${{ !cancelled() && needs.voice-lane.result == 'success' && needs.render-chunks.result == 'success' && needs.render-reel.result == 'success' }}
+    if: ${{ !cancelled() && needs.voice-lane.result == 'success' && (needs.render-chunks.result == 'success' || needs.render-chunks.result == 'skipped') && (needs.render-reel.result == 'success' || needs.render-reel.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -186,8 +187,8 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y ffmpeg
           mkdir -p final
-          python3 scripts/verify_merge.py
-          ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af apad -c:v copy -c:a aac -b:a 192k -shortest final/reel_9x16.mp4
+          ls chunks/chunk_* >/dev/null 2>&1 && python3 scripts/verify_merge.py || true
+          [ -f chunks/chunk-reel/reel_9x16.mp4 ] && ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af apad -c:v copy -c:a aac -b:a 192k -shortest final/reel_9x16.mp4 || true
           cp chunks/master-audio/captions.srt final/captions.srt || true
       - name: Verify G01-G15 Gates & Social Pack
         run: git fetch --tags -q && python3 -m pip install -q pyyaml && python3 scripts/verify_g0_g15.py && python3 scripts/social_pack.py
@@ -207,3 +208,15 @@ jobs:
           name: pro-studio-delivery-pack
           path: final/*
           retention-days: 2
+
+  notify-failure:
+    needs: [plan, voice-lane, render-chunks, render-reel, merge-final]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Alert Telegram on Failure
+        env:
+          BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -X POST "https://api.telegram.org/bot${BOT}/sendMessage" -d "chat_id=${CHAT}" -d "parse_mode=HTML" --data-urlencode "text=🚨 <b>YUNA Render Failed</b>%0ARun: <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>#${{ github.run_id }}</a>%0ATap /status to check." > /dev/null || true

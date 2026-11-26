@@ -153,8 +153,107 @@ async function runDirectorAndCommit(env, topic) {
   return { ok: patchRes.ok, sha: (newCommit.sha || "").slice(0, 7) };
 }
 
-export default {
-  async fetch(req, env) {
+
+const escH = (s) => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+async function callAiPool(env, messages, wantJson = false) {
+  const groqKeys = [env.GROQ_API_KEY, env.GROQ_API_KEY_2, env.GROQ_API_KEY_3].filter(Boolean);
+  const models = wantJson ? ["llama-3.3-70b-versatile", "openai/gpt-oss-120b"] : ["llama-3.1-8b-instant", "llama-3.3-70b-versatile"];
+  for (const key of groqKeys) {
+    for (const model of models) {
+      try {
+        const payload = { model, temperature: 0.25, messages };
+        if (wantJson) payload.response_format = { type: "json_object" };
+        const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: { "Authorization": `Bearer ${key}`, "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (r.ok) {
+          const d = await r.json();
+          const c = d?.choices?.[0]?.message?.content;
+          if (c) return c;
+        }
+      } catch {}
+    }
+  }
+  if (env.NVIDIA_API_KEY) {
+    try {
+      const r = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${env.NVIDIA_API_KEY}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ model: "meta/llama-3.3-70b-instruct", temperature: 0.2, messages })
+      });
+      if (r.ok) {
+        const d = await r.json();
+        const c = d?.choices?.[0]?.message?.content;
+        if (c) return c;
+      }
+    } catch {}
+  }
+  throw new Error("All AI pool keys exhausted");
+}
+
+async function runDirectorAndCommitV2(env, rawText, target = "both") {
+  let scriptText = String(rawText || "").trim();
+  if (scriptText.length > 2500) {
+    scriptText = await callAiPool(env, [
+      { role: "system", content: "Condense this content into 3-5 punchy spoken scenes (max 200 words total) for 2-3 characters (KANNAN, YUNA, BUGGY) in the same language (Tamil/English). Output plain dialogue lines." },
+      { role: "user", content: scriptText.slice(0, 12000) }
+    ], false);
+  }
+  const sys = `Return ONLY valid JSON with keys: timeline, characters, dialogue.
+- timeline: { fps: 30, total_sec: "auto", reel_sec: 45, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
+- characters: dict of 2-3 speakers (e.g. KANNAN, YUNA, BUGGY) with { type: "character"|"worm", body_color: "#38BDF8", dress_style: "suit"|"hoodie"|"casual"|"none", expression: "happy"|"angry"|"surprised"|"neutral", hat: "none"|"cap"|"crown"|"beanie", mustache: "none"|"handlebar"|"thick"|"pencil", glasses: "none"|"round"|"shades", voice: "ta-IN-ValluvarNeural"|"ta-IN-PallaviNeural"|"ta-SG-VenbaNeural"|"en-US-AndrewNeural"|"en-US-AvaNeural" }
+- dialogue: list of { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing" } (8-14 short lines).`;
+  const rawJson = await callAiPool(env, [{ role: "system", content: sys }, { role: "user", content: scriptText.slice(0, 3500) }], true);
+  const cleaned = rawJson.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
+  const parsed = JSON.parse(cleaned);
+  const tl = parsed.timeline || {};
+  tl.fps = 30;
+  tl.total_sec = "auto";
+  tl.fx_mode = "HYBRID";
+  tl.render_target = ["reel", "yt", "both"].includes(target) ? target : "both";
+  tl.use_manim = false;
+  tl.use_blender = false;
+  if (!["cinema", "cartoon", "ui_ux", "split_pip"].includes(tl.mode)) tl.mode = "cartoon";
+  if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
+  if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
+  const chars = parsed.characters && Object.keys(parsed.characters).length ? parsed.characters : {
+    KANNAN: { type: "character", body_color: "#38BDF8", dress_style: "suit", expression: "happy", hat: "none", mustache: "none", glasses: "round", voice: "ta-IN-ValluvarNeural" },
+    YUNA: { type: "character", body_color: "#A855F7", dress_style: "hoodie", expression: "surprised", hat: "cap", mustache: "none", glasses: "none", voice: "ta-IN-PallaviNeural" }
+  };
+  const dlg = Array.isArray(parsed.dialogue) && parsed.dialogue.length ? parsed.dialogue : [{ speaker: Object.keys(chars)[0], text: scriptText.slice(0, 140), sfx: "pop" }];
+
+  const refRes = await gh("/git/ref/heads/main", env);
+  const refData = await refRes.json();
+  const baseSha = refData?.object?.sha;
+  if (!baseSha) throw new Error("Missing main ref");
+  const commitRes = await gh(`/git/commits/${baseSha}`, env);
+  const baseTree = (await commitRes.json())?.tree?.sha;
+  const treeRes = await gh("/git/trees", env, {
+    method: "POST",
+    body: JSON.stringify({
+      base_tree: baseTree,
+      tree: [
+        { path: "timeline.json", mode: "100644", type: "blob", content: JSON.stringify(tl, null, 2) },
+        { path: "characters.json", mode: "100644", type: "blob", content: JSON.stringify(chars, null, 2) },
+        { path: "dialogue.json", mode: "100644", type: "blob", content: JSON.stringify(dlg, null, 2) }
+      ]
+    })
+  });
+  const treeData = await treeRes.json();
+  const ncRes = await gh("/git/commits", env, {
+    method: "POST",
+    body: JSON.stringify({ message: `feat(director): [${target}] [${tl.mode}]`, tree: treeData.sha, parents: [baseSha] })
+  });
+  const ncData = await ncRes.json();
+  const upRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: ncData.sha }) });
+  return { ok: upRes.ok, sha: String(ncData.sha || "").slice(0, 7), mode: tl.mode, grade: tl.grade, lines: dlg.length, target };
+}
+
+\1
+  async fetch(req, env, ctx) {
     try {
       const url = new URL(req.url);
       if (url.pathname === "/") {
@@ -201,45 +300,68 @@ export default {
         return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json" } });
       }
       if (url.pathname === "/api/tg/webhook" && req.method === "POST") {
-        try {
-          const upd = await req.json().catch(() => ({}));
-          const cb = upd.callback_query;
-          if (cb) {
-            const cid = String(cb.message?.chat?.id || "");
-            if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
-            if (cb.data === "approve") {
+        const upd = await req.json().catch(() => ({}));
+        const work = (async () => {
+          try {
+            const cb = upd.callback_query;
+            if (cb) {
+              const cid = String(cb.message?.chat?.id || "");
+              if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return;
+              if (cb.data === "approve") {
+                const r = await gh("/actions/runs?per_page=1", env);
+                const run = ((await r.json()).workflow_runs || [])[0];
+                const tag = `approved-${run ? run.id : Date.now()}`;
+                await gh("/releases", env, { method: "POST", body: JSON.stringify({ tag_name: tag, name: `Approved ${tag}`, target_commitish: "main" }) });
+                await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Approved &amp; Tagged:</b> <code>${escH(tag)}</code>` });
+              }
+              await tgApi(env, "answerCallbackQuery", { callback_query_id: cb.id });
+              return;
+            }
+            const msg = upd.message;
+            const cid = String(msg?.chat?.id || "");
+            if (!cid || !env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return;
+            let txt = String(msg?.text || msg?.caption || "").trim();
+            if (!txt && msg?.document && env.TG_BOT_TOKEN) {
+              const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${msg.document.file_id}`).then(r => r.json());
+              const fp = gf?.result?.file_path;
+              if (fp) txt = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${fp}`).then(r => r.text());
+            }
+            if (!txt) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Text, Script, or .txt file அனுப்புங்கள் (/reel, /yt, /both, /status, /cancel)." }); return; }
+            if (txt === "/start" || txt === "/help") {
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: "🎬 <b>YUNA Studio Live!</b>\n• <code>/reel &lt;script&gt;</code> — 9:16 மட்டும் (அதிவேகம்)\n• <code>/yt &lt;script&gt;</code> — 16:9 மட்டும்\n• <code>/both &lt;script&gt;</code> — இரண்டும் (அல்லது நேரடியாக Paste/.txt)\n• <code>/status</code> | <code>/cancel</code>" });
+              return;
+            }
+            if (txt === "/status") {
+              const r = await gh("/actions/runs?per_page=1", env);
+              const run = ((await r.json()).workflow_runs || [])[0] || {};
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `📊 <b>Run #${escH(run.id || "-")}</b>\nStatus: <code>${escH(run.status || "none")}</code> (${escH(run.conclusion || "running")})\n<a href="${escH(run.html_url || "https://github.com")}">🔗 View Logs</a>` });
+              return;
+            }
+            if (txt === "/cancel") {
               const r = await gh("/actions/runs?per_page=1", env);
               const run = ((await r.json()).workflow_runs || [])[0];
-              const tag = `approved-${run ? run.id : Date.now()}`;
-              await gh("/releases", env, { method: "POST", body: JSON.stringify({ tag_name: tag, name: `Approved ${tag}`, target_commitish: "main" }) });
-              await tgApi(env, "sendMessage", { chat_id: cid, text: `Approved & Tagged: ${tag}` });
+              if (run && run.status !== "completed") {
+                await gh(`/actions/runs/${run.id}/cancel`, env, { method: "POST" });
+                await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `🛑 <b>Cancelled Run #${escH(run.id)}</b>` });
+              } else {
+                await tgApi(env, "sendMessage", { chat_id: cid, text: "தற்போது எந்த render-ம் ஓடவில்லை." });
+              }
+              return;
             }
-            await tgApi(env, "answerCallbackQuery", { callback_query_id: cb.id });
-            return new Response("ok");
+            let target = "both";
+            if (/^\/reel\b/i.test(txt)) target = "reel";
+            else if (/^\/yt\b/i.test(txt)) target = "yt";
+            const topic = txt.replace(/^\/(reel|yt|both|video|script)\s*/i, "").trim();
+            if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Topic அல்லது Script-ஐச் சேர்த்து அனுப்புங்கள்!" }); return; }
+            await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `⚡ <b>Target:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script-ஐத் தயார் செய்கிறது...` });
+            const res = await runDirectorAndCommitV2(env, topic, target);
+            await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: res.ok ? `🚀 <b>Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nLines: ${res.lines} | Target: <code>${escH(res.target)}</code>` : "❌ GitHub commit failed!" });
+          } catch (err) {
+            if (env.TG_CHAT_ID) await tgApi(env, "sendMessage", { chat_id: String(env.TG_CHAT_ID), text: `Director error: ${String(err).slice(0, 200)}` }).catch(() => {});
           }
-          const msg = upd.message;
-          const cid = String(msg?.chat?.id || "");
-          if (!cid || !env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return new Response("ok");
-          const txt = String(msg?.text || "").trim();
-          if (!txt) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Please send text/script (voice or media is not supported yet)." }); return new Response("ok"); }
-          if (txt === "/start" || txt === "/help") {
-            await tgApi(env, "sendMessage", { chat_id: cid, text: "YUNA Video Studio Ready! Paste ANY topic or ChatGPT/Gemini content, or send /status." });
-            return new Response("ok");
-          }
-          if (txt === "/status") {
-            const r = await gh("/actions/runs?per_page=1", env);
-            const run = ((await r.json()).workflow_runs || [])[0] || {};
-            await tgApi(env, "sendMessage", { chat_id: cid, text: `Run ${run.id || "-"}: ${run.status || "none"} (${run.conclusion || "running"})` });
-            return new Response("ok");
-          }
-          const topic = txt.replace(/^\/(video|script)\s*/i, "").trim().slice(0, 4000);
-          if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Please send your topic or paste your ChatGPT/Gemini content directly!" }); return new Response("ok"); }
-          await tgApi(env, "sendMessage", { chat_id: cid, text: "Stage 1: Optimizing script (2-3 characters) & Stage 2: Starting 5G parallel render..." });
-          const res = await runDirectorAndCommit(env, topic);
-          await tgApi(env, "sendMessage", { chat_id: cid, text: res.ok ? `Render queued (commit ${res.sha})! Preview MP4 will arrive here in ~3-4 mins.` : "GitHub commit failed!" });
-        } catch (err) {
-          if (env.TG_CHAT_ID) await tgApi(env, "sendMessage", { chat_id: String(env.TG_CHAT_ID), text: `Director error: ${String(err).slice(0, 200)}` }).catch(() => {});
-        }
+        })();
+        if (ctx && typeof ctx.waitUntil === "function") ctx.waitUntil(work);
+        else await work;
         return new Response("ok");
       }
       if (!checkPin(req, url, env)) {
