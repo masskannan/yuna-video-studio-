@@ -96,18 +96,37 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         const zoom = interpolate(frame, [sc.startFrame, sc.endFrame], [1.05, 1.12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const panX = interpolate(frame, [sc.startFrame, sc.endFrame], [idx % 2 === 0 ? -12 : 12, idx % 2 === 0 ? 12 : -12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const cloudX = (frame * 0.6 + idx * 120) % 1200 - 150;
-        const stg = String((sc as any).setting || (idx % 3 === 0 ? "village_street" : idx % 3 === 1 ? "tea_shop" : "house_room"));
+        const rawSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === sc.part) || {};
+        const stg = String(rawSc.setting || (sc as any).setting || (idx % 3 === 0 ? "village_street" : idx % 3 === 1 ? "tea_shop" : "house_room"));
+        const tod = String(rawSc.time_of_day || (idx === 0 ? "morning" : idx === 1 ? "sunset" : "night"));
+        const sky1 = tod === "night" ? "#0F172A" : tod === "sunset" ? "#7C2D6E" : "#38BDF8";
+        const sky2 = tod === "night" ? "#1E1B4B" : tod === "sunset" ? "#F97316" : "#BAE6FD";
+        const sky3 = tod === "night" ? "#312E81" : tod === "sunset" ? "#FDE047" : "#FEF3C7";
         return (
           <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX}px, 0, 0)` }}>
             <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
               <defs>
                 <linearGradient id={`sky${idx}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={stg === "house_room" ? "#1E293B" : "#38BDF8"} />
-                  <stop offset="60%" stopColor={stg === "house_room" ? "#334155" : "#BAE6FD"} />
-                  <stop offset="100%" stopColor={stg === "house_room" ? "#475569" : "#FEF3C7"} />
+                  <stop offset="0%" stopColor={stg === "house_room" ? "#1E293B" : sky1} />
+                  <stop offset="60%" stopColor={stg === "house_room" ? "#334155" : sky2} />
+                  <stop offset="100%" stopColor={stg === "house_room" ? "#475569" : sky3} />
                 </linearGradient>
               </defs>
               <rect width="1080" height="1920" fill={`url(#sky${idx})`} />
+              {tod === "night" && stg !== "house_room" ? (
+                <g fill="#FFFFFF" opacity="0.85">
+                  <circle cx="140" cy="180" r="3" /><circle cx="310" cy="120" r="4" /><circle cx="520" cy="210" r="3" />
+                  <circle cx="720" cy="140" r="4" /><circle cx="940" cy="190" r="3" /><circle cx="860" cy="240" r="65" fill="#FEF08A" opacity="0.22" />
+                </g>
+              ) : null}
+              {tod === "sunset" && stg !== "house_room" ? (
+                <g>
+                  <path d="M 0 640 Q 540 720 1080 640" stroke="#0F172A" strokeWidth="4" fill="none" />
+                  {[120, 260, 400, 540, 680, 820, 960].map((bx, bi) => (
+                    <circle key={bi} cx={bx} cy={676 - Math.abs(540 - bx) * 0.06} r="10" fill="#FEF08A" />
+                  ))}
+                </g>
+              ) : null}
               {stg === "house_room" ? (
                 <g>
                   <rect x="0" y="1120" width="1080" height="800" fill="#78350F" />
@@ -149,7 +168,9 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
 
       <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "130px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div style={{ fontSize: wide ? 26 : 28, fontWeight: 700, color: active.accent }}>STAGE {active.part} / {totalParts}</div>
+          <div style={{ padding: "8px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.86)", border: "1.5px solid #FACC15", fontSize: wide ? 20 : 21, fontWeight: 900, color: "#FDE047", letterSpacing: 0.6 }}>
+            📍 {String(((Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {}).location || "ROCKFORT • TRICHY").toUpperCase()}
+          </div>
           <div style={{ padding: "6px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.72)", border: `1px solid ${active.accent}88`, fontSize: wide ? 22 : 24, fontWeight: 700 }}>{brand.name || "YUNA Studio"}</div>
         </div>
 
@@ -157,17 +178,22 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 60 : 280 }}>
             <div style={{ padding: "12px 24px", borderRadius: 16, backgroundColor: "rgba(15, 23, 42, 0.78)", border: `1.5px solid ${active.accent}88`, fontSize: wide ? 36 : 38, fontWeight: 800, textAlign: "center", maxWidth: "92%", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>{active.heading}</div>
             <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "space-around", alignItems: "flex-end", paddingTop: 26 }}>
-            {charEntries.map(([cname, ccfg]) => (
-              <CharacterRig
-                key={cname}
-                name={cname}
-                cfg={ccfg}
-                mouth={activeSpeaker === cname && activeLip ? activeLip.mouth : "X"}
-                frame={frame}
-                active={activeSpeaker === cname}
-                accent={active.accent}
-              />
-            ))}
+            {charEntries.map(([cname, ccfg], cIdx) => {
+                const rSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {};
+                return (
+                  <CharacterRig
+                    key={cname}
+                    name={cname}
+                    cfg={ccfg}
+                    mouth={activeSpeaker === cname && activeLip ? activeLip.mouth : "X"}
+                    frame={frame}
+                    active={activeSpeaker === cname}
+                    accent={active.accent}
+                    pose={rSc.pose || (cIdx === 0 ? (active.part % 2 === 1 ? "listen_ear" : "wave") : "hand_on_hip")}
+                    prop={rSc.prop || (active.part === 2 ? "headband" : "camera")}
+                  />
+                );
+              })}
             </div>
             <div style={{ width: "92%", height: 14, borderRadius: 999, background: `linear-gradient(90deg, transparent, ${active.accent}, transparent)`, opacity: 0.75 }} />
             </div>
