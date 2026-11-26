@@ -1,17 +1,17 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 45,
-  "mode": "cinema",
+  "reel_sec": 30,
+  "mode": "cartoon",
   "grade": "warm",
   "fx_mode": "HYBRID",
-  "render_target": "yt",
-  "use_manim": false,
-  "use_blender": false,
+  "render_target": "reel",
+  "use_manim": true,
+  "use_blender": true,
   "scenes": [
     {
       "part": 1,
-      "heading": "Smartphone Battery Boost",
+      "heading": "Online Scam-லிருந்து தப்பிக்க 3 Golden Rules",
       "accent": "#38BDF8",
       "bgTop": "#0F172A",
       "start_sec": 0,
