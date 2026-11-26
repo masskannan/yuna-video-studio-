@@ -1,52 +1,42 @@
 [
   {
-    "speaker": "KANNAN",
-    "text": "Good morning, Yuna! Ready for the stall?",
+    "speaker": "ARUN",
+    "text": "AI வேகமாக வளர்ந்தால், பல வேலைகள் தானியங்கி ஆகலாம்.",
     "sfx": "whoosh"
   },
   {
-    "speaker": "YUNA",
-    "text": "Absolutely! Fresh fruits today!",
+    "speaker": "KAVYA",
+    "text": "அதனால் சிலர் வேலை இழக்கலாம், ஆனால் புதிய வாய்ப்புகளும் உருவாகும்.",
     "sfx": "pop"
   },
   {
-    "speaker": "KANNAN",
-    "text": "The mangoes look perfect.",
-    "sfx": ""
-  },
-  {
-    "speaker": "YUNA",
-    "text": "Watch out, the wind's picking up!",
+    "speaker": "ARUN",
+    "text": "உதாரணமாக, தரவு விஞ்ஞானி, AI பயிற்சியாளர் போன்ற பங்குகள் அதிகரிக்கும்.",
     "sfx": "ding"
   },
   {
-    "speaker": "KANNAN",
-    "text": "Hold the canopy steady!",
+    "speaker": "KAVYA",
+    "text": "மற்றும் ரோபோட் பராமரிப்பு, மென்பொருள் மேம்பாடு போன்ற துறைகளும் வளர்ச்சி பெறும்.",
     "sfx": "click"
   },
   {
-    "speaker": "YUNA",
-    "text": "Got it! Customers are already lining up.",
-    "sfx": "pop"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "Let's make this the best day yet.",
+    "speaker": "ARUN",
+    "text": "ஆனால், குறைந்த திறன் கொண்ட வேலைகள் முதலில் பாதிக்கப்படும்.",
     "sfx": "boing"
   },
   {
-    "speaker": "YUNA",
-    "text": "Deal! And maybe a cold drink after?",
+    "speaker": "KAVYA",
+    "text": "அதனால் கல்வி மற்றும் பயிற்சி முக்கியம், மக்கள் மாற்றத்திற்கு தயாராக வேண்டும்.",
     "sfx": "pop"
   },
   {
-    "speaker": "KANNAN",
-    "text": "You read my mind.",
+    "speaker": "ARUN",
+    "text": "நிறுவனங்கள் AI-ஐ பயன்படுத்தும் போது, மனித-மெஷின் ஒத்துழைப்பு மாடல்களை உருவாக்க வேண்டும்.",
     "sfx": "whoosh"
   },
   {
-    "speaker": "YUNA",
-    "text": "To the market and beyond!",
+    "speaker": "KAVYA",
+    "text": "இது வேலைவாய்ப்பை மாற்றும், ஆனால் முழுமையாக அழிக்காது; புதிய பாதைகள் திறக்கும்.",
     "sfx": "ding"
   }
 ]

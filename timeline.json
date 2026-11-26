@@ -2,16 +2,16 @@
   "fps": 30,
   "total_sec": "auto",
   "reel_sec": 45,
-  "mode": "cinema",
-  "grade": "warm",
+  "mode": "cartoon",
+  "grade": "none",
   "fx_mode": "HYBRID",
-  "render_target": "both",
+  "render_target": "reel",
   "use_manim": false,
   "use_blender": false,
   "scenes": [
     {
       "part": 1,
-      "heading": "Morning Market",
+      "heading": "AI வேலைவாய்ப்பை மாற்றும்",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     }

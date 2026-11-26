@@ -1,22 +1,22 @@
 {
-  "KANNAN": {
+  "ARUN": {
     "type": "character",
     "body_color": "#38BDF8",
-    "dress_style": "suit",
+    "dress_style": "casual",
     "expression": "neutral",
     "hat": "none",
-    "mustache": "handlebar",
+    "mustache": "none",
+    "glasses": "none",
+    "voice": "ta-IN-PallaviNeural"
+  },
+  "KAVYA": {
+    "type": "character",
+    "body_color": "#38BDF8",
+    "dress_style": "casual",
+    "expression": "neutral",
+    "hat": "none",
+    "mustache": "none",
     "glasses": "none",
     "voice": "ta-IN-ValluvarNeural"
-  },
-  "YUNA": {
-    "type": "character",
-    "body_color": "#F59E0B",
-    "dress_style": "hoodie",
-    "expression": "happy",
-    "hat": "beanie",
-    "mustache": "none",
-    "glasses": "round",
-    "voice": "en-US-AvaNeural"
   }
 }
