@@ -95,7 +95,56 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         const opacity = idx === 0 ? 1 : interpolate(frame, [sc.startFrame - fade, sc.startFrame], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const zoom = interpolate(frame, [sc.startFrame, sc.endFrame], [1.05, 1.12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const panX = interpolate(frame, [sc.startFrame, sc.endFrame], [idx % 2 === 0 ? -12 : 12, idx % 2 === 0 ? 12 : -12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-        return <AbsoluteFill key={idx} style={{ opacity, background: `radial-gradient(circle at 30% 25%, ${sc.bgTop} 0%, ${bgBottom} 75%)`, transform: `scale(${zoom}) translate3d(${panX}px, 0, 0)` }} />;
+        const cloudX = (frame * 0.6 + idx * 120) % 1200 - 150;
+        const stg = String((sc as any).setting || (idx % 3 === 0 ? "village_street" : idx % 3 === 1 ? "tea_shop" : "house_room"));
+        return (
+          <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX}px, 0, 0)` }}>
+            <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id={`sky${idx}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={stg === "house_room" ? "#1E293B" : "#38BDF8"} />
+                  <stop offset="60%" stopColor={stg === "house_room" ? "#334155" : "#BAE6FD"} />
+                  <stop offset="100%" stopColor={stg === "house_room" ? "#475569" : "#FEF3C7"} />
+                </linearGradient>
+              </defs>
+              <rect width="1080" height="1920" fill={`url(#sky${idx})`} />
+              {stg === "house_room" ? (
+                <g>
+                  <rect x="0" y="1120" width="1080" height="800" fill="#78350F" />
+                  <rect x="330" y="260" width="420" height="320" rx="18" fill="#BAE6FD" stroke="#451A03" strokeWidth="16" />
+                  <line x1="540" y1="260" x2="540" y2="580" stroke="#451A03" strokeWidth="12" />
+                  <line x1="330" y1="420" x2="750" y2="420" stroke="#451A03" strokeWidth="12" />
+                  <rect x="140" y="1160" width="800" height="44" rx="14" fill="#92400E" stroke="#451A03" strokeWidth="8" />
+                </g>
+              ) : (
+                <g>
+                  <circle cx="860" cy="240" r="85" fill="#FACC15" opacity="0.95" />
+                  <g transform={`translate(${cloudX}, 180)`} fill="#FFFFFF" opacity="0.9">
+                    <ellipse cx="120" cy="60" rx="90" ry="38" />
+                    <ellipse cx="180" cy="45" rx="70" ry="42" />
+                  </g>
+                  <path d="M 0 1180 Q 270 960 560 1140 T 1080 1120 L 1080 1920 L 0 1920 Z" fill="#22C55E" />
+                  <path d="M 0 1240 Q 420 1100 780 1230 T 1080 1210 L 1080 1920 L 0 1920 Z" fill="#16A34A" />
+                  {/* Village House */}
+                  <rect x="90" y="880" width="290" height="260" rx="10" fill="#FEF3C7" stroke="#78350F" strokeWidth="8" />
+                  <polygon points="60,890 235,740 410,890" fill="#EA580C" stroke="#7C2D12" strokeWidth="8" />
+                  <rect x="195" y="990" width="76" height="150" rx="8" fill="#78350F" />
+                  {/* Tea Shop / Second Building */}
+                  <rect x="680" y="910" width="320" height="230" rx="10" fill="#E0F2FE" stroke="#1E3A8A" strokeWidth="8" />
+                  <polygon points="655,920 840,810 1025,920" fill={stg === "tea_shop" ? "#DC2626" : "#0284C7"} stroke="#0F172A" strokeWidth="8" />
+                  {/* Trees */}
+                  <rect x="490" y="920" width="28" height="210" fill="#78350F" />
+                  <circle cx="504" cy="890" r="78" fill="#15803D" />
+                  <circle cx="455" cy="925" r="55" fill="#16A34A" />
+                  <circle cx="555" cy="925" r="55" fill="#16A34A" />
+                  {/* Village Road */}
+                  <polygon points="0,1260 1080,1260 1080,1920 0,1920" fill="#D97706" opacity="0.38" />
+                  <rect x="0" y="1240" width="1080" height="680" fill="#334155" opacity="0.65" />
+                </g>
+              )}
+            </svg>
+          </AbsoluteFill>
+        );
       })}
 
       <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "130px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
