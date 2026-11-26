@@ -1,20 +1,58 @@
 import React from "react";
-import { useVideoConfig } from "remotion";
+import { useCurrentFrame, useVideoConfig } from "remotion";
 import { FxMode } from "./core/FxRegistry";
-import { resolveEffectiveFx } from "./core/FxResolver";
 import { ProfileAspect } from "./core/SafeZoneResolver";
 import { CinematicLetterbox } from "./camera/CinematicLetterbox";
+import { SpotlightMask } from "./camera/CameraExtended";
 import { LowerThirdTitle } from "./typography/LowerThirdAndHighlight";
 import { CountdownRing } from "./ui/UiCardsPack";
+import { ChatBubble, CursorRipple } from "./ui/UiExtendedPack";
 import { SvgLineChart } from "./charts/SvgCharts";
 import { SpeedLinesOverlay } from "./motion/SpeedLinesAndMask";
 import { AudioWaveformGlow } from "./audio/AudioReactive";
+import { PodcastSpeakerGlow } from "./audio/PodcastAndBeat";
 import { BokehBackdrop } from "./motion/ParticlesAndBlur";
+import { SceneTransition } from "./transitions/SceneTransition";
+import { ComicSpeechBubble, ComicStarburst, ChalkHighlight } from "./cartoon/CartoonPack";
 
-export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "SAFE"}) => {
+export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "SAFE", scenes = []}) => {
+  const frame = useCurrentFrame();
   const { width, height, durationInFrames } = useVideoConfig();
   if (fxMode === "SAFE") return null;
   const aspect: ProfileAspect = width > height ? "16:9" : "9:16";
-  const r = resolveEffectiveFx(fxMode, {cinematic_letterbox:{enabled:true,bar_pct:0.08},lower_third_title:{enabled:true}});
-  return <><BokehBackdrop config={r.ui_tilt_bokeh} fxMode={fxMode} /><SpeedLinesOverlay config={r.weather_speed_lines} fxMode={fxMode} /><CinematicLetterbox config={r.cinematic_letterbox} fxMode={fxMode} /><LowerThirdTitle config={r.lower_third_title} fxMode={fxMode} aspect={aspect} /><CountdownRing config={r.countdown_ring} fxMode={fxMode} startFrame={0} durationFrames={durationInFrames} aspect={aspect} /><SvgLineChart config={r.svg_charts} fxMode={fxMode} /><AudioWaveformGlow config={r.audio_waveform_glow} fxMode={fxMode} /></>;
+  const count = Math.max(1, scenes.length || 1);
+  const seg = Math.max(1, Math.floor(durationInFrames / count));
+  const idx = Math.min(count - 1, Math.floor(frame / seg));
+  const cur = scenes[idx] || {};
+  const title = String(cur.heading || "YUNA Studio");
+  const on = { enabled: true };
+  return (
+    <>
+      <BokehBackdrop config={on} fxMode={fxMode} />
+      <AudioWaveformGlow config={on} fxMode={fxMode} />
+      <PodcastSpeakerGlow config={on} fxMode={fxMode} active={true} />
+      <LowerThirdTitle config={on} fxMode={fxMode} aspect={aspect} title={title} />
+      <SceneTransition config={on} fxMode={fxMode} startFrame={idx * seg} durationFrames={12} kind={idx % 2 === 0 ? "wipe" : "slide"} />
+      {idx === 0 ? (
+        <>
+          <SpeedLinesOverlay config={on} fxMode={fxMode} />
+          <ComicStarburst config={on} fxMode={fxMode} label="HOT" />
+          <CountdownRing config={on} fxMode={fxMode} startFrame={0} durationFrames={seg} aspect={aspect} />
+        </>
+      ) : idx === 1 ? (
+        <>
+          <ComicSpeechBubble config={on} fxMode={fxMode} text={title} />
+          <SvgLineChart config={on} fxMode={fxMode} values={[18, 42, 36, 74, 96]} />
+          <ChalkHighlight config={on} fxMode={fxMode} />
+        </>
+      ) : (
+        <>
+          <SpotlightMask config={on} fxMode={fxMode} />
+          <ChatBubble config={on} fxMode={fxMode} sender="YUNA" msg={title} />
+          <CursorRipple config={on} fxMode={fxMode} x={0.72} y={0.36} />
+          <CinematicLetterbox config={on} fxMode={fxMode} />
+        </>
+      )}
+    </>
+  );
 };
