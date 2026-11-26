@@ -544,7 +544,9 @@ async function sendFailLogCard(env, cid, runId = null) {
   const fj = (jd.jobs || []).find(j => j.conclusion === "failure");
   if (!fj) { await tgApi(env, "sendMessage", { chat_id: cid, text: `Run #${rid} has no failed jobs.` }); return; }
   const fstep = (fj.steps || []).find(s => s.conclusion === "failure")?.name || "unknown";
-  const rawLog = await gh(`/actions/jobs/${fj.id}/logs`, env).then(r => r.text()).catch(() => "");
+  const logRes = await gh(`/actions/jobs/${fj.id}/logs`, env, { redirect: "manual" }).catch(() => null);
+  const loc = logRes?.headers?.get("location");
+  const rawLog = loc ? await fetch(loc).then(r => r.text()).catch(() => "") : (logRes ? await logRes.text().catch(() => "") : "");
   const tail = rawLog.split(/\r?\n/).filter(Boolean).slice(-12).join("\n").slice(-1600);
   let tamilTip = "";
   try {
@@ -725,7 +727,7 @@ Return ONLY valid JSON:
     return {
       ...d,
       speaker: sp,
-      voice: isHindi || isEngOnly ? vDefaults[spIdx % vDefaults.length] : (chars[sp]?.voice || vDefaults[spIdx % vDefaults.length]),
+      voice: (() => { const VALID_V = ["ta-IN-ValluvarNeural","ta-IN-PallaviNeural","ta-SG-VenbaNeural","en-US-AndrewNeural","en-US-AvaNeural","en-IN-PrabhatNeural","en-IN-NeerjaNeural","hi-IN-MadhurNeural","hi-IN-SwaraNeural"]; const cv = chars[sp]?.voice; return (!isHindi && !isEngOnly && VALID_V.includes(cv)) ? cv : vDefaults[spIdx % vDefaults.length]; })(),
       pitch: spIdx === 0 ? 0.96 : spIdx === 1 ? 1.06 : 1.14,
       sfx: ["", "pop", "whoosh", "click", "ding", "boing"].includes(d.sfx) ? d.sfx : "pop",
       meme: d.meme ? String(d.meme).replace(/[^a-z0-9_-]/gi, "_").toLowerCase() : ""

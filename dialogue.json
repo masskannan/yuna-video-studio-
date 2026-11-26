@@ -11,7 +11,7 @@
     "speaker": "YUNA",
     "text": "Thambi ore tension! Network busy! Server romba slow-ah irukku pa!",
     "sfx": "pop",
-    "voice": "ta-IN-KaniNeural",
+    "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
     "meme": ""
   },
@@ -35,7 +35,7 @@
     "speaker": "YUNA",
     "text": "Free illa thambi! Adhu oru technical gateway delay!",
     "sfx": "click",
-    "voice": "ta-IN-KaniNeural",
+    "voice": "ta-IN-ValluvarNeural",
     "pitch": 1.06,
     "meme": ""
   },
@@ -59,7 +59,7 @@
     "speaker": "YUNA",
     "text": "Adhane! Inga oru cup tea kuduthu waste aagala pa!",
     "sfx": "pop",
-    "voice": "ta-IN-KaniNeural",
+    "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
     "meme": ""
   }

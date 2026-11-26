@@ -4,7 +4,7 @@
   "reel_sec": 47,
   "mode": "cartoon",
   "grade": "cyber",
-  "fx_mode": "SAFE",
+  "fx_mode": "HYBRID",
   "render_target": "reel",
   "use_manim": false,
   "use_blender": false,
