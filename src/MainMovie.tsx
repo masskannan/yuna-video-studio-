@@ -93,7 +93,10 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         const fade = Math.max(1, Math.min(15, Math.floor(dur / 3)));
         if (frame < sc.startFrame - fade || frame > sc.endFrame + fade) return null;
         const opacity = idx === 0 ? 1 : interpolate(frame, [sc.startFrame - fade, sc.startFrame], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-        const zoom = interpolate(frame, [sc.startFrame, sc.endFrame], [1.05, 1.12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+        const isPunch = Boolean(activeWord?.word && (/[!?]$/.test(activeWord.word) || (activeWord.word.length >= 4 && activeWord.word === activeWord.word.toUpperCase())));
+        const shakeX = isPunch ? Math.sin(frame * 1.9) * 4 : 0;
+        const shakeY = isPunch ? Math.cos(frame * 2.3) * 3 : 0;
+        const zoom = interpolate(frame, [sc.startFrame, sc.endFrame], [1.04, 1.11], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + (isPunch ? 0.025 : 0);
         const panX = interpolate(frame, [sc.startFrame, sc.endFrame], [idx % 2 === 0 ? -12 : 12, idx % 2 === 0 ? 12 : -12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const cloudX = (frame * 0.6 + idx * 120) % 1200 - 150;
         const rawSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === sc.part) || {};
@@ -103,7 +106,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         const sky2 = tod === "night" ? "#1E1B4B" : tod === "sunset" ? "#F97316" : "#BAE6FD";
         const sky3 = tod === "night" ? "#312E81" : tod === "sunset" ? "#FDE047" : "#FEF3C7";
         return (
-          <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX}px, 0, 0)` }}>
+          <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX + shakeX}px, ${shakeY}px, 0)` }}>
             <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
               <defs>
                 <linearGradient id={`sky${idx}`} x1="0" y1="0" x2="0" y2="1">
@@ -142,8 +145,11 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
                     <ellipse cx="120" cy="60" rx="90" ry="38" />
                     <ellipse cx="180" cy="45" rx="70" ry="42" />
                   </g>
+                  <g transform={`translate(${panX * 0.45}, 0)`}>
                   <path d="M 0 1180 Q 270 960 560 1140 T 1080 1120 L 1080 1920 L 0 1920 Z" fill="#22C55E" />
                   <path d="M 0 1240 Q 420 1100 780 1230 T 1080 1210 L 1080 1920 L 0 1920 Z" fill="#16A34A" />
+                  </g>
+                  <g transform={`translate(${panX * 0.85}, 0)`}>
                   {/* Village House */}
                   <rect x="90" y="880" width="290" height="260" rx="10" fill="#FEF3C7" stroke="#78350F" strokeWidth="8" />
                   <polygon points="60,890 235,740 410,890" fill="#EA580C" stroke="#7C2D12" strokeWidth="8" />
@@ -156,6 +162,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
                   <circle cx="504" cy="890" r="78" fill="#15803D" />
                   <circle cx="455" cy="925" r="55" fill="#16A34A" />
                   <circle cx="555" cy="925" r="55" fill="#16A34A" />
+                  </g>
                   {/* Village Road */}
                   <polygon points="0,1260 1080,1260 1080,1920 0,1920" fill="#D97706" opacity="0.38" />
                   <rect x="0" y="1240" width="1080" height="680" fill="#334155" opacity="0.65" />
