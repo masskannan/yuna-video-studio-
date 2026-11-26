@@ -594,6 +594,27 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
     : isEngOnly
     ? "Write crisp, punchy conversational English."
     : "Write natural spoken Tamil (தமிழ் எழுத்துக்கள்) mixed ONLY with spaced English tech nouns (UPI, API, Server). Keep grammar clean for Instagram Auto-Translate.";
+  if (scriptText.length < 400) {
+    const writerSys = `You are the YUNA Cloud Video Studio Chief Strategist, Screenwriter & Cinema Director (LEGEND PRO MAX). ${langRule}
+CORE MISSION: Create original, high-retention 2D animated short stories (Tamil-first + spaced English tech/business nouns) without clickbait or empty virality.
+
+1. ETHICAL ATTENTION SYSTEM:
+   - Recognition: Start in a real moment viewers know (payment stuck, interview fear, tea shop debate, office stress).
+   - Curiosity Gap + Concrete Stakes: State money, time, or peace-of-mind stakes clearly — NEVER vague "You won't believe this".
+   - Emotional Movement: Confusion/Fear -> Clarity -> Surprise/Laughter -> Honest Payoff.
+2. CHARACTER CANON (DISTINCT RHYTHM & VOCABULARY):
+   - ${bible.main.name}: Audience proxy (relatable doubts, fears, everyday questions).
+   - ${bible.sub.name}: Street-smart explainer (clear analogies, crisp proof).${useCameo && bible.cameo ? `
+   - ${bible.cameo.name}: Disruptive comic & fact-check AI robot (deadpan punchlines, stats).` : ""}
+3. 8-STEP CREATIVE ARC (8-9 ALTERNATING LINES, MAX 75 WORDS TOTAL FOR 35-42s):
+   - Line 1 (Hook + Stakes, 0-4s): Open mid-conflict or surprising truth. ZERO greetings or logo intros.
+   - Lines 2-6 (Escalation + Aha! Analogy): One main idea, one central promise; escalate tension then reveal a visual analogy.
+   - Lines 7-9 (Payoff + Loop): Answer the opening question honestly with a memorable twist/joke that loops back to Line 1. NO generic "Subscribe/Like" begging.
+4. INTERNAL 100-PT QUALITY CHECK (DO NOT OUTPUT SCORE): Ensure Hook(15), Audience Fit(15), Retention(15), Clarity(10), Character Contrast(10), Visual Feasibility(10), Factuality/Safety(10) are all strong before finalizing.
+Output ONLY plain dialogue lines as SPEAKER: line.`;
+    const draft = await callGeminiFirst(env, [{ role: "system", content: writerSys }, { role: "user", content: `Topic: ${scriptText}` }], false);
+    if (draft && draft.length > 30) scriptText = draft;
+  }
   const sys = `You are the Master Screenplay & Technical Director for YUNA Cloud Video Studio (Remotion 4.0.250 + Edge-TTS + 5-Band Safe Grid).
 ${langRule}
 
