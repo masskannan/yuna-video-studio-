@@ -201,9 +201,21 @@ jobs:
           BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          [ -n "$BOT" ] && [ -n "$CHAT" ] && [ -f final/preview_480p.mp4 ] && curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "caption=YUNA 480p Preview (16:9)" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          if [ -n "$BOT" ] && [ -n "$CHAT" ] && [ -f final/preview_480p.mp4 ]; then
+            ffmpeg -y -ss 00:00:01 -i final/preview_480p.mp4 -vframes 1 -vf "scale=320:-1" -q:v 3 final/preview_thumb.jpg 2>/dev/null || true
+            PDUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 final/preview_480p.mp4 2>/dev/null | cut -d. -f1)
+            PTHM=()
+            [ -f final/preview_thumb.jpg ] && PTHM=(-F "thumbnail=@final/preview_thumb.jpg")
+            curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "duration=${PDUR:-35}" -F "width=854" -F "height=480" -F "supports_streaming=true" "${PTHM[@]}" -F "caption=YUNA 480p Preview (16:9)" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          fi
           for img in final/*.png; do [ -f "$img" ] && [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "photo=@$img" "https://api.telegram.org/bot${BOT}/sendPhoto" > /dev/null || true; break; done
-          [ -f final/reel_9x16.mp4 ] && curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "caption=YUNA 9:16 Reel Ready" -F 'reply_markup={"inline_keyboard":[[{"text":"✅ Approve & Tag","callback_data":"approve"}]]}' "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          if [ -n "$BOT" ] && [ -n "$CHAT" ] && [ -f final/reel_9x16.mp4 ]; then
+            ffmpeg -y -ss 00:00:01 -i final/reel_9x16.mp4 -vframes 1 -vf "scale=320:-1" -q:v 3 final/reel_thumb.jpg 2>/dev/null || true
+            RDUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 final/reel_9x16.mp4 2>/dev/null | cut -d. -f1)
+            RTHM=()
+            [ -f final/reel_thumb.jpg ] && RTHM=(-F "thumbnail=@final/reel_thumb.jpg")
+            curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "duration=${RDUR:-35}" -F "width=1080" -F "height=1920" -F "supports_streaming=true" "${RTHM[@]}" -F "caption=YUNA 9:16 Reel Ready" -F 'reply_markup={"inline_keyboard":[[{"text":"✅ Approve & Tag","callback_data":"approve"}]]}' "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: pro-studio-delivery-pack
