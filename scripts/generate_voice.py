@@ -1,3 +1,4 @@
+import re
 import asyncio, hashlib, json, os, subprocess, urllib.request, uuid
 import edge_tts
 
@@ -66,27 +67,37 @@ def get_timeline_sec():
     return 0.0
 
 async def synth_edge(text, voice, raw_mp3):
-    try:
-        comm = edge_tts.Communicate(text, voice, boundary="WordBoundary")
-    except TypeError:
-        comm = edge_tts.Communicate(text, voice)
-    words, sentences = [], []
-    with open(raw_mp3, "wb") as f:
-        async for chunk in comm.stream():
-            ctype = chunk.get("type")
-            if ctype == "audio":
-                f.write(chunk["data"])
-            elif ctype == "WordBoundary":
-                st, dur = chunk["offset"] / 10_000_000.0, chunk["duration"] / 10_000_000.0
-                w = chunk.get("text", "").strip()
-                if w:
-                    words.append({"word": w, "start": st, "end": st + dur})
-            elif ctype == "SentenceBoundary":
-                st, dur = chunk["offset"] / 10_000_000.0, chunk["duration"] / 10_000_000.0
-                s = chunk.get("text", "").strip()
-                if s:
-                    sentences.append({"text": s, "start": st, "end": st + dur})
-    return words, sentences
+    clean = re.sub(r"[<>&*#_~`]+", " ", str(text or "")).strip()
+    fb = "en-US-AndrewNeural" if str(voice).startswith("en-") else ("hi-IN-MadhurNeural" if str(voice).startswith("hi-") else "ta-IN-ValluvarNeural")
+    if clean:
+        for v_try in (voice, voice, fb):
+            try:
+                try:
+                    comm = edge_tts.Communicate(clean, v_try, boundary="WordBoundary")
+                except TypeError:
+                    comm = edge_tts.Communicate(clean, v_try)
+                words, sentences = [], []
+                with open(raw_mp3, "wb") as f:
+                    async for chunk in comm.stream():
+                        ctype = chunk.get("type")
+                        if ctype == "audio":
+                            f.write(chunk["data"])
+                        elif ctype == "WordBoundary":
+                            st, dur = chunk["offset"] / 10_000_000.0, chunk["duration"] / 10_000_000.0
+                            w = chunk.get("text", "").strip()
+                            if w:
+                                words.append({"word": w, "start": st, "end": st + dur})
+                        elif ctype == "SentenceBoundary":
+                            st, dur = chunk["offset"] / 10_000_000.0, chunk["duration"] / 10_000_000.0
+                            s = chunk.get("text", "").strip()
+                            if s:
+                                sentences.append({"text": s, "start": st, "end": st + dur})
+                if os.path.exists(raw_mp3) and os.path.getsize(raw_mp3) > 200:
+                    return words, sentences
+            except Exception:
+                await asyncio.sleep(1.5)
+    subprocess.run(["ffmpeg", "-y", "-f", "lavfi", "-i", "anullsrc=r=24000:cl=mono", "-t", "0.6", raw_mp3], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return [], []
 
 def groq_whisper_words(audio_path):
     api_key = os.environ.get("GROQ_API_KEY", "").strip()
@@ -130,7 +141,7 @@ def process_line(line):
     wav_path = os.path.join(CACHE_DIR, f"{key}.wav")
     meta_path = os.path.join(CACHE_DIR, f"{key}.json")
 
-    if os.path.exists(wav_path) and os.path.exists(meta_path):
+    if os.path.exists(wav_path) and os.path.getsize(wav_path) > 500 and os.path.exists(meta_path):
         print(f"Cache HIT [{line['speaker']}]: {key}")
         return wav_path, json.load(open(meta_path, "r", encoding="utf-8"))
 
@@ -278,8 +289,11 @@ def main():
             mix_labels.append(f"[s{i}]")
         fc_parts.append(f"{''.join(mix_labels)}amix=inputs={len(mix_labels)}:duration=first:normalize=0[out]")
         cmd.extend(["-filter_complex", ";".join(fc_parts), "-map", "[out]", VOICE_SFX_WAV])
-        subprocess.run(cmd, check=True)
-        voice_bus = VOICE_SFX_WAV
+        try:
+            subprocess.run(cmd, check=True)
+            voice_bus = VOICE_SFX_WAV
+        except Exception as e:
+            print(f"SFX/Meme mix fallback (safe): {e}")
         print(f"Mixed {len(sfx_events)} CC0 SFX into Bus 2")
 
     mood = str(json.load(open(TIMELINE_FILE, "r", encoding="utf-8")).get("bgm", "default")) if os.path.exists(TIMELINE_FILE) else "default"
