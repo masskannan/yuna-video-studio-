@@ -595,24 +595,16 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
     ? "Write crisp, punchy conversational English."
     : "Write natural spoken Tamil (தமிழ் எழுத்துக்கள்) mixed ONLY with spaced English tech nouns (UPI, API, Server). Keep grammar clean for Instagram Auto-Translate.";
   if (scriptText.length < 400) {
-    const writerSys = `You are the YUNA Cloud Video Studio Chief Strategist, Screenwriter & Cinema Director (LEGEND PRO MAX). ${langRule}
-CORE MISSION: Create original, high-retention 2D animated short stories (Tamil-first + spaced English tech/business nouns) without clickbait or empty virality.
+    const writerSys = `THINK LIKE AN OSCAR-CALIBER SHORT-FILM DIRECTOR & VIRAL REELS ARCHITECT. ${langRule}
+Even if the user gives a tiny 2-word input (e.g. "UPI scam", "Tea shop AI"), AUTOMATICALLY EXPAND IT into a vivid, cinematic 3-to-4-beat micro-film.
 
-1. ETHICAL ATTENTION SYSTEM:
-   - Recognition: Start in a real moment viewers know (payment stuck, interview fear, tea shop debate, office stress).
-   - Curiosity Gap + Concrete Stakes: State money, time, or peace-of-mind stakes clearly — NEVER vague "You won't believe this".
-   - Emotional Movement: Confusion/Fear -> Clarity -> Surprise/Laughter -> Honest Payoff.
-2. CHARACTER CANON (DISTINCT RHYTHM & VOCABULARY):
-   - ${bible.main.name}: Audience proxy (relatable doubts, fears, everyday questions).
-   - ${bible.sub.name}: Street-smart explainer (clear analogies, crisp proof).${useCameo && bible.cameo ? `
-   - ${bible.cameo.name}: Disruptive comic & fact-check AI robot (deadpan punchlines, stats).` : ""}
-3. 8-STEP CREATIVE ARC (8-9 ALTERNATING LINES, MAX 75 WORDS TOTAL FOR 35-42s):
-   - Line 1 (Hook + Stakes, 0-4s): Open mid-conflict or surprising truth. ZERO greetings or logo intros.
-   - Lines 2-6 (Escalation + Aha! Analogy): One main idea, one central promise; escalate tension then reveal a visual analogy.
-   - Lines 7-9 (Payoff + Loop): Answer the opening question honestly with a memorable twist/joke that loops back to Line 1. NO generic "Subscribe/Like" begging.
-4. INTERNAL 100-PT QUALITY CHECK (DO NOT OUTPUT SCORE): Ensure Hook(15), Audience Fit(15), Retention(15), Clarity(10), Character Contrast(10), Visual Feasibility(10), Factuality/Safety(10) are all strong before finalizing.
+ACTIVATION DIRECTIVES:
+1. DYNAMIC CASTING: Cast 2-3 context-authentic characters fitting the story (e.g. DOCTOR & PATIENT, BOSS & JUNIOR, TEA_MASTER & STUDENT, INTERVIEWER & CANDIDATE, or ${bible.main.name} & ${bible.sub.name})${useCameo && bible.cameo ? ` + ${bible.cameo.name} (Jetpack AI Robot)` : ""}. Give each character distinct personality, rhythm, and contrasting emotion.
+2. CINEMATIC SCENE SPLITTING: Split into 3 escalating beats (0-4s Shock Hook -> 4-24s Conflict + Visual Analogy -> 24-38s Aha! Twist + Loop Payoff). ZERO greetings ("Hi friends") or "Subscribe" endings.
+3. KINETIC WORD TRIGGERS: Put 1-2 short ALL-CAPS English keywords or "!" / "?" per line where our Remotion camera should trigger Zoom Punch & Screen Shake.
+4. TIMING DISCIPLINE: 8-9 strictly alternating lines, TOTAL MAX 75 WORDS for 35-42s so nothing clips.
 Output ONLY plain dialogue lines as SPEAKER: line.`;
-    const draft = await callGeminiFirst(env, [{ role: "system", content: writerSys }, { role: "user", content: `Topic: ${scriptText}` }], false);
+    const draft = await callGeminiFirst(env, [{ role: "system", content: writerSys }, { role: "user", content: `Expand into a cinematic multi-character Reel script: ${scriptText}` }], false);
     if (draft && draft.length > 30) scriptText = draft;
   }
   const sys = `You are the Master Screenplay & Technical Director for YUNA Cloud Video Studio (Remotion 4.0.250 + Edge-TTS + 5-Band Safe Grid).
@@ -664,14 +656,30 @@ Return ONLY valid JSON:
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
   tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; return { ...s, part: s.part || i + 1, start_sec: st, end_sec: en }; });
+  const parsedChars = (parsed.characters && typeof parsed.characters === "object") ? parsed.characters : {};
   const chars = {};
-  chars[bible.main.name || "KANNAN"] = bible.main;
-  chars[bible.sub.name || "YUNA"] = bible.sub;
-  if (useCameo && bible.cameo) chars[bible.cameo.name || "BUGGY"] = bible.cameo;
-  const _unusedChars = parsed.characters && Object.keys(parsed.characters).length ? parsed.characters : {
-    KANNAN: { type: "character", body_color: "#38BDF8", dress_style: "suit", expression: "happy", hat: "none", mustache: "none", glasses: "round", voice: "ta-IN-ValluvarNeural" },
-    YUNA: { type: "character", body_color: "#A855F7", dress_style: "hoodie", expression: "surprised", hat: "cap", mustache: "none", glasses: "none", voice: "ta-IN-PallaviNeural" }
-  };
+  const pKeys = Object.keys(parsedChars).slice(0, useCameo ? 2 : 3);
+  if (pKeys.length >= 2) {
+    for (const k of pKeys) {
+      const c = parsedChars[k] || {};
+      chars[k.toUpperCase().slice(0, 14)] = {
+        type: ["character", "worm", "robot"].includes(c.type) ? c.type : "character",
+        body_color: /^#[0-9A-Fa-f]{6}$/.test(c.body_color || "") ? c.body_color : "#D99B66",
+        dress_style: ["suit", "hoodie", "casual", "none"].includes(c.dress_style) ? c.dress_style : "casual",
+        dress_color: /^#[0-9A-Fa-f]{6}$/.test(c.dress_color || "") ? c.dress_color : "#0284C7",
+        expression: ["happy", "angry", "surprised", "neutral"].includes(c.expression) ? c.expression : "happy",
+        hat: ["none", "cap", "crown", "beanie"].includes(c.hat) ? c.hat : "none",
+        mustache: ["none", "handlebar", "thick", "pencil"].includes(c.mustache) ? c.mustache : "none",
+        glasses: ["none", "round", "shades"].includes(c.glasses) ? c.glasses : "none",
+        voice: c.voice || "ta-IN-ValluvarNeural"
+      };
+    }
+    if (useCameo && bible.cameo && Object.keys(chars).length < 3) chars[bible.cameo.name || "BUGGY"] = bible.cameo;
+  } else {
+    chars[bible.main.name || "KANNAN"] = bible.main;
+    chars[bible.sub.name || "YUNA"] = bible.sub;
+    if (useCameo && bible.cameo) chars[bible.cameo.name || "BUGGY"] = bible.cameo;
+  }
   const dlgRaw = Array.isArray(parsed.dialogue) && parsed.dialogue.length ? parsed.dialogue : [{ speaker: Object.keys(chars)[0], text: scriptText.slice(0, 140), sfx: "pop" }];
   const castKeys = Object.keys(chars);
   const vDefaults = isHindi
