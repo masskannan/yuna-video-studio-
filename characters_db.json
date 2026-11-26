@@ -1,0 +1,36 @@
+{
+  "main": {
+    "name": "KANNAN",
+    "type": "character",
+    "body_color": "#38BDF8",
+    "dress_style": "suit",
+    "expression": "happy",
+    "hat": "none",
+    "mustache": "none",
+    "glasses": "round",
+    "voice": "ta-IN-ValluvarNeural"
+  },
+  "sub": {
+    "name": "YUNA",
+    "type": "character",
+    "body_color": "#A855F7",
+    "dress_style": "hoodie",
+    "expression": "surprised",
+    "hat": "cap",
+    "mustache": "none",
+    "glasses": "none",
+    "voice": "ta-IN-PallaviNeural"
+  },
+  "cameo": {
+    "name": "BUGGY",
+    "type": "worm",
+    "body_color": "#22C55E",
+    "dress_style": "none",
+    "expression": "happy",
+    "hat": "none",
+    "mustache": "none",
+    "glasses": "shades",
+    "voice": "ta-SG-VenbaNeural"
+  },
+  "custom": {}
+}

@@ -194,7 +194,24 @@ async function callAiPool(env, messages, wantJson = false) {
   throw new Error("All AI pool keys exhausted");
 }
 
-async function runDirectorAndCommitV2(env, rawText, target = "both") {
+
+async function loadCharBible(env) {
+  try {
+    const r = await gh("/contents/characters_db.json?ref=main", env);
+    if (r.ok) {
+      const d = await r.json();
+      return JSON.parse(decodeURIComponent(escape(atob(String(d.content || "").replace(/\s/g, "")))));
+    }
+  } catch {}
+  return {
+    main: { name: "KANNAN", type: "character", body_color: "#38BDF8", dress_style: "suit", expression: "happy", hat: "none", mustache: "none", glasses: "round", voice: "ta-IN-ValluvarNeural" },
+    sub: { name: "YUNA", type: "character", body_color: "#A855F7", dress_style: "hoodie", expression: "surprised", hat: "cap", mustache: "none", glasses: "none", voice: "ta-IN-PallaviNeural" },
+    cameo: { name: "BUGGY", type: "worm", body_color: "#22C55E", dress_style: "none", expression: "happy", hat: "none", mustache: "none", glasses: "shades", voice: "ta-SG-VenbaNeural" },
+    custom: {}
+  };
+}
+
+async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false) {
   let scriptText = String(rawText || "").trim();
   if (scriptText.length > 2500) {
     scriptText = await callAiPool(env, [
@@ -219,7 +236,12 @@ async function runDirectorAndCommitV2(env, rawText, target = "both") {
   if (!["cinema", "cartoon", "ui_ux", "split_pip"].includes(tl.mode)) tl.mode = "cartoon";
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
-  const chars = parsed.characters && Object.keys(parsed.characters).length ? parsed.characters : {
+  const bible = await loadCharBible(env);
+  const chars = {};
+  chars[bible.main.name || "KANNAN"] = bible.main;
+  chars[bible.sub.name || "YUNA"] = bible.sub;
+  if (useCameo && bible.cameo) chars[bible.cameo.name || "BUGGY"] = bible.cameo;
+  const _unusedChars = parsed.characters && Object.keys(parsed.characters).length ? parsed.characters : {
     KANNAN: { type: "character", body_color: "#38BDF8", dress_style: "suit", expression: "happy", hat: "none", mustache: "none", glasses: "round", voice: "ta-IN-ValluvarNeural" },
     YUNA: { type: "character", body_color: "#A855F7", dress_style: "hoodie", expression: "surprised", hat: "cap", mustache: "none", glasses: "none", voice: "ta-IN-PallaviNeural" }
   };
@@ -372,6 +394,24 @@ export default {
               });
               return;
             }
+            if (txt === "/cast") {
+              const b = await loadCharBible(env);
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `🎭 <b>Saved Character Bible</b>\n• <b>Main:</b> <code>${escH(b.main.name)}</code> (${escH(b.main.dress_style)}, ${escH(b.main.voice)})\n• <b>Sub:</b> <code>${escH(b.sub.name)}</code> (${escH(b.sub.dress_style)}, ${escH(b.sub.voice)})\n• <b>Cameo:</b> <code>${escH(b.cameo?.name || "BUGGY")}</code> (${escH(b.cameo?.type || "worm")})\n\nUse <code>/cameo &lt;script&gt;</code> for 3rd guest, or <code>/addchar NAME suit cap shades</code>` });
+              return;
+            }
+            if (/^\/\s*addchar\b/i.test(txt)) {
+              const parts = txt.replace(/^\/\s*addchar\s*/i, "").trim().split(/\s+/);
+              const cname = (parts[0] || "GUEST").toUpperCase().slice(0, 14);
+              const dress = ["suit","hoodie","casual","none"].includes(parts[1]) ? parts[1] : "casual";
+              const hat = ["none","cap","crown","beanie"].includes(parts[2]) ? parts[2] : "none";
+              const glasses = ["none","round","shades"].includes(parts[3]) ? parts[3] : "none";
+              const b = await loadCharBible(env);
+              b.cameo = { name: cname, type: "character", body_color: "#F59E0B", dress_style: dress, expression: "happy", hat, mustache: "none", glasses, voice: "ta-SG-VenbaNeural" };
+              const r = await gh("/contents/characters_db.json?ref=main", env).then(x => x.json()).catch(() => ({}));
+              await gh("/contents/characters_db.json", env, { method: "PUT", body: JSON.stringify({ message: `chore(cast): update cameo ${cname} [skip ci]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(b, null, 2)))), sha: r.sha }) });
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Cameo Saved:</b> <code>${escH(cname)}</code> (${dress}, ${hat}, ${glasses})` });
+              return;
+            }
             if (txt === "/status") {
               const r = await gh("/actions/runs?per_page=1", env);
               const run = ((await r.json()).workflow_runs || [])[0] || {};
@@ -390,12 +430,13 @@ export default {
               return;
             }
             let target = "both";
-            if (/^(\/\s*)?reel\b/i.test(txt)) target = "reel";
+            const useCameo = /^(\/\s*)?cameo\b/i.test(txt);
+            if (/^(\/\s*)?(reel|cameo)\b/i.test(txt)) target = "reel";
             else if (/^(\/\s*)?yt\b/i.test(txt)) target = "yt";
-            const topic = txt.replace(/^(\/\s*)?(reel|yt|both|video|script)\s*/i, "").trim();
+            const topic = txt.replace(/^(\/\s*)?(reel|cameo|yt|both|video|script)\s*/i, "").trim();
             if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Topic அல்லது Script-ஐச் சேர்த்து அனுப்புங்கள்!" }); return; }
             await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `⚡ <b>Target:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script-ஐத் தயார் செய்கிறது...` });
-            const res = await runDirectorAndCommitV2(env, topic, target);
+            const res = await runDirectorAndCommitV2(env, topic, target, useCameo);
             await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: res.ok ? `🚀 <b>Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nLines: ${res.lines} | Target: <code>${escH(res.target)}</code>` : "❌ GitHub commit failed!" });
           } catch (err) {
             if (env.TG_CHAT_ID) await tgApi(env, "sendMessage", { chat_id: String(env.TG_CHAT_ID), text: `Director error: ${String(err).slice(0, 200)}` }).catch(() => {});

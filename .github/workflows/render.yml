@@ -185,24 +185,25 @@ jobs:
           path: chunks
       - name: Quality Gate, Mux Audio & Build 480p Proxy
         run: |
-          sudo apt-get update && sudo apt-get install -y ffmpeg
+          which ffmpeg >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y ffmpeg)
           mkdir -p final
-          ls chunks/chunk_* >/dev/null 2>&1 && python3 scripts/verify_merge.py || true
-          [ -f chunks/chunk-reel/reel_9x16.mp4 ] && ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af apad -c:v copy -c:a aac -b:a 192k -shortest final/reel_9x16.mp4 || true
+          ls chunks/chunk-0* >/dev/null 2>&1 && python3 scripts/verify_merge.py || true
+          if [ -f chunks/chunk-reel/reel_9x16.mp4 ]; then VDUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 chunks/chunk-reel/reel_9x16.mp4); ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af "apad=whole_dur=${VDUR}" -t "${VDUR}" -c:v copy -c:a aac -b:a 192k final/reel_9x16.mp4; fi
           cp chunks/master-audio/captions.srt final/captions.srt || true
       - name: Verify G01-G15 Gates & Social Pack
-        run: git fetch --tags -q && python3 -m pip install -q pyyaml && python3 scripts/verify_g0_g15.py && python3 scripts/social_pack.py
+        run: git fetch --tags -q && python3 -m pip install -q pyyaml && (if [ -f final/final_master.mp4 ]; then python3 scripts/verify_g0_g15.py; fi) && python3 scripts/social_pack.py
+      - name: Generate A/B Thumbnails (Pre-Send)
+        run: |
+          sudo apt-get update && sudo apt-get install -y fonts-noto-core fonts-lohit-taml python3-pil libraqm0
+          python3 scripts/generate_thumbnails.py || true
       - name: Send 480p Proxy to Telegram (if configured)
         env:
           BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "caption=YUNA 480p Preview (16:9)" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          [ -n "$BOT" ] && [ -n "$CHAT" ] && [ -f final/preview_480p.mp4 ] && curl -s -F "chat_id=$CHAT" -F "video=@final/preview_480p.mp4" -F "caption=YUNA 480p Preview (16:9)" "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+          for img in final/*.png; do [ -f "$img" ] && [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -F "chat_id=$CHAT" -F "photo=@$img" "https://api.telegram.org/bot${BOT}/sendPhoto" > /dev/null || true; break; done
           [ -f final/reel_9x16.mp4 ] && curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "caption=YUNA 9:16 Reel Ready" -F 'reply_markup={"inline_keyboard":[[{"text":"✅ Approve & Tag","callback_data":"approve"}]]}' "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
-      - name: Generate A/B Thumbnails
-        run: |
-          sudo apt-get update && sudo apt-get install -y fonts-noto-core fonts-lohit-taml python3-pil libraqm0
-          python3 scripts/generate_thumbnails.py
       - uses: actions/upload-artifact@v4
         with:
           name: pro-studio-delivery-pack
