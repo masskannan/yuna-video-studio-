@@ -3,6 +3,7 @@ const REPO = "yuna-video-studio-";
 
 
 
+
 function officeMiniAppHtml(pin) {
   const safePinJson = JSON.stringify(String(pin || ""));
   return `<!doctype html>
@@ -16,8 +17,8 @@ function officeMiniAppHtml(pin) {
   .top{display:flex;justify-content:space-between;align-items:center}
   .brand{font-size:17px;font-weight:800}
   .pill{font-size:11px;font-weight:700;padding:5px 11px;border-radius:999px;background:#0F172A;border:1px solid #38BDF8;color:#38BDF8}
-  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
-  .sp{background:#0B1120;border:1px solid #1E293B;border-radius:10px;padding:8px 2px;text-align:center;font-size:11px;font-weight:700;color:#64748B;cursor:pointer}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+  .sp{background:#0B1120;border:1px solid #1E293B;border-radius:10px;padding:8px 4px;text-align:center;font-size:11px;font-weight:700;color:#64748B;cursor:pointer}
   .sp.on{background:#0C4A6E;border-color:#38BDF8;color:#fff}
   .sp.done{border-color:#10B981;color:#34D399}
   .page{display:none;flex-direction:column;gap:14px}
@@ -26,21 +27,22 @@ function officeMiniAppHtml(pin) {
   .h2{font-size:15px;font-weight:800;color:#F8FAFC;margin:0}
   .sub{font-size:12px;color:#94A3B8;margin:0}
   .lbl{font-size:11px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.5px}
+  .scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+  .ccard{min-width:142px;scroll-snap-align:start;background:#111827;border:2px solid #1E293B;border-radius:16px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;text-align:center}
+  .ccard.on{border-color:#38BDF8;background:#0C1E35}
+  .cname{font-size:13px;font-weight:800;color:#F8FAFC}
+  .crole{font-size:10px;color:#94A3B8;line-height:1.25}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .tile{padding:13px 8px;border-radius:14px;border:1.5px solid #1E293B;background:#111827;color:#CBD5E1;font-size:13px;font-weight:700;cursor:pointer;text-align:center;display:flex;flex-direction:column;gap:3px;align-items:center;min-height:56px;justify-content:center}
+  .tile{padding:12px 8px;border-radius:14px;border:1.5px solid #1E293B;background:#111827;color:#CBD5E1;font-size:12.5px;font-weight:700;cursor:pointer;text-align:center;display:flex;flex-direction:column;gap:3px;align-items:center;min-height:54px;justify-content:center}
   .tile.on{background:#0284C7;border-color:#38BDF8;color:#fff}
   .tile small{font-size:10px;font-weight:600;opacity:.8}
-  textarea{width:100%;height:155px;border-radius:14px;border:1.5px solid #334155;background:#020617;color:#F8FAFC;padding:12px;font-size:14px;line-height:1.45;resize:none;font-family:inherit}
+  textarea{width:100%;height:150px;border-radius:14px;border:1.5px solid #334155;background:#020617;color:#F8FAFC;padding:12px;font-size:14px;line-height:1.45;resize:none;font-family:inherit}
   .wc{font-size:11px;color:#38BDF8;text-align:right;font-weight:700}
   .swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
   .sw{padding:10px 6px;border-radius:12px;border:1.5px solid #1E293B;background:#111827;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;font-weight:700;cursor:pointer;color:#CBD5E1}
   .sw.on{border-color:#38BDF8;background:#0F172A;color:#fff}
-  .dot{width:24px;height:24px;border-radius:999px;border:2px solid #475569}
-  .phone{background:linear-gradient(160deg,#0F172A,#1E1B4B);border:2px solid #334155;border-radius:20px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;min-height:150px}
-  .phone.cyber{background:linear-gradient(160deg,#090D24,#3B0764)}
-  .phone.warm{background:linear-gradient(160deg,#1F1205,#451A03)}
-  .phone.noir{background:linear-gradient(160deg,#09090B,#27272A)}
+  .dot{width:22px;height:22px;border-radius:999px;border:2px solid #475569}
   .track{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
   .step{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#94A3B8;font-weight:700}
   .sico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#111827;border:1px solid #334155;color:#94A3B8}
@@ -63,19 +65,31 @@ function officeMiniAppHtml(pin) {
     <div class="pill" id="runPill">LIVE</div>
   </div>
   <div class="steps" id="steps">
-    <div class="sp on" onclick="goStep(1)">1.Script</div>
-    <div class="sp" onclick="goStep(2)">2.2D/3D</div>
-    <div class="sp" onclick="goStep(3)">3.Style</div>
-    <div class="sp" onclick="goStep(4)">4.Cast</div>
-    <div class="sp" onclick="goStep(5)">5.Send</div>
+    <div class="sp on" onclick="goStep(1)">1.Cast</div>
+    <div class="sp" onclick="goStep(2)">2.Script</div>
+    <div class="sp" onclick="goStep(3)">3.Motion</div>
+    <div class="sp" onclick="goStep(4)">4.Send</div>
   </div>
 
   <div class="page on" id="p1">
     <div class="card">
-      <div class="h2">Step 1: Script அல்லது Idea</div>
-      <div class="sub">Preset தட்டவும் அல்லது உங்கள் Script-ஐ Paste செய்யவும்.</div>
+      <div class="h2">Step 1: Real-Time Character Cast</div>
+      <div class="sub">Scroll செய்து கதாபாத்திரங்களின் நிஜ SVG தோற்றத்தைப் பார்த்து தேர்வு செய்யவும்.</div>
+      <div class="scroll" id="charScroll"></div>
+      <div class="lbl">Cast Lineup</div>
+      <div class="grid2" id="castRow">
+        <div class="tile" data-v="0" onclick="setCameo(false)">🔒 2-Char Lock<small>KANNAN + YUNA</small></div>
+        <div class="tile" data-v="1" onclick="setCameo(true)">🎭 +Cameo Guest<small>+ BUGGY (3rd)</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="p2">
+    <div class="card">
+      <div class="h2">Step 2: Voice Script &amp; Dialogue</div>
+      <div class="sub">கதாபாத்திரங்கள் என்ன பேச வேண்டும்? Preset தட்டவும் அல்லது Paste செய்யவும்.</div>
       <div class="grid2">
-        <div class="tile" onclick="fill('AI வேலைவாய்ப்பை எப்படி மாற்றும்? 2 நண்பர்கள் உரையாடல்')">🔥 Tech Debate<small>2 Characters</small></div>
+        <div class="tile" onclick="fill('AI வேலைவாய்ப்பை எப்படி மாற்றும்? 2 நண்பர்கள் உரையாடல்')">🔥 Tech Debate<small>KANNAN vs YUNA</small></div>
         <div class="tile" onclick="fill('இந்த 3 தவறுகள் Mobile-ல் செய்யாதீங்க! Quick tips')">⚠️ 3 Mistakes<small>Viral Hook</small></div>
         <div class="tile" onclick="fill('புதிய AI Tool 30 நொடியில் வீடியோ எடிட்டிங் demo')">💻 Tool Demo<small>UI/UX Style</small></div>
         <div class="tile" onclick="surprise()">🎲 Viral Idea<small>Auto Topic</small></div>
@@ -85,74 +99,44 @@ function officeMiniAppHtml(pin) {
     </div>
   </div>
 
-  <div class="page" id="p2">
+  <div class="page" id="p3">
     <div class="card">
-      <div class="h2">Step 2: Target &amp; 2D / 3D / 5D</div>
-      <div class="lbl">Platform Format</div>
+      <div class="h2">Step 3: Motions, 2D/3D &amp; Look</div>
+      <div class="lbl">Stage &amp; Motion Style</div>
+      <div class="grid2" id="modeRow">
+        <div class="tile" data-v="cartoon" onclick="setMode('cartoon')">🎭 Studio Debate<small>1.38x Close-Up + Desk</small></div>
+        <div class="tile" data-v="ui_ux" onclick="setMode('ui_ux')">💻 Tech &amp; Code<small>UI Cards + Cursor</small></div>
+        <div class="tile" data-v="cinema" onclick="setMode('cinema')">🎬 Cinema Stage<small>Letterbox + Cast</small></div>
+        <div class="tile" data-v="split_pip" onclick="setMode('split_pip')">🔀 Split B-Roll<small>Visuals + Host</small></div>
+      </div>
+      <div class="lbl">Platform &amp; Dimension</div>
       <div class="grid3" id="tgtRow">
         <div class="tile" data-v="reel" onclick="setTgt('reel')">📱 9:16 Reel<small>Fast</small></div>
         <div class="tile" data-v="yt" onclick="setTgt('yt')">📺 16:9 YT<small>Wide HD</small></div>
         <div class="tile" data-v="both" onclick="setTgt('both')">🎬 Both<small>Reel + YT</small></div>
       </div>
-      <div class="lbl">Dimension Engine</div>
       <div class="grid2" id="dimRow">
-        <div class="tile" data-v="2d" onclick="setDim('2d')">📐 2D Fast<small>Remotion (~90s)</small></div>
-        <div class="tile" data-v="manim" onclick="setDim('manim')">📊 2.5D Manim<small>Math &amp; Graphs</small></div>
-        <div class="tile" data-v="blender" onclick="setDim('blender')">🧊 3D Blender<small>EEVEE 3D Clips</small></div>
-        <div class="tile" data-v="5d" onclick="setDim('5d')">✨ 5D Studio<small>2D + 3D + Full FX</small></div>
+        <div class="tile" data-v="2d" onclick="setDim('2d')">📐 2D Fast (~90s)</div>
+        <div class="tile" data-v="5d" onclick="setDim('5d')">✨ 5D (2D+Manim+3D)</div>
       </div>
-    </div>
-  </div>
-
-  <div class="page" id="p3">
-    <div class="card">
-      <div class="h2">Step 3: Style, FX &amp; Color Grade</div>
-      <div class="lbl">Visual Mode</div>
-      <div class="grid2" id="modeRow">
-        <div class="tile" data-v="cartoon" onclick="setMode('cartoon')">🎨 Cartoon<small>Puppets + Pop</small></div>
-        <div class="tile" data-v="ui_ux" onclick="setMode('ui_ux')">💻 UI / UX<small>Tech &amp; Code</small></div>
-        <div class="tile" data-v="cinema" onclick="setMode('cinema')">🎬 Cinema<small>Letterbox Look</small></div>
-        <div class="tile" data-v="split_pip" onclick="setMode('split_pip')">🔀 Split Screen<small>B-Roll + Host</small></div>
-      </div>
-      <div class="lbl">FX Engine Tier</div>
-      <div class="grid3" id="fxRow">
-        <div class="tile" data-v="SAFE" onclick="setFx('SAFE')">🛡️ SAFE<small>0 FX · Ultra Fast</small></div>
-        <div class="tile" data-v="HYBRID" onclick="setFx('HYBRID')">✨ HYBRID<small>31 FX Unlocked</small></div>
-        <div class="tile" data-v="PRO" onclick="setFx('PRO')">🔥 PRO<small>All 45 FX</small></div>
-      </div>
-      <div class="lbl">Color Grade</div>
+      <div class="lbl">Color Grade &amp; Duration</div>
       <div class="swatches" id="gradeRow">
         <div class="sw" data-v="none" onclick="setGrade('none')"><div class="dot" style="background:#E2E8F0"></div>Clean</div>
         <div class="sw" data-v="cyber" onclick="setGrade('cyber')"><div class="dot" style="background:#7C3AED"></div>Cyber</div>
         <div class="sw" data-v="warm" onclick="setGrade('warm')"><div class="dot" style="background:#F59E0B"></div>Warm</div>
         <div class="sw" data-v="noir" onclick="setGrade('noir')"><div class="dot" style="background:#18181B"></div>Noir</div>
       </div>
+      <div class="grid3" id="durRow">
+        <div class="tile" data-v="30" onclick="setDur(30)">⚡ 30s</div>
+        <div class="tile" data-v="45" onclick="setDur(45)">📱 45s</div>
+        <div class="tile" data-v="60" onclick="setDur(60)">🎯 60s</div>
+      </div>
     </div>
   </div>
 
   <div class="page" id="p4">
     <div class="card">
-      <div class="h2">Step 4: Cast, Duration &amp; Preview</div>
-      <div class="phone cyber" id="phone">
-        <div style="font-size:11px;font-weight:800;color:#38BDF8" id="ptag">9:16 REEL • 2D • HYBRID</div>
-        <div style="text-align:center;font-size:28px" id="pcast">🧑🏽‍💼 👩🏽‍💻</div>
-        <div style="background:rgba(0,0,0,.75);border-radius:8px;padding:6px;text-align:center;font-size:12px;font-weight:800;color:#FACC15" id="psub">45s • CYBER</div>
-      </div>
-      <div class="grid2" id="castRow">
-        <div class="tile" data-v="0" onclick="setCameo(false)">🧑🏽‍💼👩🏽‍💻 2-Char Lock<small>KANNAN + YUNA</small></div>
-        <div class="tile" data-v="1" onclick="setCameo(true)">🎭 +Cameo Guest<small>+ BUGGY (3rd)</small></div>
-      </div>
-      <div class="grid3" id="durRow">
-        <div class="tile" data-v="30" onclick="setDur(30)">⚡ 30s<small>Quick</small></div>
-        <div class="tile" data-v="45" onclick="setDur(45)">📱 45s<small>Best Reel</small></div>
-        <div class="tile" data-v="60" onclick="setDur(60)">🎯 60s<small>Story</small></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="page" id="p5">
-    <div class="card">
-      <div class="h2">Step 5: Send &amp; Watch in Telegram</div>
+      <div class="h2">Step 4: Send &amp; Watch in Telegram</div>
       <div class="sum" id="sumBox"></div>
       <div class="track" id="track"></div>
       <div class="log" id="log">&gt; Ready. Tap Send &amp; Render — Video will arrive in Telegram!</div>
@@ -162,7 +146,7 @@ function officeMiniAppHtml(pin) {
 
 <div class="nav">
   <button class="btn back" id="backBtn" onclick="prevStep()" style="display:none">← Back</button>
-  <button class="btn next" id="nextBtn" onclick="nextStep()">Next: 2D/3D →</button>
+  <button class="btn next" id="nextBtn" onclick="nextStep()">Next: Script →</button>
 </div>
 
 <script>
@@ -170,6 +154,18 @@ const PIN = ${safePinJson};
 try { if (window.Telegram && Telegram.WebApp) { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } } catch {}
 function buzz(){ try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch {} }
 function notify(m){ try { if (window.Telegram && Telegram.WebApp && Telegram.WebApp.showAlert) { Telegram.WebApp.showAlert(m); return; } } catch {} alert(m); }
+function svgChar(color, dress, hat, glasses, worm){
+  if (worm) return '<svg width="78" height="86" viewBox="0 0 200 220"><circle cx="75" cy="185" r="24" fill="'+color+'" stroke="#0F172A" stroke-width="4"/><circle cx="100" cy="155" r="28" fill="'+color+'" stroke="#0F172A" stroke-width="4"/><path d="M56 96 C56 58 144 58 144 96 C144 130 130 144 100 146 C70 144 56 130 56 96 Z" fill="'+color+'" stroke="#38BDF8" stroke-width="5"/><rect x="65" y="88" width="30" height="18" rx="4" fill="#0F172A"/><rect x="105" y="88" width="30" height="18" rx="4" fill="#0F172A"/><path d="M86 128 Q100 138 114 128" stroke="#0F172A" stroke-width="4" fill="none"/></svg>';
+  const suitPart = dress === 'suit' ? '<polygon points="84,158 100,192 116,158" fill="#F8FAFC"/><polygon points="100,162 93,200 100,218 107,200" fill="#EF4444"/>' : '<path d="M76 158 Q100 175 124 158" fill="none" stroke="#F8FAFC" stroke-width="4"/>';
+  const hatPart = hat === 'cap' ? '<path d="M52 78 C58 42 142 42 148 78 Z" fill="#38BDF8" stroke="#0F172A" stroke-width="3"/><path d="M48 78 L164 84 L48 82 Z" fill="#38BDF8"/>' : '<path d="M50 92 C48 44 152 44 150 92 C138 66 116 62 100 66 C82 62 62 68 50 92 Z" fill="#1E293B"/>';
+  const glPart = glasses === 'round' ? '<circle cx="81" cy="98" r="13" fill="none" stroke="#0F172A" stroke-width="3.5"/><circle cx="119" cy="98" r="13" fill="none" stroke="#0F172A" stroke-width="3.5"/><line x1="94" y1="98" x2="106" y2="98" stroke="#0F172A" stroke-width="3"/>' : '';
+  return '<svg width="78" height="86" viewBox="0 0 200 220"><path d="M42 220 C44 176 60 158 100 158 C140 158 156 176 158 220 Z" fill="#0284C7" stroke="#0F172A" stroke-width="4"/>'+suitPart+'<rect x="86" y="138" width="28" height="24" rx="8" fill="'+color+'" stroke="#0F172A" stroke-width="3"/><path d="M52 94 C52 54 148 54 148 94 C148 130 132 148 100 150 C68 148 52 130 52 94 Z" fill="'+color+'" stroke="#38BDF8" stroke-width="4"/>'+hatPart+'<ellipse cx="81" cy="98" rx="10" ry="9" fill="#fff" stroke="#0F172A" stroke-width="2"/><ellipse cx="119" cy="98" rx="10" ry="9" fill="#fff" stroke="#0F172A" stroke-width="2"/><circle cx="82" cy="98" r="5" fill="#0F172A"/><circle cx="120" cy="98" r="5" fill="#0F172A"/>'+glPart+'<path d="M86 128 Q100 136 114 128" stroke="#0F172A" stroke-width="4" fill="none"/></svg>';
+}
+const CAST = [
+  { name: "KANNAN", role: "Curious Tech Host · Suit", svg: svgChar("#38BDF8","suit","none","round",false), cameo: false },
+  { name: "YUNA", role: "Smart AI Co-Host · Hoodie", svg: svgChar("#A855F7","hoodie","cap","none",false), cameo: false },
+  { name: "BUGGY", role: "Comedy Cameo · Shades", svg: svgChar("#22C55E","none","none","shades",true), cameo: true }
+];
 const SVGS = [
   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.7-3.3 6l-.7 3H9l-.7-3A7 7 0 0 1 12 2z"/></svg>',
   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>',
@@ -181,60 +177,59 @@ const SVGS = [
 const LBLS = ["Director", "Voice", "3D/FX", "Render", "Merge", "Pack"];
 let step = 1;
 let cfg = { tgt: "reel", dim: "2d", cameo: false, mode: "cartoon", fx: "HYBRID", grade: "cyber", dur: 45 };
-try { const s = JSON.parse(localStorage.getItem("yuna_cfg5") || "null"); if (s) cfg = Object.assign(cfg, s); } catch {}
-function saveCfg(){ try { localStorage.setItem("yuna_cfg5", JSON.stringify(cfg)); } catch {} syncUi(); }
+try { const s = JSON.parse(localStorage.getItem("yuna_cfg6") || "null"); if (s) cfg = Object.assign(cfg, s); } catch {}
+function saveCfg(){ try { localStorage.setItem("yuna_cfg6", JSON.stringify(cfg)); } catch {} syncUi(); }
+function renderChars(){
+  document.getElementById('charScroll').innerHTML = CAST.map(c => {
+    const active = !c.cameo || cfg.cameo;
+    return '<div class="ccard '+(active?'on':'')+'" onclick="setCameo('+(c.cameo?'true':'cfg.cameo')+')">'+c.svg+'<div class="cname">'+c.name+'</div><div class="crole">'+c.role+'</div></div>';
+  }).join('');
+}
 function countWords(){
   const w = document.getElementById('txt').value.trim().split(/\s+/).filter(Boolean).length;
   document.getElementById('wc').textContent = w + ' words (~' + Math.max(25, Math.min(90, Math.round(w * 0.45))) + 's)';
 }
 function syncUi(){
-  const p = document.getElementById('phone');
-  p.className = 'phone ' + cfg.grade;
-  document.getElementById('ptag').textContent = (cfg.tgt === 'yt' ? '16:9 YT' : '9:16 REEL') + ' • ' + cfg.dim.toUpperCase() + ' • ' + cfg.fx;
-  document.getElementById('pcast').textContent = cfg.cameo ? '🧑🏽‍💼 👩🏽‍💻 🐛' : '🧑🏽‍💼 👩🏽‍💻';
-  document.getElementById('psub').textContent = cfg.dur + 's • ' + cfg.mode.toUpperCase() + ' • ' + cfg.grade.toUpperCase();
+  renderChars();
   const mark = (id, val) => document.querySelectorAll('#' + id + ' [data-v]').forEach(x => x.classList.toggle('on', x.getAttribute('data-v') === String(val)));
+  mark('castRow', cfg.cameo ? '1' : '0');
+  mark('modeRow', cfg.mode);
   mark('tgtRow', cfg.tgt);
   mark('dimRow', cfg.dim);
-  mark('modeRow', cfg.mode);
-  mark('fxRow', cfg.fx);
   mark('gradeRow', cfg.grade);
-  mark('castRow', cfg.cameo ? '1' : '0');
   mark('durRow', cfg.dur);
   document.getElementById('sumBox').innerHTML =
-    '<div class="kv"><b>Format &amp; Engine</b>' + cfg.tgt.toUpperCase() + ' · ' + cfg.dim.toUpperCase() + '</div>' +
-    '<div class="kv"><b>Style &amp; FX</b>' + cfg.mode.toUpperCase() + ' · ' + cfg.fx + '</div>' +
-    '<div class="kv"><b>Color &amp; Time</b>' + cfg.grade.toUpperCase() + ' · ' + cfg.dur + 's</div>' +
-    '<div class="kv"><b>Cast</b>' + (cfg.cameo ? 'KANNAN + YUNA + BUGGY' : 'KANNAN + YUNA') + '</div>';
+    '<div class="kv"><b>Cast</b>' + (cfg.cameo ? 'KANNAN + YUNA + BUGGY' : 'KANNAN + YUNA') + '</div>' +
+    '<div class="kv"><b>Motion</b>' + cfg.mode.toUpperCase() + ' (' + cfg.dim.toUpperCase() + ')</div>' +
+    '<div class="kv"><b>Format</b>' + cfg.tgt.toUpperCase() + ' · ' + cfg.dur + 's</div>' +
+    '<div class="kv"><b>Color &amp; FX</b>' + cfg.grade.toUpperCase() + ' · HYBRID</div>';
 }
 function goStep(n){
   buzz();
-  step = Math.max(1, Math.min(5, n));
+  step = Math.max(1, Math.min(4, n));
   document.querySelectorAll('.page').forEach((el, i) => el.classList.toggle('on', i + 1 === step));
   document.querySelectorAll('#steps .sp').forEach((el, i) => {
     el.classList.toggle('on', i + 1 === step);
     el.classList.toggle('done', i + 1 < step);
   });
   document.getElementById('backBtn').style.display = step > 1 ? 'block' : 'none';
-  const nb = document.getElementById('nextBtn');
-  nb.textContent = step === 1 ? 'Next: 2D/3D →' : step === 2 ? 'Next: Style →' : step === 3 ? 'Next: Cast →' : step === 4 ? 'Next: Review →' : '🚀 Send & Render';
+  document.getElementById('nextBtn').textContent = step === 1 ? 'Next: Script →' : step === 2 ? 'Next: Motion →' : step === 3 ? 'Next: Review →' : '🚀 Send & Render';
   syncUi();
 }
 function prevStep(){ goStep(step - 1); }
 function nextStep(){
-  if (step < 5) {
-    if (step === 1 && !document.getElementById('txt').value.trim()) { notify('Script அல்லது Idea முதலில் உள்ளிடவும்!'); return; }
+  if (step < 4) {
+    if (step === 2 && !document.getElementById('txt').value.trim()) { notify('Script அல்லது Idea முதலில் உள்ளிடவும்!'); return; }
     goStep(step + 1);
   } else {
     startRender();
   }
 }
+function setCameo(c){ cfg.cameo = Boolean(c); buzz(); saveCfg(); }
+function setMode(m){ cfg.mode = m; buzz(); saveCfg(); }
 function setTgt(t){ cfg.tgt = t; buzz(); saveCfg(); }
 function setDim(d){ cfg.dim = d; buzz(); saveCfg(); }
-function setMode(m){ cfg.mode = m; buzz(); saveCfg(); }
-function setFx(f){ cfg.fx = f; buzz(); saveCfg(); }
 function setGrade(g){ cfg.grade = g; buzz(); saveCfg(); }
-function setCameo(c){ cfg.cameo = c; buzz(); saveCfg(); }
 function setDur(d){ cfg.dur = d; buzz(); saveCfg(); }
 function fill(s){ buzz(); document.getElementById('txt').value = s; countWords(); }
 function surprise(){
@@ -271,14 +266,14 @@ async function startRender(){
   const topic = document.getElementById('txt').value.trim();
   const log = document.getElementById('log');
   const nb = document.getElementById('nextBtn');
-  if (!topic) { goStep(1); return; }
+  if (!topic) { goStep(2); return; }
   buzz();
   nb.disabled = true; nb.textContent = '⏳ Sending...';
   log.textContent = '> AI Director building scenes...';
   try {
     const r = await fetch('/api/miniapp/render?pin=' + encodeURIComponent(PIN), {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ topic, target: cfg.tgt, dim: cfg.dim, cameo: cfg.cameo, mode: cfg.mode, fx_mode: cfg.fx, grade: cfg.grade, reel_sec: cfg.dur })
+      body: JSON.stringify({ topic, target: cfg.tgt, dim: cfg.dim, cameo: cfg.cameo, mode: cfg.mode, fx_mode: "HYBRID", grade: cfg.grade, reel_sec: cfg.dur })
     });
     const d = await r.json();
     log.textContent = d.ok ? '> 🚀 Sent! Commit ' + d.sha + ' — Video will arrive in Telegram chat!' : '> ❌ ' + (d.error || 'Failed');
