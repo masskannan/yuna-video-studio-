@@ -47,7 +47,7 @@ export const Captions: React.FC = () => {
           const isActive = time >= w.start && time <= w.end + 0.05;
           const c = w.color || fallbackColor;
           return (
-            <span key={`${activeGroupIdx}-${idx}`} style={{ color: isActive ? c : "#FFFFFF", transform: isActive ? "scale(1.08)" : "scale(1)", textShadow: isActive ? `0 0 18px ${c}66` : "0 2px 6px rgba(0,0,0,0.9)", display: "inline-block" }}>
+            <span key={`${activeGroupIdx}-${idx}`} style={{ color: isActive ? c : "#FFFFFF", transform: isActive ? "scale(1.08)" : "scale(1)", textShadow: isActive ? `0 0 18px ${c}66` : "0 3px 0 #020617, 0 6px 16px rgba(0,0,0,0.95)", display: "inline-block" }}>
               {w.word}
             </span>
           );

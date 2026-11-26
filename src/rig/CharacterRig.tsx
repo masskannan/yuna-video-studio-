@@ -91,6 +91,16 @@ export const CharacterRig: React.FC<Props> = ({ name, cfg, mouth, frame, active,
           </g>
         ) : null}
 
+        {/* Hair + Studio Mic */}
+          {!isWorm && cfg.hat === "none" ? (
+            <path d="M 52 92 Q 100 32 148 92 Q 125 66 100 68 Q 75 66 52 92 Z" fill={hair} />
+          ) : null}
+          {active && !isWorm ? (
+            <g>
+              <rect x="94" y="206" width="12" height="22" rx="6" fill="#334155" stroke="#0F172A" strokeWidth="2.5" />
+              <line x1="100" y1="228" x2="100" y2="240" stroke="#64748B" strokeWidth="4" />
+            </g>
+          ) : null}
         {/* Glasses */}
         {cfg.glasses === "round" ? (
           <g stroke="#0F172A" strokeWidth="3.5" fill="rgba(255,255,255,0.18)">

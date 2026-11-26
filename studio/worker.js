@@ -553,6 +553,7 @@ async function loadCharBible(env) {
 }
 
 async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false, opts = {}) {
+  const bible = await loadCharBible(env);
   let scriptText = String(rawText || "").trim();
   if (scriptText.length > 2500) {
     scriptText = await callAiPool(env, [
@@ -560,7 +561,7 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
       { role: "user", content: scriptText.slice(0, 12000) }
     ], false);
   }
-  const sys = `Return ONLY valid JSON with keys: timeline, characters, dialogue.
+  const sys = `Cast Personalities: ${bible.main.name} (${bible.main.role || "Host"}: ${bible.main.personality || "Curious"}), ${bible.sub.name} (${bible.sub.role || "Co-Host"}: ${bible.sub.personality || "Witty"}). Write dialogue matching each character personality. Return ONLY valid JSON with keys: timeline, characters, dialogue.
 - timeline: { fps: 30, total_sec: "auto", reel_sec: 55, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
 - characters: dict of 2-3 speakers (e.g. KANNAN, YUNA, BUGGY) with { type: "character"|"worm", body_color: "#38BDF8", dress_style: "suit"|"hoodie"|"casual"|"none", expression: "happy"|"angry"|"surprised"|"neutral", hat: "none"|"cap"|"crown"|"beanie", mustache: "none"|"handlebar"|"thick"|"pencil", glasses: "none"|"round"|"shades", voice: "ta-IN-ValluvarNeural"|"ta-IN-PallaviNeural"|"ta-SG-VenbaNeural"|"en-US-AndrewNeural"|"en-US-AvaNeural" }
 - dialogue: list of { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing" } (8-14 short lines).`;
@@ -584,7 +585,6 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
   tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; return { ...s, part: s.part || i + 1, start_sec: st, end_sec: en }; });
-  const bible = await loadCharBible(env);
   const chars = {};
   chars[bible.main.name || "KANNAN"] = bible.main;
   chars[bible.sub.name || "YUNA"] = bible.sub;

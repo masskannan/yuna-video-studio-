@@ -98,7 +98,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         return <AbsoluteFill key={idx} style={{ opacity, background: `radial-gradient(circle at 30% 25%, ${sc.bgTop} 0%, ${bgBottom} 75%)`, transform: `scale(${zoom}) translate3d(${panX}px, 0, 0)` }} />;
       })}
 
-      <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "96px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
+      <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "130px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontSize: wide ? 26 : 28, fontWeight: 700, color: active.accent }}>STAGE {active.part} / {totalParts}</div>
           <div style={{ padding: "6px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.72)", border: `1px solid ${active.accent}88`, fontSize: wide ? 22 : 24, fontWeight: 700 }}>{brand.name || "YUNA Studio"}</div>

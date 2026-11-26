@@ -8,7 +8,9 @@
     "hat": "none",
     "mustache": "none",
     "glasses": "round",
-    "voice": "ta-IN-ValluvarNeural"
+    "voice": "ta-IN-ValluvarNeural",
+    "role": "Curious Tech Host",
+    "personality": "Asks sharp everyday Tamil questions with high energy"
   },
   "sub": {
     "name": "YUNA",
@@ -19,7 +21,9 @@
     "hat": "cap",
     "mustache": "none",
     "glasses": "none",
-    "voice": "ta-IN-PallaviNeural"
+    "voice": "ta-IN-PallaviNeural",
+    "role": "Smart AI Co-Host",
+    "personality": "Gives witty, clear 1-line facts and practical fixes"
   },
   "cameo": {
     "name": "BUGGY",
@@ -30,7 +34,9 @@
     "hat": "none",
     "mustache": "none",
     "glasses": "shades",
-    "voice": "ta-SG-VenbaNeural"
+    "voice": "ta-SG-VenbaNeural",
+    "role": "Sarcastic Comic Guest",
+    "personality": "Drops a funny twist or punchline at the end"
   },
   "custom": {}
 }
