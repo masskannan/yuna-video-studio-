@@ -30,7 +30,7 @@ audio = "chunks/master-audio/master_audio.mp3"
 if os.path.exists(audio):
     subprocess.run([
         "ffmpeg", "-y", "-i", "final/video_only.mp4", "-i", audio, "-af", "apad",
-        "-c:v", "libx264", "-crf", "24", "-preset", "ultrafast", "-c:a", "aac", "-b:a", "192k",
+        "-c:v", "libx264", "-crf", "24", "-preset", "fast", "-c:a", "aac", "-b:a", "192k",
         "-shortest", "final/final_master.mp4"
     ], check=True)
 else:

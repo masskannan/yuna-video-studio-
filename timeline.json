@@ -11,9 +11,11 @@
   "scenes": [
     {
       "part": 1,
-      "heading": "AI வேலைவாய்ப்பை மாற்றும்",
+      "heading": "AI \u0bb5\u0bc7\u0bb2\u0bc8\u0bb5\u0bbe\u0baf\u0bcd\u0baa\u0bcd\u0baa\u0bc8 \u0bae\u0bbe\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd",
       "accent": "#38BDF8",
-      "bgTop": "#0F172A"
+      "bgTop": "#0F172A",
+      "start_sec": 0.0,
+      "end_sec": 15.0
     }
   ]
 }
