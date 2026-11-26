@@ -1,7 +1,6 @@
 import React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { FxMode } from "./core/FxRegistry";
-import { ProfileAspect } from "./core/SafeZoneResolver";
 import { AudioWaveformGlow } from "./audio/AudioReactive";
 import { BokehBackdrop } from "./motion/ParticlesAndBlur";
 import { SceneTransition } from "./transitions/SceneTransition";
@@ -12,9 +11,8 @@ import { CardRain40, NeonTopicRow, BusLoadBalancer, HotelMenuCard, PaymentStampC
 
 export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "SAFE", scenes = []}) => {
   const frame = useCurrentFrame();
-  const { width, height, durationInFrames } = useVideoConfig();
+  const { durationInFrames } = useVideoConfig();
   if (fxMode === "SAFE") return null;
-  const aspect: ProfileAspect = width > height ? "16:9" : "9:16";
   const count = Math.max(1, scenes.length || 1);
   const seg = Math.max(1, Math.floor(durationInFrames / count));
   const idx = Math.min(count - 1, Math.floor(frame / seg));
@@ -22,13 +20,14 @@ export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "
   const title = String(cur.heading || "YUNA Studio");
   const metaphor = String(cur.metaphor || "");
   const topics = Array.isArray(cur.topics) && cur.topics.length ? cur.topics : undefined;
+  const items = Array.isArray(cur.metaphor_items) && cur.metaphor_items.length ? cur.metaphor_items : topics;
   const on = { enabled: true };
 
   const renderMetaphor = () => {
     if (metaphor === "card_rain" || (!metaphor && idx === 0)) return <CardRain40 title={title.slice(0, 24)} />;
-    if (metaphor === "bus_balancer") return <BusLoadBalancer />;
-    if (metaphor === "hotel_menu") return <HotelMenuCard />;
-    if (metaphor === "payment_stamp") return <PaymentStampCard />;
+    if (metaphor === "bus_balancer") return <BusLoadBalancer title={title} items={items} />;
+    if (metaphor === "hotel_menu") return <HotelMenuCard title={title} items={items} />;
+    if (metaphor === "payment_stamp") return <PaymentStampCard title={title} items={items} />;
     return <NeonTopicRow topics={topics} />;
   };
 

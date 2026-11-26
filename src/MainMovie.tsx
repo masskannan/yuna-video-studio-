@@ -176,7 +176,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
       <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "130px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ padding: "8px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.86)", border: "1.5px solid #FACC15", fontSize: wide ? 20 : 21, fontWeight: 900, color: "#FDE047", letterSpacing: 0.6 }}>
-            📍 {String(((Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {}).location || "ROCKFORT • TRICHY").toUpperCase()}
+            📍 {String(((Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {}).location || "YUNA STUDIO").toUpperCase()}
           </div>
           <div style={{ padding: "6px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.72)", border: `1px solid ${active.accent}88`, fontSize: wide ? 22 : 24, fontWeight: 700 }}>{brand.name || "YUNA Studio"}</div>
         </div>
