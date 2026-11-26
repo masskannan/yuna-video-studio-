@@ -547,6 +547,32 @@ async function loadCharBible(env) {
   };
 }
 
+async function callGeminiFirst(env, messages, jsonMode = false) {
+  if (env.GEMINI_API_KEY) {
+    const sysMsg = messages.filter(m => m.role === "system").map(m => m.content).join("\n");
+    const usrMsg = messages.filter(m => m.role !== "system").map(m => m.content).join("\n");
+    for (const gm of ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite"]) {
+      try {
+        const body = {
+          contents: [{ role: "user", parts: [{ text: usrMsg }] }],
+          generationConfig: { temperature: 0.35, ...(jsonMode ? { responseMimeType: "application/json" } : {}) }
+        };
+        if (sysMsg) body.systemInstruction = { parts: [{ text: sysMsg }] };
+        const gr = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${gm}:generateContent`, {
+          method: "POST",
+          headers: { "x-goog-api-key": env.GEMINI_API_KEY, "content-type": "application/json" },
+          body: JSON.stringify(body)
+        });
+        if (!gr.ok) continue;
+        const gd = await gr.json();
+        const txt = gd?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+        if (txt) return txt;
+      } catch (_) {}
+    }
+  }
+  return callAiPool(env, messages, jsonMode);
+}
+
 async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false, opts = {}) {
   const bible = await loadCharBible(env);
   let scriptText = String(rawText || "").trim();
@@ -556,11 +582,26 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
       { role: "user", content: scriptText.slice(0, 12000) }
     ], false);
   }
-  const sys = `Cast Personalities: ${bible.main.name} (${bible.main.role || "Host"}: ${bible.main.personality || "Curious"}), ${bible.sub.name} (${bible.sub.role || "Co-Host"}: ${bible.sub.personality || "Witty"}). Write dialogue matching each character personality. Return ONLY valid JSON with keys: timeline, characters, dialogue.
-- timeline: { fps: 30, total_sec: "auto", reel_sec: 55, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, start_sec: 0, end_sec: 15, setting: "village_street"|"tea_shop"|"house_room", time_of_day: "morning"|"sunset"|"night", location: "YUNA STUDIO"|"TEA STALL"|"MAIN STREET", pose: "listen_ear"|"wave"|"arms_up"|"hand_on_hip", prop: "camera"|"headband"|"none", char_pos: "around"|"left"|"right", metaphor: "card_rain"|"neon_topics"|"bus_balancer"|"hotel_menu"|"payment_stamp", topics: ["KEYWORD1","KEYWORD2","KEYWORD3"], metaphor_items: ["Point 1","Point 2","Point 3"], heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
-- characters: dict of 2-3 speakers (e.g. KANNAN, YUNA, BUGGY) with { type: "character"|"worm", body_color: "#38BDF8", dress_style: "suit"|"hoodie"|"casual"|"none", expression: "happy"|"angry"|"surprised"|"neutral", hat: "none"|"cap"|"crown"|"beanie", mustache: "none"|"handlebar"|"thick"|"pencil", glasses: "none"|"round"|"shades", voice: "ta-IN-ValluvarNeural"|"ta-IN-PallaviNeural"|"ta-SG-VenbaNeural"|"en-US-AndrewNeural"|"en-US-AvaNeural" }
-- dialogue: list of { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing" } (8-14 short lines).`;
-  const rawJson = await callAiPool(env, [{ role: "system", content: sys }, { role: "user", content: scriptText.slice(0, 3500) }], true);
+  let memeNames = [];
+  try {
+    const dbM = await gh("/contents/memes_db.json?ref=main", env).then(x => x.json());
+    memeNames = dbM.content ? JSON.parse(atob(dbM.content.replace(/\s+/g, ""))) : [];
+  } catch (_) {}
+  const isHindi = /[\u0900-\u097F]/.test(scriptText) || /\bhindi\b/i.test(scriptText);
+  const isEngOnly = /\bin english\b/i.test(scriptText);
+  const langRule = isHindi
+    ? "Write natural conversational Hindi (Devanagari script) with spaced English tech nouns."
+    : isEngOnly
+    ? "Write crisp, punchy conversational English."
+    : "Write natural spoken Tamil (தமிழ் எழுத்துக்கள்) mixed ONLY with properly spaced uppercase/clear English tech nouns (UPI, API, Server). Keep grammar clean for Instagram Auto-Translate.";
+  const sys = `You are YUNA Video Studio Director. ${langRule}
+Cast: ${bible.main.name} (${bible.main.role || "Host"}: ${bible.main.personality || "Curious"}), ${bible.sub.name} (${bible.sub.role || "Co-Host"}: ${bible.sub.personality || "Witty"})${useCameo && bible.cameo ? `, ${bible.cameo.name} (${bible.cameo.role || "AI Robot"}: ${bible.cameo.personality || "Funny"})` : ""}.
+3-Beat Viral Arc: Line 1 = Hook Question/Myth (0-4s); Lines 2-6 = Fast Debate + Concrete Metaphor; Lines 7-9 = Mind-Blown Twist + Loop Punchline (NO boring 'Subscribe' ending).
+Return ONLY valid JSON with keys: timeline, characters, dialogue.
+- timeline: { fps: 30, total_sec: "auto", reel_sec: 40, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, start_sec: 0, end_sec: 14, setting: "village_street"|"tea_shop"|"house_room", time_of_day: "morning"|"sunset"|"night", location: "YUNA STUDIO"|"TEA STALL"|"MAIN STREET", pose: "listen_ear"|"wave"|"arms_up"|"hand_on_hip", prop: "camera"|"headband"|"none", char_pos: "around"|"left"|"right", metaphor: "card_rain"|"neon_topics"|"bus_balancer"|"hotel_menu"|"payment_stamp", topics: ["KEYWORD1","KEYWORD2","KEYWORD3"], metaphor_items: ["Point 1","Point 2","Point 3"], heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
+- characters: dict of 2-3 speakers with distinct voices.
+- dialogue: 8-10 strictly alternating punchy lines (TOTAL MAX 75 WORDS for Reel), each { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing"${memeNames.length ? `, meme: ""|${memeNames.map(m => `"${m}"`).join("|")}` : ""} }.`;
+  const rawJson = await callGeminiFirst(env, [{ role: "system", content: sys }, { role: "user", content: scriptText.slice(0, 3500) }], true);
   const cleaned = rawJson.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
   const parsed = JSON.parse(cleaned);
   const tl = parsed.timeline || {};
@@ -590,12 +631,27 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
   };
   const dlgRaw = Array.isArray(parsed.dialogue) && parsed.dialogue.length ? parsed.dialogue : [{ speaker: Object.keys(chars)[0], text: scriptText.slice(0, 140), sfx: "pop" }];
   const castKeys = Object.keys(chars);
-  const dlg = dlgRaw.slice(0, 10).map((d, i) => ({
-    ...d,
-    speaker: castKeys.includes(d.speaker) ? d.speaker : castKeys[i % castKeys.length],
-    sfx: ["", "pop", "whoosh", "click", "ding", "boing"].includes(d.sfx) ? d.sfx : "pop",
-    meme: d.meme ? String(d.meme).replace(/[^a-z0-9_-]/gi, "_").toLowerCase() : ""
-  }));
+  const vDefaults = isHindi
+    ? ["hi-IN-MadhurNeural", "hi-IN-SwaraNeural", "en-IN-PrabhatNeural"]
+    : isEngOnly
+    ? ["en-IN-PrabhatNeural", "en-IN-NeerjaNeural", "en-US-AndrewNeural"]
+    : ["ta-IN-ValluvarNeural", "ta-IN-PallaviNeural", "ta-SG-VenbaNeural"];
+  const dlg = dlgRaw.slice(0, 10).map((d, i) => {
+    const sp = castKeys.includes(d.speaker) ? d.speaker : castKeys[i % castKeys.length];
+    const spIdx = Math.max(0, castKeys.indexOf(sp));
+    return {
+      ...d,
+      speaker: sp,
+      voice: isHindi || isEngOnly ? vDefaults[spIdx % vDefaults.length] : (chars[sp]?.voice || vDefaults[spIdx % vDefaults.length]),
+      pitch: spIdx === 0 ? 0.96 : spIdx === 1 ? 1.06 : 1.14,
+      sfx: ["", "pop", "whoosh", "click", "ding", "boing"].includes(d.sfx) ? d.sfx : "pop",
+      meme: d.meme ? String(d.meme).replace(/[^a-z0-9_-]/gi, "_").toLowerCase() : ""
+    };
+  });
+  const totalWords = dlg.map(d => String(d.text || "").trim().split(/\s+/).length).reduce((a, b) => a + b, 0);
+  const autoReelSec = Math.min(85, Math.max(30, Math.ceil(totalWords / 1.85) + 6));
+  tl.reel_sec = Math.max(Number(tl.reel_sec) || 30, autoReelSec);
+  if (tl.scenes.length) tl.scenes[tl.scenes.length - 1].end_sec = Math.max(tl.scenes[tl.scenes.length - 1].end_sec, tl.reel_sec);
 
   let upRes = { ok: false }, ncData = {};
   for (let attempt = 0; attempt < 3; attempt++) {
