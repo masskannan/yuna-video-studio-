@@ -921,6 +921,32 @@ export default {
               await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: mlist.length ? `😂 <b>Meme Sound Vault (${mlist.length}):</b>\n` + mlist.map(m => `• <code>${escH(m)}</code>`).join("\n") + `\n\nAdd more: send Voice/MP3 with caption <code>/addmeme name</code>` : `😂 Meme Vault காலியாக உள்ளது!\nஒரு Voice Note அல்லது MP3 அனுப்பி Caption-ல் <code>/addmeme name</code> எனக் கொடுங்கள்.` });
               return;
             }
+            if (/^\/\s*ideas\b/i.test(txt)) {
+              const niche = txt.replace(/^\/\s*ideas\s*/i, "").trim() || "Tech, AI & Daily Money in Tamil";
+              const ideaPrompt = `Generate 3 distinct, high-retention Tamil+English Reel concepts for: "${niche}". Score each out of 100 (Hook, Stakes, Clarity, Visuals). Pick the #1 WINNER and end with a 1-line ready-to-paste command starting with: /cameo `;
+              const resIdeas = await callGeminiFirst(env, [{ role: "user", content: ideaPrompt }], false);
+              await tgApi(env, "sendMessage", { chat_id: cid, text: String(resIdeas || "No ideas").slice(0, 3800) });
+              return;
+            }
+            if (/^\/\s*fixscene\b/i.test(txt)) {
+              const args = txt.replace(/^\/\s*fixscene\s*/i, "").trim().split(/\s+/);
+              const partNum = parseInt(args[0] || "1", 10) || 1;
+              const tlMeta = await gh("/contents/timeline.json?ref=main", env).then(x => x.json());
+              const tlObj = JSON.parse(decodeURIComponent(escape(atob(tlMeta.content.replace(/\s+/g, "")))));
+              const sc = (tlObj.scenes || []).find(s => (s.part || 1) === partNum);
+              if (!sc) { await tgApi(env, "sendMessage", { chat_id: cid, text: `Scene ${partNum} கிடைக்கவில்லை.` }); return; }
+              for (const kv of args.slice(1)) {
+                const [k, ...rest] = kv.split("=");
+                const key = (k || "").trim();
+                if (key && rest.length) {
+                  const val = rest.join("=");
+                  sc[key] = (key === "location" || key === "heading") ? val.replace(/_/g, " ") : val;
+                }
+              }
+              await gh("/contents/timeline.json", env, { method: "PUT", body: JSON.stringify({ message: `fix(scene): patch part ${partNum}`, content: btoa(unescape(encodeURIComponent(JSON.stringify(tlObj, null, 2)))), sha: tlMeta.sha }) });
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `🛠️ <b>Scene ${partNum} Updated &amp; Re-Render Queued!</b>` });
+              return;
+            }
             if (txt === "/status") {
               await sendJobStatusCard(env, cid);
               return;

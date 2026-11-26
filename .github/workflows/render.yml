@@ -215,6 +215,7 @@ jobs:
             RTHM=()
             [ -f final/reel_thumb.jpg ] && RTHM=(-F "thumbnail=@final/reel_thumb.jpg")
             curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "duration=${RDUR:-35}" -F "width=1080" -F "height=1920" -F "supports_streaming=true" "${RTHM[@]}" -F "caption=YUNA 9:16 Reel Ready" -F 'reply_markup={"inline_keyboard":[[{"text":"✅ Approve & Tag","callback_data":"approve"}]]}' "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
+            [ -f final/social_tg.txt ] && curl -s -F "chat_id=$CHAT" -F "text=<final/social_tg.txt" "https://api.telegram.org/bot${BOT}/sendMessage" > /dev/null || true
           fi
       - uses: actions/upload-artifact@v4
         with:
