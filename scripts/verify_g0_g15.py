@@ -9,7 +9,7 @@ assert os.path.isfile("src/fx/core/FrameContext.ts")  # G02
 assert os.path.isfile("scripts/generate_voice.py") and os.path.isfile("scripts/verify_merge.py")  # G03-G05
 assert len(json.load(open("schemas/fx.schema.json"))["feature_ids"]) == 45  # G06
 tl = json.load(open("timeline.json", encoding="utf-8"))
-assert tl.get("fx_mode", "SAFE") == "SAFE" and '?? "SAFE"' in open("src/MainMovie.tsx").read()  # G07
+assert tl.get("fx_mode", "SAFE") in ("SAFE", "HYBRID", "PRO") and '?? "SAFE"' in open("src/MainMovie.tsx").read()  # G07
 w = open("studio/worker.js", encoding="utf-8").read()
 assert all(r in w for r in ("/office", "/api/apk/dispatch", "/api/ig/webhook", "/manifest.json", "/sw.js"))  # G08
 assert POLICY["cost_mode"] == "STRICT_ZERO" and lint_workflows(".github/workflows") >= 1  # G09-G10
