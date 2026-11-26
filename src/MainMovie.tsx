@@ -188,7 +188,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         );
       })}
 
-      <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "130px 48px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
+      <AbsoluteFill style={{ color: "#F8FAFC", padding: wide ? "56px 96px" : "135px 96px 210px 40px", display: "flex", flexDirection: "column", justifyContent: "space-between", zIndex: 20 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ padding: "8px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.86)", border: "1.5px solid #FACC15", fontSize: wide ? 20 : 21, fontWeight: 900, color: "#FDE047", letterSpacing: 0.6 }}>
             📍 {String(((Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {}).location || "YUNA STUDIO").toUpperCase()}
@@ -197,8 +197,8 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         </div>
 
         {(mode === "cartoon" || mode === "cinema") && charEntries.length ? (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 60 : 280 }}>
-            <div style={{ padding: "12px 24px", borderRadius: 16, backgroundColor: "rgba(15, 23, 42, 0.78)", border: `1.5px solid ${active.accent}88`, fontSize: wide ? 36 : 38, fontWeight: 800, textAlign: "center", maxWidth: "92%", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>{active.heading}</div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 48 : 195 }}>
+            {(timeline.fx_mode || "SAFE") === "SAFE" ? (<div style={{ padding: "12px 24px", borderRadius: 16, backgroundColor: "rgba(15, 23, 42, 0.78)", border: `1.5px solid ${active.accent}88`, fontSize: wide ? 36 : 38, fontWeight: 800, textAlign: "center", maxWidth: "92%", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>{active.heading}</div>) : null}
             <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "space-around", alignItems: "flex-end", paddingTop: 26 }}>
             {charEntries.map(([cname, ccfg], cIdx) => {
                 const rSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {};

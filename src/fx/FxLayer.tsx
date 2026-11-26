@@ -1,11 +1,10 @@
 import React from "react";
-import { useCurrentFrame, useVideoConfig } from "remotion";
+import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 import { FxMode } from "./core/FxRegistry";
 import { AudioWaveformGlow } from "./audio/AudioReactive";
 import { BokehBackdrop } from "./motion/ParticlesAndBlur";
 import { SceneTransition } from "./transitions/SceneTransition";
 import { SpeedLinesOverlay } from "./motion/SpeedLinesAndMask";
-import { ComicStarburst } from "./cartoon/CartoonPack";
 import { CursorRipple } from "./ui/UiExtendedPack";
 import { CardRain40, NeonTopicRow, BusLoadBalancer, HotelMenuCard, PaymentStampCard } from "./MetaphorWidgets";
 
@@ -16,6 +15,9 @@ export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "
   const count = Math.max(1, scenes.length || 1);
   const seg = Math.max(1, Math.floor(durationInFrames / count));
   const idx = Math.min(count - 1, Math.floor(frame / seg));
+  const segStart = idx * seg;
+  const segEnd = (idx + 1) * seg;
+  const fadeOut = interpolate(frame, [Math.max(segStart, segEnd - 8), segEnd], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const cur = scenes[idx] || {};
   const title = String(cur.heading || "YUNA Studio");
   const metaphor = String(cur.metaphor || "");
@@ -35,16 +37,9 @@ export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "
     <>
       <BokehBackdrop config={on} fxMode={fxMode} />
       <AudioWaveformGlow config={on} fxMode={fxMode} />
-      <SceneTransition config={on} fxMode={fxMode} startFrame={idx * seg} durationFrames={10} kind={idx % 2 === 0 ? "wipe" : "slide"} />
-      {renderMetaphor()}
-      {idx === 0 ? (
-        <>
-          <SpeedLinesOverlay config={on} fxMode={fxMode} />
-          <ComicStarburst config={on} fxMode={fxMode} label="NEW!" />
-        </>
-      ) : (
-        <CursorRipple config={on} fxMode={fxMode} x={0.72} y={0.38} />
-      )}
+      <SceneTransition config={on} fxMode={fxMode} startFrame={segStart} durationFrames={10} kind={idx % 2 === 0 ? "wipe" : "slide"} />
+      <div style={{ opacity: fadeOut }}>{renderMetaphor()}</div>
+      {idx === 0 ? <SpeedLinesOverlay config={on} fxMode={fxMode} /> : <CursorRipple config={on} fxMode={fxMode} x={0.72} y={0.34} />}
     </>
   );
 };
