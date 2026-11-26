@@ -84,7 +84,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
   const activeLip = lipsync.find((l) => time >= l.start && time <= l.end);
   const activeWord = words.find((w) => time >= w.start && time <= w.end + 0.15);
   const activeSpeaker = activeLip?.speaker || activeWord?.speaker || Object.keys(characters)[0] || "YUNA";
-  const charEntries = Object.entries(characters).slice(0, 2);
+  const charEntries = Object.entries(characters).slice(0, 3);
 
   return (
     <AbsoluteFill style={{ backgroundColor: bgBottom, filter: gradeFilter, overflow: "hidden", fontFamily: '"Noto Sans Tamil", "Space Grotesk", system-ui, sans-serif' }}>
@@ -104,8 +104,10 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
           <div style={{ padding: "6px 16px", borderRadius: 999, backgroundColor: "rgba(15, 23, 42, 0.72)", border: `1px solid ${active.accent}88`, fontSize: wide ? 22 : 24, fontWeight: 700 }}>{brand.name || "YUNA Studio"}</div>
         </div>
 
-        {mode === "cartoon" && charEntries.length ? (
-          <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", paddingBottom: wide ? 80 : 320 }}>
+        {(mode === "cartoon" || mode === "cinema") && charEntries.length ? (
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 60 : 280 }}>
+            <div style={{ padding: "12px 24px", borderRadius: 16, backgroundColor: "rgba(15, 23, 42, 0.78)", border: `1.5px solid ${active.accent}88`, fontSize: wide ? 36 : 38, fontWeight: 800, textAlign: "center", maxWidth: "92%", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>{active.heading}</div>
+            <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "space-around", alignItems: "flex-end", paddingTop: 26 }}>
             {charEntries.map(([cname, ccfg]) => (
               <CharacterRig
                 key={cname}
@@ -117,8 +119,10 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
                 accent={active.accent}
               />
             ))}
-          </div>
-        ) : mode === "split_pip" ? (
+            </div>
+            <div style={{ width: "92%", height: 14, borderRadius: 999, background: `linear-gradient(90deg, transparent, ${active.accent}, transparent)`, opacity: 0.75 }} />
+            </div>
+            ) : mode === "split_pip" ? (
           <SplitPip wide={wide} frame={frame} accent={active.accent} heading={active.heading} charName={activeSpeaker} charCfg={characters[activeSpeaker] || charEntries[0]?.[1] || {}} mouth={activeLip ? activeLip.mouth : "X"} />
         ) : mode === "ui_ux" ? (
           <div style={{ paddingBottom: wide ? 70 : 280 }}>
@@ -135,7 +139,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         </div>
       </AbsoluteFill>
 
-      {introOpacity > 0 ? (
+      {false && introOpacity > 0 ? (
         <AbsoluteFill style={{ opacity: introOpacity, backgroundColor: "rgba(2, 6, 23, 0.88)", justifyContent: "center", alignItems: "center", zIndex: 45 }}>
           <div style={{ textAlign: "center", padding: 40 }}>
             <div style={{ width: 90, height: 6, backgroundColor: active.accent, margin: "0 auto 22px", borderRadius: 4 }} />

@@ -39,7 +39,7 @@ export const CharacterRig: React.FC<Props> = ({ name, cfg, mouth, frame, active,
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `translateY(${bounce}px) scale(${active ? 1.06 : 0.94})`, opacity: active ? 1 : 0.78 }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", transform: `translateY(${bounce}px) scale(${active ? 1.38 : 1.08})`, opacity: active ? 1 : 0.62, filter: active ? `drop-shadow(0 0 22px ${accent}55)` : "none" }}>
       <svg width="220" height="260" viewBox="0 0 200 240">
         {/* Body / Dress */}
         {isWorm ? (
@@ -55,6 +55,13 @@ export const CharacterRig: React.FC<Props> = ({ name, cfg, mouth, frame, active,
           </g>
         )}
 
+        {/* Animated Hands */}
+          {!isWorm ? (
+            <g>
+              <circle cx="44" cy={active ? 172 - Math.sin(frame * 0.35) * 14 : 188} r="13" fill={body} stroke="#0F172A" strokeWidth="4" />
+              <circle cx="156" cy={active ? 172 + Math.cos(frame * 0.35) * 14 : 188} r="13" fill={body} stroke="#0F172A" strokeWidth="4" />
+            </g>
+          ) : null}
         {/* Head */}
         <circle cx="100" cy="105" r="52" fill={body} stroke={active ? accent : "#0F172A"} strokeWidth={active ? 5 : 4} />
 
