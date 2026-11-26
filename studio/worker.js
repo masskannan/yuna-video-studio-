@@ -385,6 +385,60 @@ async function callAiPool(env, messages, wantJson = false) {
 }
 
 
+
+async function sendJobStatusCard(env, cid, runId = null) {
+  let run = null;
+  if (runId) {
+    run = await gh(`/actions/runs/${runId}`, env).then(r => r.json()).catch(() => null);
+  } else {
+    const d = await gh("/actions/runs?per_page=1", env).then(r => r.json()).catch(() => ({}));
+    run = (d.workflow_runs || [])[0];
+  }
+  if (!run || !run.id) { await tgApi(env, "sendMessage", { chat_id: cid, text: "No runs found." }); return; }
+  const jd = await gh(`/actions/runs/${run.id}/jobs`, env).then(r => r.json()).catch(() => ({}));
+  const jobs = jd.jobs || [];
+  const lines = jobs.map(j => {
+    const ic = j.conclusion === "success" ? "✅" : j.conclusion === "failure" ? "❌" : j.conclusion === "skipped" ? "⏭️" : j.status === "in_progress" ? "🟡" : "⏸️";
+    const sec = j.started_at ? Math.max(0, Math.round(((j.completed_at ? Date.parse(j.completed_at) : Date.now()) - Date.parse(j.started_at)) / 1000)) + "s" : "";
+    const failStep = (j.steps || []).find(s => s.conclusion === "failure");
+    return `${ic} <b>${escH(j.name)}</b> ${sec ? `(${sec})` : ""}${failStep ? ` → <i>${escH(failStep.name)}</i>` : ""}`;
+  });
+  const hasFail = jobs.some(j => j.conclusion === "failure");
+  const kb = hasFail ? { inline_keyboard: [[{ text: "🔍 View Error Log", callback_data: `view_logs:${run.id}` }, { text: "🔁 Re-Run Failed", callback_data: `rerun_failed:${run.id}` }], [{ text: "🛡️ Retry SAFE Mode", callback_data: "retry_safe" }]] } : undefined;
+  await tgApi(env, "sendMessage", {
+    chat_id: cid,
+    parse_mode: "HTML",
+    text: `📊 <b>Run #${escH(run.id)}</b> — <code>${escH(run.conclusion || run.status)}</code>\n${lines.join("\n") || "Starting..."}`,
+    ...(kb ? { reply_markup: kb } : {})
+  });
+}
+
+async function sendFailLogCard(env, cid, runId = null) {
+  let rid = runId;
+  if (!rid) {
+    const d = await gh("/actions/runs?per_page=3", env).then(r => r.json()).catch(() => ({}));
+    const fr = (d.workflow_runs || []).find(r => r.conclusion === "failure") || (d.workflow_runs || [])[0];
+    rid = fr?.id;
+  }
+  if (!rid) { await tgApi(env, "sendMessage", { chat_id: cid, text: "No failed run found." }); return; }
+  const jd = await gh(`/actions/runs/${rid}/jobs`, env).then(r => r.json()).catch(() => ({}));
+  const fj = (jd.jobs || []).find(j => j.conclusion === "failure");
+  if (!fj) { await tgApi(env, "sendMessage", { chat_id: cid, text: `Run #${rid} has no failed jobs.` }); return; }
+  const fstep = (fj.steps || []).find(s => s.conclusion === "failure")?.name || "unknown";
+  const rawLog = await gh(`/actions/jobs/${fj.id}/logs`, env).then(r => r.text()).catch(() => "");
+  const tail = rawLog.split(/\r?\n/).filter(Boolean).slice(-12).join("\n").slice(-1600);
+  let tamilTip = "";
+  try {
+    tamilTip = await callAiPool(env, [{ role: "system", content: "Explain this CI error in 1 simple Tamil sentence (with English technical terms). No markdown." }, { role: "user", content: tail }], false);
+  } catch {}
+  await tgApi(env, "sendMessage", {
+    chat_id: cid,
+    parse_mode: "HTML",
+    text: `🚨 <b>Failed:</b> <code>${escH(fj.name)}</code> → <b>${escH(fstep)}</b>\n${tamilTip ? `💡 <b>காரணம்:</b> ${escH(tamilTip)}\n\n` : ""}<code>${escH(tail || "Log unavailable")}</code>`,
+    reply_markup: { inline_keyboard: [[{ text: "🔁 Re-Run Failed Only", callback_data: `rerun_failed:${rid}` }, { text: "🛡️ Retry SAFE Mode", callback_data: "retry_safe" }]] }
+  });
+}
+
 async function loadCharBible(env) {
   try {
     const r = await gh("/contents/characters_db.json?ref=main", env);
@@ -483,6 +537,12 @@ export default {
   async fetch(req, env, ctx) {
     try {
       const url = new URL(req.url);
+      if (url.pathname === "/api/tg/fail") {
+        if (!checkPin(req, url, env)) return new Response("Invalid PIN", { status: 401 });
+        const rid = url.searchParams.get("run_id") || null;
+        if (env.TG_CHAT_ID) await sendFailLogCard(env, String(env.TG_CHAT_ID), rid);
+        return Response.json({ ok: true });
+      }
       if (url.pathname === "/office") {
         if (!checkPin(req, url, env)) return new Response("Invalid PIN", { status: 401 });
         return new Response(officeMiniAppHtml(url.searchParams.get("pin") || ""), { headers: { "content-type": "text/html; charset=utf-8" } });
@@ -553,6 +613,19 @@ export default {
                 const tag = `approved-${run ? run.id : Date.now()}`;
                 await gh("/releases", env, { method: "POST", body: JSON.stringify({ tag_name: tag, name: `Approved ${tag}`, target_commitish: "main" }) });
                 await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Approved &amp; Tagged:</b> <code>${escH(tag)}</code>` });
+                            } else if (cb.data.startsWith("rerun_failed:")) {
+                const rid = cb.data.split(":")[1];
+                const rr = await gh(`/actions/runs/${rid}/rerun-failed-jobs`, env, { method: "POST" });
+                await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: rr.ok ? `🔁 <b>Re-running failed jobs for #${escH(rid)}!</b>` : `❌ Re-run failed (${rr.status})` });
+              } else if (cb.data.startsWith("view_logs:")) {
+                await sendFailLogCard(env, cid, cb.data.split(":")[1]);
+              } else if (cb.data === "retry_safe") {
+                const f = await gh("/contents/timeline.json?ref=main", env).then(x => x.json());
+                const tl = JSON.parse(decodeURIComponent(escape(atob(String(f.content || "").replace(/\s/g, "")))));
+                tl.fx_mode = "SAFE"; tl.use_manim = false; tl.use_blender = false;
+                await gh("/contents/timeline.json", env, { method: "PUT", body: JSON.stringify({ message: "chore(retry): SAFE mode fallback", content: btoa(unescape(encodeURIComponent(JSON.stringify(tl, null, 2)))), sha: f.sha }) });
+                await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: "🛡️ <b>Retrying in SAFE Mode!</b>" });
+              }
               }
               await tgApi(env, "answerCallbackQuery", { callback_query_id: cb.id });
               return;
@@ -626,9 +699,11 @@ export default {
               return;
             }
             if (txt === "/status") {
-              const r = await gh("/actions/runs?per_page=1", env);
-              const run = ((await r.json()).workflow_runs || [])[0] || {};
-              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `📊 <b>Run #${escH(run.id || "-")}</b>\nStatus: <code>${escH(run.status || "none")}</code> (${escH(run.conclusion || "running")})\n<a href="${escH(run.html_url || "https://github.com")}">🔗 View Logs</a>` });
+              await sendJobStatusCard(env, cid);
+              return;
+            }
+            if (txt === "/logs") {
+              await sendFailLogCard(env, cid);
               return;
             }
             if (txt === "/cancel") {

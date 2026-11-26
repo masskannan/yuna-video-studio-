@@ -216,8 +216,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Alert Telegram on Failure
-        env:
-          BOT: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          [ -n "$BOT" ] && [ -n "$CHAT" ] && curl -s -X POST "https://api.telegram.org/bot${BOT}/sendMessage" -d "chat_id=${CHAT}" -d "parse_mode=HTML" --data-urlencode "text=🚨 <b>YUNA Render Failed</b>%0ARun: <a href='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'>#${{ github.run_id }}</a>%0ATap /status to check." > /dev/null || true
+          curl -s "https://yuna-video-studio.masskannan719.workers.dev/api/tg/fail?run_id=${{ github.run_id }}&pin=yuna2026" > /dev/null || true
