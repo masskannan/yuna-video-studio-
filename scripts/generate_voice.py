@@ -195,14 +195,41 @@ def write_srt(words):
         idx += 1
     open(SRT_FILE, "w", encoding="utf-8").write("\n".join(lines))
 
+def ensure_distinct_voices(lines):
+    ta_pool = [("ta-IN-ValluvarNeural", 0.96), ("ta-IN-PallaviNeural", 1.06), ("ta-SG-VenbaNeural", 1.12)]
+    en_pool = [("en-US-AndrewNeural", 0.95), ("en-US-AvaNeural", 1.08), ("en-IN-PrabhatNeural", 0.94), ("en-IN-NeerjaNeural", 1.06)]
+    assigned = {}
+    used_voices = set()
+    for ln in lines:
+        sp = ln["speaker"]
+        if sp not in assigned:
+            v, p = ln["voice"], ln["pitch"]
+            if v in used_voices:
+                pool = en_pool if str(v).startswith("en-") else ta_pool
+                for pv, pp in pool:
+                    if pv not in used_voices:
+                        v, p = pv, pp
+                        break
+            assigned[sp] = (v, p)
+            used_voices.add(v)
+        ln["voice"], ln["pitch"] = assigned[sp]
+    return lines
+
 def main():
-    lines = load_lines()
+    lines = ensure_distinct_voices(load_lines())
     wavs, all_words, line_timings, sfx_events = [], [], [], []
     cursor = 0.0
 
-    for ln in lines:
+    for idx, ln in enumerate(lines):
         wpath, meta = process_line(ln)
-        wavs.append(wpath)
+        next_sp = lines[idx + 1]["speaker"] if idx + 1 < len(lines) else None
+        if next_sp and next_sp != ln["speaker"]:
+            pad_path = os.path.join(OUT_DIR, f"pad_{idx}.wav")
+            subprocess.run(["ffmpeg", "-y", "-i", wpath, "-af", "apad=pad_dur=0.18", pad_path], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            meta["duration"] = get_duration(pad_path)
+            wavs.append(pad_path)
+        else:
+            wavs.append(wpath)
         if ln["sfx"]:
             sfx_path = os.path.join("assets/sfx", f"{ln['sfx']}.wav")
             if os.path.exists(sfx_path):
