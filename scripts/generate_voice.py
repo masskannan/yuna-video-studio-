@@ -39,6 +39,7 @@ def load_lines():
                 "pitch": float(d.get("pitch", 0.93)),
                 "color": str(d.get("color", "#38BDF8")),
                 "sfx": str(d.get("sfx", "")).strip(),
+                "meme": str(d.get("meme", "")).strip(),
                 "text": apply_glossary(str(d.get("text", ""))),
             } for d in data if str(d.get("text", "")).strip()]
     with open(NARRATION_FILE, "r", encoding="utf-8") as f:
@@ -206,6 +207,12 @@ def main():
             sfx_path = os.path.join("assets/sfx", f"{ln['sfx']}.wav")
             if os.path.exists(sfx_path):
                 sfx_events.append((sfx_path, cursor))
+        if ln.get("meme"):
+            for ext in ("mp3", "ogg", "wav", "m4a"):
+                mpath = os.path.join("assets/memes", f"{ln['meme']}.{ext}")
+                if os.path.exists(mpath):
+                    sfx_events.append((mpath, cursor + meta["duration"]))
+                    break
         line_timings.append({"speaker": ln["speaker"], "start": round(cursor, 3), "end": round(cursor + meta["duration"], 3)})
         for w in meta["words"]:
             all_words.append({

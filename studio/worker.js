@@ -593,7 +593,8 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
   const dlg = dlgRaw.slice(0, 10).map((d, i) => ({
     ...d,
     speaker: castKeys.includes(d.speaker) ? d.speaker : castKeys[i % castKeys.length],
-    sfx: ["", "pop", "whoosh", "click", "ding", "boing"].includes(d.sfx) ? d.sfx : "pop"
+    sfx: ["", "pop", "whoosh", "click", "ding", "boing"].includes(d.sfx) ? d.sfx : "pop",
+    meme: d.meme ? String(d.meme).replace(/[^a-z0-9_-]/gi, "_").toLowerCase() : ""
   }));
 
   let upRes = { ok: false }, ncData = {};
@@ -728,6 +729,28 @@ export default {
             const cid = String(msg?.chat?.id || "");
             if (!cid || !env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return;
             let txt = String(msg?.text || msg?.caption || "").trim();
+            if (/^\/\s*addmeme\b/i.test(txt) && (msg?.voice || msg?.audio || msg?.document) && env.TG_BOT_TOKEN) {
+              const mname = (txt.replace(/^\/\s*addmeme\s*/i, "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "_").slice(0, 24)) || ("meme_" + Date.now().toString().slice(-4));
+              const fid = msg.voice?.file_id || msg.audio?.file_id || msg.document?.file_id;
+              const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${fid}`).then(r => r.json());
+              const fp = gf?.result?.file_path || "";
+              if (fp) {
+                const ext = (fp.split(".").pop() || "ogg").toLowerCase();
+                const ab = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${fp}`).then(r => r.arrayBuffer());
+                const bytes = new Uint8Array(ab);
+                let bin = "";
+                for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+                const exM = await gh(`/contents/assets/memes/${mname}.${ext}?ref=main`, env).then(x => x.json()).catch(() => ({}));
+                await gh(`/contents/assets/memes/${mname}.${ext}`, env, { method: "PUT", body: JSON.stringify({ message: `chore(meme): add ${mname} [skip ci]`, content: btoa(bin), sha: exM.sha }) });
+                const dbMeta = await gh("/contents/memes_db.json?ref=main", env).then(x => x.json()).catch(() => ({}));
+                let mlist = [];
+                try { mlist = dbMeta.content ? JSON.parse(atob(dbMeta.content.replace(/\s+/g, ""))) : []; } catch (_) {}
+                if (!mlist.includes(mname)) mlist.push(mname);
+                await gh("/contents/memes_db.json", env, { method: "PUT", body: JSON.stringify({ message: `chore(meme): index ${mname} [skip ci]`, content: btoa(JSON.stringify(mlist, null, 2)), sha: dbMeta.sha }) });
+                await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Meme Saved:</b> <code>${escH(mname)}</code> (<code>${escH(mname)}.${escH(ext)}</code>)` });
+              }
+              return;
+            }
             if (!txt && msg?.voice && env.TG_BOT_TOKEN) {
               const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${msg.voice.file_id}`).then(r => r.json());
               const fp = gf?.result?.file_path;
@@ -790,6 +813,13 @@ export default {
               const r = await gh("/contents/characters_db.json?ref=main", env).then(x => x.json()).catch(() => ({}));
               await gh("/contents/characters_db.json", env, { method: "PUT", body: JSON.stringify({ message: `chore(cast): update cameo ${cname} [skip ci]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(b, null, 2)))), sha: r.sha }) });
               await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Cameo Saved:</b> <code>${escH(cname)}</code> (${dress}, ${hat}, ${glasses})` });
+              return;
+            }
+            if (txt === "/memes") {
+              const dbMeta = await gh("/contents/memes_db.json?ref=main", env).then(x => x.json()).catch(() => ({}));
+              let mlist = [];
+              try { mlist = dbMeta.content ? JSON.parse(atob(dbMeta.content.replace(/\s+/g, ""))) : []; } catch (_) {}
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: mlist.length ? `😂 <b>Meme Sound Vault (${mlist.length}):</b>\n` + mlist.map(m => `• <code>${escH(m)}</code>`).join("\n") + `\n\nAdd more: send Voice/MP3 with caption <code>/addmeme name</code>` : `😂 Meme Vault காலியாக உள்ளது!\nஒரு Voice Note அல்லது MP3 அனுப்பி Caption-ல் <code>/addmeme name</code> எனக் கொடுங்கள்.` });
               return;
             }
             if (txt === "/status") {
