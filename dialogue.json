@@ -1,52 +1,52 @@
 [
   {
     "speaker": "KANNAN",
-    "text": "நீங்கள் உங்கள் ஸ்மார்ட்போன் பேட்டரியை இரட்டிப்பு நேரம் நீட்டிக்க 3 ரகசிய அமைப்புகளை அறிய விரும்புகிறீர்களா?",
-    "sfx": "pop"
-  },
-  {
-    "speaker": "YUNA",
-    "text": "முதலில், 'Battery Saver' மோட்-ஐ எப்போதும் ஆன் வைத்துக்கொள்.",
-    "sfx": "ding"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "அதற்கு, Settings > Battery > Battery Saver-க்கு சென்று 'Always On' தேர்வு செய்.",
-    "sfx": "click"
-  },
-  {
-    "speaker": "YUNA",
-    "text": "இரண்டாவது ரகசியம்: 'Adaptive Brightness' ஐ முடக்கு, திரை பிரகாசத்தை கைமுறையாக குறை.",
+    "text": "வணக்கம்! உங்கள் ஸ்மார்ட்போன் பேட்டரி இரட்டிப்பு நீடிக்க 3 ரகசிய அமைப்புகளைப் பார்க்கலாம்.",
     "sfx": "whoosh"
   },
   {
-    "speaker": "KANNAN",
-    "text": "Settings > Display > Brightness இல் 'Adaptive' ஸ்விட்சை ஆஃப் செய்.",
-    "sfx": "click"
-  },
-  {
     "speaker": "YUNA",
-    "text": "மூன்றாவது, 'Background App Refresh' ஐ கட்டுப்படுத்து, தேவையற்ற பயன்பாடுகள் பின்புலத்தில் ஓடாமல்.",
+    "text": "முதலாவது, டிஸ்ப்ளே பிரைட்ட்னெஸ் 50% க்கு குறைக்கவும்.",
     "sfx": "pop"
   },
   {
     "speaker": "KANNAN",
-    "text": "Apps > [App Name] > Battery > Restrict background activity.",
+    "text": "அதற்கு Settings > Display > Brightness இல் சுலபமாக செய்யலாம்.",
     "sfx": "click"
   },
   {
     "speaker": "YUNA",
-    "text": "இவை எல்லாம் செய்தால், பேட்டரி ஆயுள் 2 மடங்கு அதிகரிக்கும்!",
+    "text": "இரண்டாவது, பேட்டரி சேவிங் மோட் ஐ எப்போதும் ஆன் வைத்துக்கொள்ளுங்கள்.",
     "sfx": "ding"
   },
   {
     "speaker": "KANNAN",
-    "text": "மேலும், ஒவ்வொரு மாதமும் பேட்டரியை முழுமையாக சார்ஜ் செய்யாமல் 80% வரை வைத்திரு.",
-    "sfx": "boing"
+    "text": "Settings > Battery > Battery Saver > Always On ஐ தேர்வு செய்யுங்கள்.",
+    "sfx": "click"
   },
   {
     "speaker": "YUNA",
-    "text": "அப்படியே! இப்போது உங்கள் போன் நீண்ட நேரம் ஓடட்டும்!",
+    "text": "மூன்றாவது, பின்புல ஆப் ரிஃப்ரெஷை கட்டுப்படுத்துங்கள்.",
+    "sfx": "pop"
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "Settings > Apps > Select App > Battery > Background restriction.",
+    "sfx": "click"
+  },
+  {
+    "speaker": "YUNA",
+    "text": "இப்போது உங்கள் பேட்டரி 2 மடங்கு நீடிக்கும்!",
+    "sfx": "boing"
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "இதை நண்பர்களுடன் பகிர்ந்து, லைக், சப்ஸ்க்ரைப் செய்யுங்கள்.",
+    "sfx": "ding"
+  },
+  {
+    "speaker": "YUNA",
+    "text": "நன்றி, சந்தோஷமாக பயன்படுத்துங்கள்!",
     "sfx": "pop"
   }
 ]
