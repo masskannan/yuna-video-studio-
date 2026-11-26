@@ -2,7 +2,7 @@
   "fps": 30,
   "total_sec": "auto",
   "reel_sec": 55,
-  "mode": "cinema",
+  "mode": "split_pip",
   "grade": "warm",
   "fx_mode": "HYBRID",
   "render_target": "reel",
@@ -12,45 +12,75 @@
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 15,
-      "setting": "tea_shop",
+      "end_sec": 18,
+      "setting": "village_street",
       "time_of_day": "morning",
-      "location": "ROCKFORT • TRICHY",
-      "pose": "listen_ear",
+      "location": "MAIN STREET",
+      "pose": "wave",
       "prop": "camera",
       "char_pos": "left",
       "metaphor": "card_rain",
-      "heading": "Morning Query",
+      "topics": [
+        "UPI",
+        "Refund",
+        "Payment Stamp"
+      ],
+      "metaphor_items": [
+        "₹500 disappears",
+        "Auto‑reversal trigger",
+        "Stamp card record"
+      ],
+      "heading": "UPI Refund Mystery",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 15,
-      "end_sec": 40,
-      "setting": "village_street",
+      "start_sec": 18,
+      "end_sec": 38,
+      "setting": "tea_shop",
       "time_of_day": "sunset",
-      "location": "ROCKFORT • TRICHY",
-      "pose": "wave",
-      "prop": "none",
+      "location": "TEA STALL",
+      "pose": "hand_on_hip",
+      "prop": "headband",
       "char_pos": "right",
       "metaphor": "neon_topics",
-      "heading": "Sunset Explanation",
+      "topics": [
+        "Merchant",
+        "Transaction Limit",
+        "Security"
+      ],
+      "metaphor_items": [
+        "Merchant hold",
+        "Limit check",
+        "Secure token"
+      ],
+      "heading": "UPI Refund Mystery",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 3,
-      "start_sec": 40,
+      "start_sec": 38,
       "end_sec": 55,
-      "setting": "village_street",
+      "setting": "house_room",
       "time_of_day": "night",
-      "location": "ROCKFORT • TRICHY",
-      "pose": "arms_up",
+      "location": "YUNA STUDIO",
+      "pose": "listen_ear",
       "prop": "none",
       "char_pos": "around",
-      "metaphor": "payment_stamp",
-      "heading": "Night Wrap",
+      "metaphor": "bus_balancer",
+      "topics": [
+        "Daily Summary",
+        "Balance Update",
+        "Future Tips"
+      ],
+      "metaphor_items": [
+        "Balance sync",
+        "Daily ledger",
+        "Smart reminders"
+      ],
+      "heading": "UPI Refund Mystery",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     }

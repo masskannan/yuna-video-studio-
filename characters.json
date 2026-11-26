@@ -24,5 +24,18 @@
     "voice": "ta-IN-PallaviNeural",
     "role": "Smart AI Co-Host",
     "personality": "Gives witty, clear 1-line facts and practical fixes"
+  },
+  "BUGGY": {
+    "name": "BUGGY",
+    "type": "worm",
+    "body_color": "#22C55E",
+    "dress_style": "none",
+    "expression": "happy",
+    "hat": "none",
+    "mustache": "none",
+    "glasses": "shades",
+    "voice": "ta-SG-VenbaNeural",
+    "role": "Sarcastic Comic Guest",
+    "personality": "Drops a funny twist or punchline at the end"
   }
 }

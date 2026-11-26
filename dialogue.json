@@ -1,47 +1,62 @@
 [
   {
     "speaker": "KANNAN",
-    "text": "Interviewer திடீர்னு Load Balancer, API, Transaction பத்தி கேட்டா என்ன பண்ணுவே?",
-    "sfx": "pop"
+    "text": "இன்று காலை என் UPI-யில் 500 ரூபாய் போயிட்டது, கடைக்காரருக்கு வரலையா? ஏன் தானாக திரும்ப வந்தது?",
+    "sfx": "whoosh",
+    "meme": ""
   },
   {
     "speaker": "YUNA",
-    "text": "Load Balancer-ன்னா Trichy Bus Stand மாதிரி, Bay 1, Bay 2-ன்னு traffic-ஐ பிரிச்சு விடும்!",
-    "sfx": "whoosh"
+    "text": "UPI refunds happen when the merchant’s bank rejects the transaction within 24 hours.",
+    "sfx": "pop",
+    "meme": ""
+  },
+  {
+    "speaker": "BUGGY",
+    "text": "Check your transaction history; a ‘reversal’ tag means the money never left your account.",
+    "sfx": "click",
+    "meme": ""
   },
   {
     "speaker": "KANNAN",
-    "text": "Correct! It routes requests to the healthiest server, just like directing buses to free bays.",
-    "sfx": "click"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "API-ன்னா ஹோட்டல் மெனு மாதிரி, Order-ஐ எடுத்து, Kitchen-க்கு அனுப்பும் interface!",
-    "sfx": "ding"
+    "text": "ஆமா, அதாவது என் பைசா ‘card rain’‑ல் மழை போல விழுந்து மீண்டும் வந்தது!",
+    "sfx": "ding",
+    "meme": ""
   },
   {
     "speaker": "YUNA",
-    "text": "And the robot waiter brings back the response, fast and consistent.",
-    "sfx": "pop"
+    "text": "Think of the payment stamp card: each swipe stamps a record, and a failed swipe erases the stamp instantly.",
+    "sfx": "boing",
+    "meme": ""
   },
   {
-    "speaker": "YUNA",
-    "text": "Database Transaction-ன்னா ₹500 fee payment மாதிரி, All-or-Nothing guarantee.",
-    "sfx": "boing"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "If any step fails, whole payment rolls back, no partial charge!",
-    "sfx": "click"
-  },
-  {
-    "speaker": "YUNA",
-    "text": "So interview-ல் இவைகளை சொல்லினால், எல்லாம் smooth sailing!",
-    "sfx": "ding"
+    "speaker": "BUGGY",
+    "text": "If you see ‘auto‑reversal’, no action needed—just wait for the balance to sync.",
+    "sfx": "pop",
+    "meme": ""
   },
   {
     "speaker": "KANNAN",
-    "text": "Ready for the next query, teammates!",
-    "sfx": "whoosh"
+    "text": "இப்போது மாலை, என் நண்பர் டீ ஸ்டாலில் 500 ரூபாய் செலுத்தினான், அதும் திரும்ப வந்தா?",
+    "sfx": "whoosh",
+    "meme": ""
+  },
+  {
+    "speaker": "YUNA",
+    "text": "Same rule applies: merchant didn’t capture the amount, so the system rolls it back.",
+    "sfx": "ding",
+    "meme": ""
+  },
+  {
+    "speaker": "BUGGY",
+    "text": "Enable push notifications; you’ll get a ‘refund received’ alert instantly.",
+    "sfx": "click",
+    "meme": ""
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "நன்றி! இப்போ இரவு, என் ஸ்மார்ட் கார்டில் எல்லா ஸ்டாம்புகளும் சரியாக இருக்குது, கவலை இல்லை!",
+    "sfx": "boing",
+    "meme": ""
   }
 ]
