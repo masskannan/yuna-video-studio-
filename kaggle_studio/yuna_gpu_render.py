@@ -2,21 +2,23 @@ import json, os, subprocess, torch
 from pathlib import Path
 from diffusers import AutoPipelineForText2Image
 
-print("CUDA Available:", torch.cuda.is_available(), "| Device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU")
+print("CUDA:", torch.cuda.is_available(), "| Device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU")
 
-# 1. Clone latest YUNA Studio project & install edge-tts
+# 1. Clone latest YUNA Studio & install Tamil fonts + edge-tts
 subprocess.run(["git", "clone", "--depth", "1", "https://github.com/masskannan/yuna-video-studio-.git", "/kaggle/working/studio"], check=True)
 os.chdir("/kaggle/working/studio")
+subprocess.run(["bash", "-c", "apt-get -qq update && apt-get -qq install -y fonts-noto-core fonts-lohit-taml ffmpeg"], check=True)
 subprocess.run(["pip", "install", "-q", "edge-tts"], check=True)
 
 # 2. Generate Multi-Voice Master Audio + SRT
 subprocess.run(["python3", "scripts/generate_voice.py"], check=True)
 
-# 3. Generate Realistic 2D/3D Scene Art on T4 GPU using SDXL-Turbo
+# 3. Generate Realistic 2D/3D Scene Art on T4 GPU (SDXL-Turbo)
 tl = json.loads(Path("timeline.json").read_text(encoding="utf-8"))
 scenes = tl.get("scenes") or [{"part": 1, "heading": "YUNA Studio", "setting": "tea_shop", "time_of_day": "sunset"}]
 
 pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16").to("cuda")
+pipe.enable_attention_slicing()
 os.makedirs("/kaggle/working/scenes", exist_ok=True)
 img_clips = []
 
@@ -32,12 +34,12 @@ for i, sc in enumerate(scenes):
     frames = int(dur * 30)
     subprocess.run([
         "ffmpeg", "-y", "-loop", "1", "-i", p_img,
-        "-vf", f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,zoompan=z='min(zoom+0.0012,1.15)':d={frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30",
-        "-t", f"{dur:.2f}", "-c:v", "libx264", "-pix_fmt", "yuv420p", p_clip
+        "-vf", f"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,zoompan=z='min(zoom+0.0012,1.15)':d={frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30",
+        "-t", f"{dur:.2f}", "-r", "30", "-c:v", "libx264", "-pix_fmt", "yuv420p", p_clip
     ], check=True)
     img_clips.append(p_clip)
 
-# 4. Concat Clips + Mux Master Audio + Burn Bold Captions
+# 4. Concat Clips + Mux Master Audio + Burn Tamil Bold Captions
 concat_f = "/kaggle/working/scenes/concat.txt"
 Path(concat_f).write_text("\n".join(f"file '{c}'" for c in img_clips) + "\n")
 raw_vid = "/kaggle/working/raw_gpu.mp4"
