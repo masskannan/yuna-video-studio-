@@ -116,6 +116,21 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
                 </linearGradient>
               </defs>
               <rect width="1080" height="1920" fill={`url(#sky${idx})`} />
+              {tod !== "night" && stg !== "house_room" ? (
+                <g opacity="0.16">
+                  <polygon points="860,240 240,1920 520,1920" fill="#FEF08A" />
+                  <polygon points="860,240 680,1920 960,1920" fill="#FEF08A" />
+                  <path d={`M ${((frame * 2.1 + 120) % 1200) - 80} 310 Q ${((frame * 2.1 + 120) % 1200) - 65} 296 ${((frame * 2.1 + 120) % 1200) - 50} 310`} stroke="#0F172A" strokeWidth="3.5" fill="none" opacity="0.65" />
+                  <path d={`M ${((frame * 1.7 + 440) % 1200) - 80} 380 Q ${((frame * 1.7 + 440) % 1200) - 67} 368 ${((frame * 1.7 + 440) % 1200) - 54} 380`} stroke="#0F172A" strokeWidth="3" fill="none" opacity="0.55" />
+                </g>
+              ) : null}
+              {tod === "night" && stg !== "house_room" ? (
+                <g>
+                  {[0, 1, 2, 3, 4, 5].map((fi) => (
+                    <circle key={fi} cx={(160 + fi * 170 + Math.sin(frame * 0.05 + fi) * 35)} cy={(880 + (fi % 3) * 140 + Math.cos(frame * 0.06 + fi) * 28)} r="5" fill="#FDE047" opacity={0.35 + Math.abs(Math.sin(frame * 0.1 + fi)) * 0.55} />
+                  ))}
+                </g>
+              ) : null}
               {tod === "night" && stg !== "house_room" ? (
                 <g fill="#FFFFFF" opacity="0.85">
                   <circle cx="140" cy="180" r="3" /><circle cx="310" cy="120" r="4" /><circle cx="520" cy="210" r="3" />
@@ -196,6 +211,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
                     frame={frame}
                     active={activeSpeaker === cname}
                     accent={active.accent}
+                    lookDir={cIdx === 0 ? 1 : -1}
                     pose={rSc.pose || (cIdx === 0 ? (active.part % 2 === 1 ? "listen_ear" : "wave") : "hand_on_hip")}
                     prop={rSc.prop || (active.part === 2 ? "headband" : "camera")}
                   />
@@ -240,6 +256,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         </AbsoluteFill>
       ) : null}
 
+      <div style={{ position: "absolute", left: -40, bottom: -30, width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle, rgba(2,6,23,0.45), transparent 70%)", filter: "blur(3px)", pointerEvents: "none", zIndex: 35 }} />
       <CounterHook />
       <OverlayLayer />
       <Captions />
