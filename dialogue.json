@@ -1,50 +1,52 @@
 [
   {
-    "speaker": "YUNA",
-    "voice": "en-US-JennyNeural",
-    "pitch": 1,
-    "color": "#38BDF8",
-    "sfx": "whoosh",
-    "text": "Welcome to YUNA Video Studio, where imagination meets technology."
-  },
-  {
-    "speaker": "Guest",
-    "voice": "en-US-GuyNeural",
-    "pitch": 0.95,
-    "color": "#FFFFFF",
-    "sfx": "none",
-    "text": "We empower creators with AI-driven tools."
+    "speaker": "KANNAN",
+    "text": "Good morning, Yuna! Ready for the stall?",
+    "sfx": "whoosh"
   },
   {
     "speaker": "YUNA",
-    "voice": "en-US-JennyNeural",
-    "pitch": 1,
-    "color": "#38BDF8",
-    "sfx": "none",
-    "text": "Our platform offers seamless 3D rendering, animation, and real-time collaboration."
+    "text": "Absolutely! Fresh fruits today!",
+    "sfx": "pop"
   },
   {
-    "speaker": "Guest",
-    "voice": "en-US-GuyNeural",
-    "pitch": 0.95,
-    "color": "#FFFFFF",
-    "sfx": "none",
-    "text": "From cinema-quality visuals to interactive UI/UX designs."
+    "speaker": "KANNAN",
+    "text": "The mangoes look perfect.",
+    "sfx": ""
   },
   {
     "speaker": "YUNA",
-    "voice": "en-US-JennyNeural",
-    "pitch": 1,
-    "color": "#38BDF8",
-    "sfx": "whoosh",
-    "text": "Join us today and bring your stories to life."
+    "text": "Watch out, the wind's picking up!",
+    "sfx": "ding"
   },
   {
-    "speaker": "Guest",
-    "voice": "en-US-GuyNeural",
-    "pitch": 0.95,
-    "color": "#FFFFFF",
-    "sfx": "none",
-    "text": "Visit yuna.studio and start your free trial now."
+    "speaker": "KANNAN",
+    "text": "Hold the canopy steady!",
+    "sfx": "click"
+  },
+  {
+    "speaker": "YUNA",
+    "text": "Got it! Customers are already lining up.",
+    "sfx": "pop"
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "Let's make this the best day yet.",
+    "sfx": "boing"
+  },
+  {
+    "speaker": "YUNA",
+    "text": "Deal! And maybe a cold drink after?",
+    "sfx": "pop"
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "You read my mind.",
+    "sfx": "whoosh"
+  },
+  {
+    "speaker": "YUNA",
+    "text": "To the market and beyond!",
+    "sfx": "ding"
   }
 ]

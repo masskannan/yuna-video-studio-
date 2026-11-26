@@ -1,26 +1,22 @@
 {
-  "YUNA": {
-    "type": "host",
-    "body_color": "#FFDAB9",
-    "dress_style": "formal",
-    "dress_color": "#2E86C1",
-    "expression": "smile",
-    "hat": "none",
-    "hat_color": "none",
-    "mustache": false,
-    "hair_color": "#4B3621",
-    "glasses": "none"
-  },
-  "Guest": {
-    "type": "assistant",
-    "body_color": "#E0E0E0",
-    "dress_style": "casual",
-    "dress_color": "#27AE60",
+  "KANNAN": {
+    "type": "character",
+    "body_color": "#38BDF8",
+    "dress_style": "suit",
     "expression": "neutral",
     "hat": "none",
-    "hat_color": "none",
-    "mustache": false,
-    "hair_color": "#000000",
-    "glasses": "none"
+    "mustache": "handlebar",
+    "glasses": "none",
+    "voice": "ta-IN-ValluvarNeural"
+  },
+  "YUNA": {
+    "type": "character",
+    "body_color": "#F59E0B",
+    "dress_style": "hoodie",
+    "expression": "happy",
+    "hat": "beanie",
+    "mustache": "none",
+    "glasses": "round",
+    "voice": "en-US-AvaNeural"
   }
 }

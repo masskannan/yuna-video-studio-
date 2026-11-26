@@ -1,33 +1,19 @@
 {
   "fps": 30,
-  "total_sec": 90,
-  "reel_sec": 30,
+  "total_sec": "auto",
+  "reel_sec": 45,
   "mode": "cinema",
+  "grade": "warm",
+  "fx_mode": "HYBRID",
+  "render_target": "both",
   "use_manim": false,
   "use_blender": false,
   "scenes": [
     {
-      "part": "Intro",
-      "start_sec": 0,
-      "end_sec": 30,
-      "heading": "Welcome to YUNA Studio",
-      "accent": "en-US"
-    },
-    {
-      "part": "Features",
-      "start_sec": 30,
-      "end_sec": 60,
-      "heading": "Our Cutting-Edge Tools",
-      "accent": "en-US"
-    },
-    {
-      "part": "CallToAction",
-      "start_sec": 60,
-      "end_sec": 90,
-      "heading": "Join Us Today",
-      "accent": "en-US"
+      "part": 1,
+      "heading": "Morning Market",
+      "accent": "#38BDF8",
+      "bgTop": "#0F172A"
     }
-  ],
-  "fx_mode": "SAFE",
-  "chunk_sec": 60
+  ]
 }
