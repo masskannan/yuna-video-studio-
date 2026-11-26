@@ -225,30 +225,35 @@ async function runDirectorAndCommitV2(env, rawText, target = "both") {
   };
   const dlg = Array.isArray(parsed.dialogue) && parsed.dialogue.length ? parsed.dialogue : [{ speaker: Object.keys(chars)[0], text: scriptText.slice(0, 140), sfx: "pop" }];
 
-  const refRes = await gh("/git/ref/heads/main", env);
-  const refData = await refRes.json();
-  const baseSha = refData?.object?.sha;
-  if (!baseSha) throw new Error("Missing main ref");
-  const commitRes = await gh(`/git/commits/${baseSha}`, env);
-  const baseTree = (await commitRes.json())?.tree?.sha;
-  const treeRes = await gh("/git/trees", env, {
-    method: "POST",
-    body: JSON.stringify({
-      base_tree: baseTree,
-      tree: [
-        { path: "timeline.json", mode: "100644", type: "blob", content: JSON.stringify(tl, null, 2) },
-        { path: "characters.json", mode: "100644", type: "blob", content: JSON.stringify(chars, null, 2) },
-        { path: "dialogue.json", mode: "100644", type: "blob", content: JSON.stringify(dlg, null, 2) }
-      ]
-    })
-  });
-  const treeData = await treeRes.json();
-  const ncRes = await gh("/git/commits", env, {
-    method: "POST",
-    body: JSON.stringify({ message: `feat(director): [${target}] [${tl.mode}]`, tree: treeData.sha, parents: [baseSha] })
-  });
-  const ncData = await ncRes.json();
-  const upRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: ncData.sha }) });
+  let upRes = { ok: false }, ncData = {};
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const refRes = await gh("/git/ref/heads/main", env);
+    const refData = await refRes.json();
+    const baseSha = refData?.object?.sha;
+    if (!baseSha) throw new Error("Missing main ref");
+    const commitRes = await gh(`/git/commits/${baseSha}`, env);
+    const baseTree = (await commitRes.json())?.tree?.sha;
+    const treeRes = await gh("/git/trees", env, {
+      method: "POST",
+      body: JSON.stringify({
+        base_tree: baseTree,
+        tree: [
+          { path: "timeline.json", mode: "100644", type: "blob", content: JSON.stringify(tl, null, 2) },
+          { path: "characters.json", mode: "100644", type: "blob", content: JSON.stringify(chars, null, 2) },
+          { path: "dialogue.json", mode: "100644", type: "blob", content: JSON.stringify(dlg, null, 2) }
+        ]
+      })
+    });
+    const treeData = await treeRes.json();
+    const ncRes = await gh("/git/commits", env, {
+      method: "POST",
+      body: JSON.stringify({ message: `feat(director): [${target}] [${tl.mode}]`, tree: treeData.sha, parents: [baseSha] })
+    });
+    ncData = await ncRes.json();
+    upRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: ncData.sha }) });
+    if (upRes.ok) break;
+    await new Promise(r => setTimeout(r, 400));
+  }
   return { ok: upRes.ok, sha: String(ncData.sha || "").slice(0, 7), mode: tl.mode, grade: tl.grade, lines: dlg.length, target };
 }
 
@@ -321,14 +326,50 @@ export default {
             const cid = String(msg?.chat?.id || "");
             if (!cid || !env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return;
             let txt = String(msg?.text || msg?.caption || "").trim();
+            if (!txt && msg?.voice && env.TG_BOT_TOKEN) {
+              const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${msg.voice.file_id}`).then(r => r.json());
+              const fp = gf?.result?.file_path;
+              if (fp) {
+                const audioBlob = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${fp}`).then(r => r.blob());
+                for (const gk of [env.GROQ_API_KEY, env.GROQ_API_KEY_2, env.GROQ_API_KEY_3].filter(Boolean)) {
+                  const fd = new FormData();
+                  fd.append("file", audioBlob, "voice.ogg");
+                  fd.append("model", "whisper-large-v3-turbo");
+                  const tr = await fetch("https://api.groq.com/openai/v1/audio/transcriptions", { method: "POST", headers: { "Authorization": `Bearer ${gk}` }, body: fd }).then(r => r.json()).catch(() => ({}));
+                  if (tr?.text) { txt = "/reel " + tr.text; break; }
+                }
+              }
+            }
+            if (!txt && Array.isArray(msg?.photo) && msg.photo.length && env.TG_BOT_TOKEN) {
+              const fid = msg.photo[msg.photo.length - 1].file_id;
+              const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${fid}`).then(r => r.json());
+              const fp = gf?.result?.file_path;
+              if (fp) {
+                const imgUrl = `https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${fp}`;
+                for (const gk of [env.GROQ_API_KEY, env.GROQ_API_KEY_2, env.GROQ_API_KEY_3].filter(Boolean)) {
+                  const vr = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${gk}`, "Content-Type": "application/json" },
+                    body: JSON.stringify({ model: "meta-llama/llama-4-scout-17b-16e-instruct", temperature: 0.3, messages: [{ role: "user", content: [{ type: "text", text: "Write a punchy 60-sec Tamil+English product promo script with 2 speakers (KANNAN, YUNA) for this product." }, { type: "image_url", image_url: { url: imgUrl } }] }] })
+                  }).then(r => r.json()).catch(() => ({}));
+                  const desc = vr?.choices?.[0]?.message?.content;
+                  if (desc) { txt = "/reel " + desc; break; }
+                }
+              }
+            }
             if (!txt && msg?.document && env.TG_BOT_TOKEN) {
               const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${msg.document.file_id}`).then(r => r.json());
               const fp = gf?.result?.file_path;
-              if (fp) txt = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${fp}`).then(r => r.text());
+              if (fp) txt = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${fp}`).then(r => r.text()).then(t => t.slice(0, 15000));
             }
             if (!txt) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Text, Script, or .txt file அனுப்புங்கள் (/reel, /yt, /both, /status, /cancel)." }); return; }
             if (txt === "/start" || txt === "/help") {
-              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: "🎬 <b>YUNA Studio Live!</b>\n• <code>/reel &lt;script&gt;</code> — 9:16 மட்டும் (அதிவேகம்)\n• <code>/yt &lt;script&gt;</code> — 16:9 மட்டும்\n• <code>/both &lt;script&gt;</code> — இரண்டும் (அல்லது நேரடியாக Paste/.txt)\n• <code>/status</code> | <code>/cancel</code>" });
+              await tgApi(env, "sendMessage", {
+                chat_id: cid,
+                parse_mode: "HTML",
+                text: "🎬 <b>YUNA 2050 Studio Live!</b>\n• <code>/reel &lt;script&gt;</code> — 9:16 மட்டும் (அதிவேகம்)\n• <code>/yt &lt;script&gt;</code> — 16:9 மட்டும்\n• <code>/both &lt;script&gt;</code> — இரண்டும் (Text / .txt / Voice / Photo)\n• <code>/status</code> | <code>/cancel</code>",
+                reply_markup: { inline_keyboard: [[{ text: "🎛️ Open Studio Mini App", web_app: { url: "https://yuna-video-studio.masskannan719.workers.dev/office?pin=yuna2026" } }]] }
+              });
               return;
             }
             if (txt === "/status") {
@@ -349,9 +390,9 @@ export default {
               return;
             }
             let target = "both";
-            if (/^\/reel\b/i.test(txt)) target = "reel";
-            else if (/^\/yt\b/i.test(txt)) target = "yt";
-            const topic = txt.replace(/^\/(reel|yt|both|video|script)\s*/i, "").trim();
+            if (/^(\/\s*)?reel\b/i.test(txt)) target = "reel";
+            else if (/^(\/\s*)?yt\b/i.test(txt)) target = "yt";
+            const topic = txt.replace(/^(\/\s*)?(reel|yt|both|video|script)\s*/i, "").trim();
             if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Topic அல்லது Script-ஐச் சேர்த்து அனுப்புங்கள்!" }); return; }
             await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `⚡ <b>Target:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script-ஐத் தயார் செய்கிறது...` });
             const res = await runDirectorAndCommitV2(env, topic, target);
