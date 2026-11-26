@@ -1,6 +1,196 @@
 const OWNER = "masskannan";
 const REPO = "yuna-video-studio-";
 
+
+function officeMiniAppHtml(pin) {
+  const safePinJson = JSON.stringify(String(pin || ""));
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>YUNA 2050 Bento Studio</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;background:#050811;color:#F8FAFC;font-family:system-ui,-apple-system,sans-serif;padding:14px}
+  .wrap{max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+  .bar{display:flex;justify-content:space-between;align-items:center}
+  .brand{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:800;letter-spacing:-0.3px}
+  .pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:#0F172A;border:1px solid #38BDF8;color:#38BDF8}
+  .track{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;background:#0B1120;border:1px solid #1E293B;border-radius:14px;padding:10px}
+  .step{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+  .sico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#111827;border:1px solid #334155;color:#94A3B8}
+  .sico.ok{border-color:#10B981;color:#34D399;background:#052E16}
+  .sico.run{border-color:#F59E0B;color:#FBBF24;background:#2E1A05;animation:pulse 1.2s infinite}
+  .sico.err{border-color:#EF4444;color:#F87171;background:#2E0505}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .slbl{font-size:10px;color:#94A3B8;font-weight:700}
+  .bento{display:grid;grid-template-columns:118px 1fr;gap:10px}
+  .phone{background:linear-gradient(160deg,#0F172A,#1E1B4B);border:2px solid #334155;border-radius:18px;padding:10px 8px;display:flex;flex-direction:column;justify-content:space-between;min-height:190px;position:relative;overflow:hidden}
+  .phone.cyber{background:linear-gradient(160deg,#090D24,#3B0764)}
+  .phone.warm{background:linear-gradient(160deg,#1F1205,#451A03)}
+  .phone.noir{background:linear-gradient(160deg,#09090B,#27272A)}
+  .ptag{font-size:9px;font-weight:800;color:#38BDF8;text-transform:uppercase;text-align:center}
+  .pcast{display:flex;justify-content:center;gap:6px;font-size:20px;margin:8px 0}
+  .psub{background:rgba(0,0,0,.75);border-radius:8px;padding:5px;font-size:10px;font-weight:800;text-align:center;color:#FACC15}
+  .panel{background:#0B1120;border:1px solid #1E293B;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
+  .lbl{font-size:10px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.6px}
+  .row{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{flex:1;min-width:58px;padding:7px 6px;border-radius:9px;border:1px solid #1E293B;background:#111827;color:#CBD5E1;font-size:11px;font-weight:700;cursor:pointer;text-align:center}
+  .chip.on{background:#0284C7;border-color:#38BDF8;color:#fff}
+  .swatches{display:flex;gap:8px;align-items:center}
+  .sw{width:26px;height:26px;border-radius:999px;border:2px solid #334155;cursor:pointer}
+  .sw.on{border-color:#fff;transform:scale(1.12)}
+  .card{background:#0B1120;border:1px solid #1E293B;border-radius:16px;padding:12px}
+  .recipes{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}
+  .rcp{white-space:nowrap;padding:6px 10px;border-radius:999px;background:#111827;border:1px solid #334155;color:#E2E8F0;font-size:11px;font-weight:700;cursor:pointer}
+  textarea{width:100%;height:78px;border-radius:10px;border:1px solid #334155;background:#020617;color:#F8FAFC;padding:10px;font-size:13px;resize:none;font-family:inherit}
+  .actions{display:flex;gap:8px;margin-top:8px}
+  .btn-sub{padding:11px 12px;border-radius:10px;border:1px solid #334155;background:#111827;color:#38BDF8;font-size:12px;font-weight:800;cursor:pointer}
+  .btn-go{flex:1;padding:12px;border:0;border-radius:10px;background:linear-gradient(90deg,#0EA5E9,#6366F1);color:#fff;font-size:14px;font-weight:800;cursor:pointer}
+  .btn-go:disabled{opacity:.55;cursor:not-allowed}
+  .log{font-family:monospace;font-size:11px;color:#34D399;background:#020617;border:1px solid #1E293B;border-radius:10px;padding:8px 10px;min-height:32px}
+</style></head><body>
+<div class="wrap">
+  <div class="bar">
+    <div class="brand">🎬 YUNA Studio <span style="font-size:11px;color:#64748B">2050</span></div>
+    <div class="pill" id="runPill">LIVE SYNC</div>
+  </div>
+  <div class="track" id="track"></div>
+  <div class="bento">
+    <div class="phone cyber" id="phone">
+      <div class="ptag" id="ptag">9:16 REEL • CARTOON</div>
+      <div class="pcast" id="pcast">🧑🏽‍💼 👩🏽‍💻</div>
+      <div class="psub" id="psub">45s • CYBER</div>
+    </div>
+    <div class="panel">
+      <div class="lbl">Target &amp; Cast</div>
+      <div class="row" id="tgtRow">
+        <div class="chip" data-v="reel:0" onclick="setTgt('reel',false,this)">📱 Reel</div>
+        <div class="chip" data-v="reel:1" onclick="setTgt('reel',true,this)">🎭 +Cameo</div>
+        <div class="chip" data-v="yt:0" onclick="setTgt('yt',false,this)">📺 16:9</div>
+        <div class="chip" data-v="both:0" onclick="setTgt('both',false,this)">🎬 Both</div>
+      </div>
+      <div class="lbl">Mode &amp; Color</div>
+      <div class="row" id="modeRow">
+        <div class="chip" data-v="cartoon" onclick="setMode('cartoon',this)">🎨 Cartoon</div>
+        <div class="chip" data-v="ui_ux" onclick="setMode('ui_ux',this)">💻 UI/UX</div>
+        <div class="chip" data-v="cinema" onclick="setMode('cinema',this)">🎬 Cinema</div>
+        <div class="chip" data-v="split_pip" onclick="setMode('split_pip',this)">🔀 Split</div>
+      </div>
+      <div class="row" style="align-items:center;justify-content:space-between">
+        <div class="swatches" id="gradeRow">
+          <div class="sw" data-v="none" title="Clean" style="background:#E2E8F0" onclick="setGrade('none',this)"></div>
+          <div class="sw" data-v="cyber" title="Cyber" style="background:#7C3AED" onclick="setGrade('cyber',this)"></div>
+          <div class="sw" data-v="warm" title="Warm" style="background:#F59E0B" onclick="setGrade('warm',this)"></div>
+          <div class="sw" data-v="noir" title="Noir" style="background:#18181B" onclick="setGrade('noir',this)"></div>
+        </div>
+        <div class="row" id="durRow" style="flex:0 0 auto">
+          <div class="chip" data-v="45" style="min-width:40px" onclick="setDur(45,this)">45s</div>
+          <div class="chip" data-v="60" style="min-width:40px" onclick="setDur(60,this)">60s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="recipes">
+      <div class="rcp" onclick="fill('AI வேலைவாய்ப்பை எப்படி மாற்றும்? 2 நண்பர்கள் உரையாடல்')">🔥 Tech Debate</div>
+      <div class="rcp" onclick="fill('இந்த 3 தவறுகள் Mobile-ல் செய்யாதீங்க! Quick tips')">⚠️ 3 Mistakes</div>
+      <div class="rcp" onclick="fill('புதிய AI Tool 30 நொடியில் வீடியோ எடிட்டிங் demo')">💻 Tool Demo</div>
+      <div class="rcp" onclick="fill('50% Offer! Smart Watch honest review & price slash')">🛍️ Product Ad</div>
+    </div>
+    <textarea id="txt" placeholder="Paste topic or Tamil/English script..."></textarea>
+    <div class="actions">
+      <button class="btn-sub" onclick="surprise()">🎲 Idea</button>
+      <button class="btn-go" id="goBtn" onclick="go()">🚀 Start Render</button>
+    </div>
+  </div>
+  <div class="log" id="log">&gt; Ready. Tap a recipe or paste script.</div>
+</div>
+<script>
+const PIN = ${safePinJson};
+try { if (window.Telegram && Telegram.WebApp) { Telegram.WebApp.ready(); Telegram.WebApp.expand(); } } catch {}
+function buzz(){ try { Telegram.WebApp.HapticFeedback.impactOccurred('light'); } catch {} }
+const SVGS = [
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.7-3.3 6l-.7 3H9l-.7-3A7 7 0 0 1 12 2z"/></svg>',
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>',
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>',
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 9l5 3-5 3V9z"/></svg>',
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/></svg>',
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>'
+];
+const LBLS = ["Director", "Voice", "3D/FX", "Render", "Merge", "Pack"];
+let cfg = { tgt: "reel", cameo: false, mode: "cartoon", grade: "cyber", dur: 45 };
+try { const saved = JSON.parse(localStorage.getItem("yuna_cfg") || "null"); if (saved) cfg = Object.assign(cfg, saved); } catch {}
+function saveCfg(){ try { localStorage.setItem("yuna_cfg", JSON.stringify(cfg)); } catch {} syncUi(); }
+function syncUi(){
+  const p = document.getElementById('phone');
+  p.className = 'phone ' + cfg.grade;
+  document.getElementById('ptag').textContent = (cfg.tgt === 'yt' ? '16:9 YT' : '9:16 REEL') + ' • ' + cfg.mode.toUpperCase();
+  document.getElementById('pcast').textContent = cfg.cameo ? '🧑🏽‍💼 👩🏽‍💻 🐛' : '🧑🏽‍💼 👩🏽‍💻';
+  document.getElementById('psub').textContent = cfg.dur + 's • ' + cfg.grade.toUpperCase();
+  const mark = (id, val) => document.querySelectorAll('#' + id + ' [data-v]').forEach(x => x.classList.toggle('on', x.getAttribute('data-v') === String(val)));
+  mark('tgtRow', cfg.tgt + ':' + (cfg.cameo ? '1' : '0'));
+  mark('modeRow', cfg.mode);
+  mark('gradeRow', cfg.grade);
+  mark('durRow', cfg.dur);
+}
+function setTgt(t, c){ cfg.tgt = t; cfg.cameo = c; buzz(); saveCfg(); }
+function setMode(m){ cfg.mode = m; buzz(); saveCfg(); }
+function setGrade(g){ cfg.grade = g; buzz(); saveCfg(); }
+function setDur(d){ cfg.dur = d; buzz(); saveCfg(); }
+function fill(s){ buzz(); document.getElementById('txt').value = s; }
+function surprise(){
+  const list = [
+    "2026-ல் AI Coding கற்றுக்கொண்டால் சம்பளம் எப்படி உயரும்? 2 நண்பர்கள் பேச்சு",
+    "Smartphone Battery 2 மடங்கு நீடிக்க 3 Secret Settings",
+    "Online Scam-லிருந்து தப்பிக்க 3 Golden Rules — Tamil Awareness"
+  ];
+  fill(list[Math.floor(Math.random() * list.length)]);
+}
+function stCls(s){
+  s = String(s || "").toLowerCase();
+  if (s === "completed" || s === "success" || s === "ready") return "ok";
+  if (s === "in_progress" || s === "queued") return "run";
+  if (s === "failure" || s === "cancelled") return "err";
+  return "";
+}
+function renderTrack(desks){
+  document.getElementById('track').innerHTML = LBLS.map((l, i) => {
+    const st = (desks && desks[i] && desks[i].status) || "idle";
+    return '<div class="step"><div class="sico ' + stCls(st) + '">' + SVGS[i] + '</div><div class="slbl">' + l + '</div></div>';
+  }).join('');
+}
+renderTrack([]); syncUi();
+const es = new EventSource('/api/stream?pin=' + encodeURIComponent(PIN));
+es.onmessage = (e) => {
+  try {
+    const d = JSON.parse(e.data);
+    if (d.run_id) document.getElementById('runPill').textContent = 'RUN #' + d.run_id;
+    if (d.desks) renderTrack(d.desks);
+  } catch {}
+};
+async function go(){
+  const topic = document.getElementById('txt').value.trim();
+  const log = document.getElementById('log');
+  const btn = document.getElementById('goBtn');
+  if (!topic) { log.textContent = '> ⚠️ Enter a topic or tap a recipe first.'; return; }
+  buzz();
+  btn.disabled = true; btn.textContent = '⏳ Queuing...';
+  log.textContent = '> AI Director building scenes (' + cfg.mode + ', ' + cfg.grade + ')...';
+  try {
+    const r = await fetch('/api/miniapp/render?pin=' + encodeURIComponent(PIN), {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ topic, target: cfg.tgt, cameo: cfg.cameo, mode: cfg.mode, grade: cfg.grade, reel_sec: cfg.dur })
+    });
+    const d = await r.json();
+    log.textContent = d.ok ? '> 🚀 Queued! Commit ' + d.sha + ' | ' + d.mode + ' | ' + d.target : '> ❌ ' + (d.error || 'Failed');
+  } catch (err) {
+    log.textContent = '> ❌ Network error';
+  }
+  btn.disabled = false; btn.textContent = '🚀 Start Render';
+}
+</script></body></html>`;
+}
+
 function htmlPage() {
   return `<!doctype html>
 <html lang="ta"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -233,7 +423,10 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
   tl.render_target = ["reel", "yt", "both"].includes(target) ? target : "both";
   tl.use_manim = false;
   tl.use_blender = false;
+  if (opts.mode && ["cinema", "cartoon", "ui_ux", "split_pip"].includes(opts.mode)) tl.mode = opts.mode;
   if (!["cinema", "cartoon", "ui_ux", "split_pip"].includes(tl.mode)) tl.mode = "cartoon";
+  if (opts.grade && ["none", "cyber", "warm", "noir"].includes(opts.grade)) tl.grade = opts.grade;
+  if (opts.reel_sec) tl.reel_sec = Math.min(90, Math.max(20, Number(opts.reel_sec) || 45));
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
   tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; return { ...s, part: s.part || i + 1, start_sec: st, end_sec: en }; });
@@ -284,6 +477,19 @@ export default {
   async fetch(req, env, ctx) {
     try {
       const url = new URL(req.url);
+      if (url.pathname === "/office") {
+        if (!checkPin(req, url, env)) return new Response("Invalid PIN", { status: 401 });
+        return new Response(officeMiniAppHtml(url.searchParams.get("pin") || ""), { headers: { "content-type": "text/html; charset=utf-8" } });
+      }
+      if (url.pathname === "/api/miniapp/render" && req.method === "POST") {
+        if (!checkPin(req, url, env)) return Response.json({ error: "Invalid PIN" }, { status: 401 });
+        const b = await req.json().catch(() => ({}));
+        const topic = String(b.topic || "").trim();
+        if (!topic) return Response.json({ error: "Empty topic" }, { status: 400 });
+        const res = await runDirectorAndCommitV2(env, topic, String(b.target || "reel"), Boolean(b.cameo), b);
+        return Response.json(res);
+      }
+
       if (url.pathname === "/") {
         return new Response(htmlPage(), { headers: { "Content-Type": "text/html; charset=utf-8" } });
       }
