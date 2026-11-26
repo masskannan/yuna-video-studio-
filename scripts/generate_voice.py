@@ -247,7 +247,7 @@ def main():
         for i, (spath, st) in enumerate(sfx_events, start=1):
             cmd.extend(["-i", spath])
             ms = int(round(st * 1000))
-            fc_parts.append(f"[{i}:a]aresample=48000,adelay={ms}:all=1,volume=0.45[s{i}]")
+            fc_parts.append(f"[{i}:a]aresample=48000,dynaudnorm=f=50:g=5,adelay={ms}:all=1,volume=0.55[s{i}]")
             mix_labels.append(f"[s{i}]")
         fc_parts.append(f"{''.join(mix_labels)}amix=inputs={len(mix_labels)}:duration=first:normalize=0[out]")
         cmd.extend(["-filter_complex", ";".join(fc_parts), "-map", "[out]", VOICE_SFX_WAV])
