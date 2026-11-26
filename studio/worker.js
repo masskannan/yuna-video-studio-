@@ -131,6 +131,28 @@ function officeMiniAppHtml(pin) {
         <div class="tile" data-v="45" onclick="setDur(45)">📱 45s</div>
         <div class="tile" data-v="60" onclick="setDur(60)">🎯 60s</div>
       </div>
+      <div class="lbl">Language, Script Mode &amp; Cast</div>
+      <div class="grid3" id="langRow">
+        <div class="tile" data-v="ta" onclick="setLang('ta')">🇮🇳 தமிழ்</div>
+        <div class="tile" data-v="en" onclick="setLang('en')">🇬🇧 English</div>
+        <div class="tile" data-v="hi" onclick="setLang('hi')">🇮🇳 हिन्दी</div>
+      </div>
+      <div class="grid3" id="scriptModeRow">
+        <div class="tile" data-v="auto" onclick="setScriptMode('auto')">⚡ Auto</div>
+        <div class="tile" data-v="exact" onclick="setScriptMode('exact')">📜 Exact Script</div>
+        <div class="tile" data-v="expand" onclick="setScriptMode('expand')">✨ AI Expand</div>
+      </div>
+      <div class="grid2" id="castModeRow">
+        <div class="tile" data-v="auto" onclick="setCastMode('auto')">🤖 Auto AI Cast</div>
+        <div class="tile" data-v="fixed" onclick="setCastMode('fixed')">🎭 KANNAN &amp; YUNA</div>
+      </div>
+      <div class="lbl">Sky &amp; Time Cycle</div>
+      <div class="grid2" id="todRow">
+        <div class="tile" data-v="auto" onclick="setTod('auto')">🌅 Auto Cycle</div>
+        <div class="tile" data-v="morning" onclick="setTod('morning')">☀️ Morning</div>
+        <div class="tile" data-v="sunset" onclick="setTod('sunset')">🌇 Sunset</div>
+        <div class="tile" data-v="night" onclick="setTod('night')">🌙 Night</div>
+      </div>
     </div>
   </div>
 
@@ -176,9 +198,9 @@ const SVGS = [
 ];
 const LBLS = ["Director", "Voice", "3D/FX", "Render", "Merge", "Pack"];
 let step = 1;
-let cfg = { tgt: "reel", dim: "2d", cameo: false, mode: "cartoon", fx: "HYBRID", grade: "cyber", dur: 45 };
-try { const s = JSON.parse(localStorage.getItem("yuna_cfg6") || "null"); if (s) cfg = Object.assign(cfg, s); } catch {}
-function saveCfg(){ try { localStorage.setItem("yuna_cfg6", JSON.stringify(cfg)); } catch {} syncUi(); }
+let cfg = { tgt: "reel", dim: "2d", cameo: true, mode: "cartoon", fx: "HYBRID", grade: "cyber", dur: 45, lang: "ta", script_mode: "auto", cast_mode: "auto", tod: "auto" };
+try { const s = JSON.parse(localStorage.getItem("yuna_cfg7") || "null"); if (s) cfg = Object.assign(cfg, s); } catch {}
+function saveCfg(){ try { localStorage.setItem("yuna_cfg7", JSON.stringify(cfg)); } catch {} syncUi(); }
 function renderChars(){
   document.getElementById('charScroll').innerHTML = CAST.map(c => {
     const active = !c.cameo || cfg.cameo;
@@ -197,9 +219,9 @@ function syncUi(){
   mark('tgtRow', cfg.tgt);
   mark('dimRow', cfg.dim);
   mark('gradeRow', cfg.grade);
-  mark('durRow', cfg.dur);
+  mark('durRow', cfg.dur); mark('langRow', cfg.lang); mark('scriptModeRow', cfg.script_mode); mark('castModeRow', cfg.cast_mode); mark('todRow', cfg.tod);
   document.getElementById('sumBox').innerHTML =
-    '<div class="kv"><b>Cast</b>' + (cfg.cameo ? 'KANNAN + YUNA + BUGGY' : 'KANNAN + YUNA') + '</div>' +
+    '<div class="kv"><b>Cast &amp; Mode</b>' + (cfg.cast_mode === 'auto' ? 'Auto AI Cast' : 'KANNAN + YUNA') + (cfg.cameo ? ' + BUGGY' : '') + ' · ' + cfg.lang.toUpperCase() + ' · ' + cfg.script_mode.toUpperCase() + '</div>' +
     '<div class="kv"><b>Motion</b>' + cfg.mode.toUpperCase() + ' (' + cfg.dim.toUpperCase() + ')</div>' +
     '<div class="kv"><b>Format</b>' + cfg.tgt.toUpperCase() + ' · ' + cfg.dur + 's</div>' +
     '<div class="kv"><b>Color &amp; FX</b>' + cfg.grade.toUpperCase() + ' · HYBRID</div>';
@@ -231,12 +253,17 @@ function setTgt(t){ cfg.tgt = t; buzz(); saveCfg(); }
 function setDim(d){ cfg.dim = d; buzz(); saveCfg(); }
 function setGrade(g){ cfg.grade = g; buzz(); saveCfg(); }
 function setDur(d){ cfg.dur = d; buzz(); saveCfg(); }
+function setLang(l){ cfg.lang = l; buzz(); saveCfg(); }
+function setScriptMode(s){ cfg.script_mode = s; buzz(); saveCfg(); }
+function setCastMode(m){ cfg.cast_mode = m; buzz(); saveCfg(); }
+function setTod(t){ cfg.tod = t; buzz(); saveCfg(); }
 function fill(s){ buzz(); document.getElementById('txt').value = s; countWords(); }
 function surprise(){
   const list = [
-    "2026-ல் AI Coding கற்றுக்கொண்டால் சம்பளம் எப்படி உயரும்? 2 நண்பர்கள் பேச்சு",
-    "Smartphone Battery 2 மடங்கு நீடிக்க 3 Secret Settings",
-    "Online Scam-லிருந்து தப்பிக்க 3 Golden Rules — Tamil Awareness"
+    "Doctor vs Patient: சர்க்கரை பற்றிய பெரிய கட்டுக்கதை & உண்மை!",
+    "Boss vs Fresher: AI காலத்தில் வேலை தப்பிக்க 3 முக்கிய Skills!",
+    "UPI Payment நடுவுல நின்னா ஏன் ₹500 தானா திரும்ப வருது?",
+    "Tea Stall-ல 2 நண்பர்கள்: Smartphone Battery 2x நீடிக்க 3 Tricks!"
   ];
   fill(list[Math.floor(Math.random() * list.length)]);
 }
@@ -273,7 +300,7 @@ async function startRender(){
   try {
     const r = await fetch('/api/miniapp/render?pin=' + encodeURIComponent(PIN), {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ topic, target: cfg.tgt, dim: cfg.dim, cameo: cfg.cameo, mode: cfg.mode, fx_mode: "HYBRID", grade: cfg.grade, reel_sec: cfg.dur })
+      body: JSON.stringify({ topic, target: cfg.tgt, dim: cfg.dim, cameo: cfg.cameo, mode: cfg.mode, fx_mode: "HYBRID", grade: cfg.grade, reel_sec: cfg.dur, lang: cfg.lang, script_mode: cfg.script_mode, cast_mode: cfg.cast_mode, time_of_day: cfg.tod })
     });
     const d = await r.json();
     log.textContent = d.ok ? '> 🚀 Sent! Commit ' + d.sha + ' — Video will arrive in Telegram chat!' : '> ❌ ' + (d.error || 'Failed');
@@ -576,7 +603,8 @@ async function callGeminiFirst(env, messages, jsonMode = false) {
 async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false, opts = {}) {
   const bible = await loadCharBible(env);
   let scriptText = String(rawText || "").trim();
-  if (scriptText.length > 2500) {
+  const hasSpeakerLines = /(?:^|\n)\s*[A-Za-z0-9_ ]{2,18}\s*:/.test(scriptText);
+  if (scriptText.length > 2500 && !hasSpeakerLines && opts.script_mode !== "exact") {
     scriptText = await callAiPool(env, [
       { role: "system", content: "Condense this content into 3-5 punchy spoken scenes (max 200 words total) for 2-3 characters (KANNAN, YUNA, BUGGY) in the same language (Tamil/English). Output plain dialogue lines." },
       { role: "user", content: scriptText.slice(0, 12000) }
@@ -587,14 +615,15 @@ async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = 
     const dbM = await gh("/contents/memes_db.json?ref=main", env).then(x => x.json());
     memeNames = dbM.content ? JSON.parse(atob(dbM.content.replace(/\s+/g, ""))) : [];
   } catch (_) {}
-  const isHindi = /[\u0900-\u097F]/.test(scriptText) || /\bhindi\b/i.test(scriptText);
-  const isEngOnly = /\bin english\b/i.test(scriptText);
+  const isHindi = opts.lang === "hi" || /[\u0900-\u097F]/.test(scriptText) || /\bhindi\b/i.test(scriptText);
+  const isEngOnly = opts.lang === "en" || /\bin english\b/i.test(scriptText);
+  const isExactScript = opts.script_mode === "exact" || (opts.script_mode !== "expand" && (hasSpeakerLines || scriptText.length >= 260));
   const langRule = isHindi
     ? "Write natural conversational Hindi (Devanagari script) with spaced English tech nouns."
     : isEngOnly
     ? "Write crisp, punchy conversational English."
     : "Write natural spoken Tamil (தமிழ் எழுத்துக்கள்) mixed ONLY with spaced English tech nouns (UPI, API, Server). Keep grammar clean for Instagram Auto-Translate.";
-  if (scriptText.length < 400) {
+  if (!isExactScript) {
     const writerSys = `THINK LIKE AN OSCAR-CALIBER SHORT-FILM DIRECTOR & VIRAL REELS ARCHITECT. ${langRule}
 Even if the user gives a tiny 2-word input (e.g. "UPI scam", "Tea shop AI"), AUTOMATICALLY EXPAND IT into a vivid, cinematic 3-to-4-beat micro-film.
 
@@ -607,7 +636,8 @@ Output ONLY plain dialogue lines as SPEAKER: line.`;
     const draft = await callGeminiFirst(env, [{ role: "system", content: writerSys }, { role: "user", content: `Expand into a cinematic multi-character Reel script: ${scriptText}` }], false);
     if (draft && draft.length > 30) scriptText = draft;
   }
-  const sys = `You are the Master Screenplay & Technical Director for YUNA Cloud Video Studio (Remotion 4.0.250 + Edge-TTS + 5-Band Safe Grid).
+  const exactRule = isExactScript ? "CRITICAL EXACT-SCRIPT RULE: User supplied a finished script. DO NOT rewrite, paraphrase, shorten, or translate their spoken lines—keep their EXACT speaker names and EXACT spoken text verbatim, and ONLY attach visual direction (pose, prop, setting, time_of_day, metaphor, topics, metaphor_items, sfx)." : "";
+  const sys = `You are the Master Screenplay & Technical Director for YUNA Cloud Video Studio (Remotion 4.0.250 + Edge-TTS + 5-Band Safe Grid). ${exactRule}
 ${langRule}
 
 OUR ENGINE CAPABILITIES (USE THESE FULLY):
@@ -635,7 +665,7 @@ OUR ENGINE CAPABILITIES (USE THESE FULLY):
 Return ONLY valid JSON:
 - timeline: { fps: 30, total_sec: "auto", reel_sec: 40, mode: "cartoon"|"cinema"|"ui_ux"|"split_pip", grade: "none"|"cyber"|"warm"|"noir", fx_mode: "HYBRID", render_target: "${target}", use_manim: false, use_blender: false, scenes: [{ part: 1, start_sec: 0, end_sec: 14, setting: "village_street", time_of_day: "morning", location: "YUNA STUDIO", pose: "listen_ear", prop: "camera", char_pos: "around", metaphor: "card_rain", topics: ["K1","K2","K3"], metaphor_items: ["Item 1","Item 2","Item 3"], heading: "...", accent: "#38BDF8", bgTop: "#0F172A" }] }
 - characters: dict of 2-3 speakers with distinct voices.
-- dialogue: 8-10 strictly alternating punchy lines (TOTAL MAX 75 WORDS for Reel), each { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing"${memeNames.length ? `, meme: ""|${memeNames.map(m => `"${m}"`).join("|")}` : ""} }.`;
+- dialogue: ${isExactScript ? "ALL lines from the user exact script verbatim (DO NOT drop or rewrite)" : "8-10 strictly alternating punchy lines (TOTAL MAX 75 WORDS for Reel)"}, each { speaker, text, sfx: ""|"pop"|"whoosh"|"click"|"ding"|"boing"${memeNames.length ? `, meme: ""|${memeNames.map(m => `"${m}"`).join("|")}` : ""} }.`;
   const rawJson = await callGeminiFirst(env, [{ role: "system", content: sys }, { role: "user", content: scriptText.slice(0, 3500) }], true);
   const cleaned = rawJson.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
   const parsed = JSON.parse(cleaned);
@@ -655,11 +685,11 @@ Return ONLY valid JSON:
   if (opts.dim === "blender" || opts.dim === "5d") tl.use_blender = true;
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
-  tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; return { ...s, part: s.part || i + 1, start_sec: st, end_sec: en }; });
+  tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; return { ...s, part: s.part || i + 1, start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
   const parsedChars = (parsed.characters && typeof parsed.characters === "object") ? parsed.characters : {};
   const chars = {};
   const pKeys = Object.keys(parsedChars).slice(0, useCameo ? 2 : 3);
-  if (pKeys.length >= 2) {
+  if (opts.cast_mode !== "fixed" && pKeys.length >= 2) {
     for (const k of pKeys) {
       const c = parsedChars[k] || {};
       chars[k.toUpperCase().slice(0, 14)] = {
@@ -687,7 +717,9 @@ Return ONLY valid JSON:
     : isEngOnly
     ? ["en-IN-PrabhatNeural", "en-IN-NeerjaNeural", "en-US-AndrewNeural"]
     : ["ta-IN-ValluvarNeural", "ta-IN-PallaviNeural", "ta-SG-VenbaNeural"];
-  const dlg = dlgRaw.slice(0, 10).map((d, i) => {
+  const exactParsed = (isExactScript && hasSpeakerLines) ? scriptText.split(/\r?\n/).map(l => l.match(/^\s*([A-Za-z0-9_ ]{2,18})\s*:\s*(.+)$/)).filter(Boolean).map(m => ({ speaker: m[1].trim().toUpperCase().slice(0, 14), text: m[2].trim() })) : [];
+  const srcDlg = exactParsed.length >= 2 ? exactParsed.map((ep, i) => ({ ...(dlgRaw[i] || {}), speaker: ep.speaker, text: ep.text })) : dlgRaw;
+  const dlg = srcDlg.slice(0, isExactScript ? 24 : 10).map((d, i) => {
     const sp = castKeys.includes(d.speaker) ? d.speaker : castKeys[i % castKeys.length];
     const spIdx = Math.max(0, castKeys.indexOf(sp));
     return {
