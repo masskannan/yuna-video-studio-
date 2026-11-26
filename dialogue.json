@@ -1,52 +1,47 @@
 [
   {
     "speaker": "KANNAN",
-    "text": "வணக்கம்! ஆன்லைன் ஸ்கேம்-களில் எப்படிப் பாதுகாப்பாக இருக்கலாம்?",
+    "text": "Interviewer திடீர்னு Load Balancer, API, Transaction பத்தி கேட்டா என்ன பண்ணுவே?",
     "sfx": "pop"
   },
   {
     "speaker": "YUNA",
-    "text": "முதலாவது: எப்போதும் URL-ஐ சரிபார்க்கவும், https‑இல் lock icon இருக்க வேண்டும்.",
-    "sfx": "ding"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "அப்படியென்றால், இரண்டாவது ருல் என்ன?",
-    "sfx": "pop"
-  },
-  {
-    "speaker": "YUNA",
-    "text": "இரண்டாவது: தனிப்பட்ட தகவலை எப்போதும் பகிர வேண்டாம், OTP‑யை யாரும் கேட்கக் கூடாது.",
-    "sfx": "ding"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "மூன்றாவது ருல் என்ன, வேகமாக சொல்லுங்க!",
-    "sfx": "pop"
-  },
-  {
-    "speaker": "YUNA",
-    "text": "மூன்றாவது: சந்தேகமான லிங்க்-களை கிளிக் செய்யாதீர்கள், அவை மால்வேர் கொண்டிருக்கலாம்.",
-    "sfx": "ding"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "சரி, இவை எல்லாம் எப்படிப் பயிற்சி செய்யலாம்?",
-    "sfx": "pop"
-  },
-  {
-    "speaker": "YUNA",
-    "text": "பயிற்சி: பாதுகாப்பு அமைப்புகளை two‑factor authentication‑ஆல் வலுப்படுத்துங்கள்.",
-    "sfx": "ding"
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "நன்றி! இப்போது நம்மை பாதுகாப்பாக வைத்துக்கொள்வோம்!",
+    "text": "Load Balancer-ன்னா Trichy Bus Stand மாதிரி, Bay 1, Bay 2-ன்னு traffic-ஐ பிரிச்சு விடும்!",
     "sfx": "whoosh"
   },
   {
+    "speaker": "KANNAN",
+    "text": "Correct! It routes requests to the healthiest server, just like directing buses to free bays.",
+    "sfx": "click"
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "API-ன்னா ஹோட்டல் மெனு மாதிரி, Order-ஐ எடுத்து, Kitchen-க்கு அனுப்பும் interface!",
+    "sfx": "ding"
+  },
+  {
     "speaker": "YUNA",
-    "text": "நினைவில் கொள்: எப்போதும் சந்தேகம், சரிபார், பாதுகாப்பு!",
+    "text": "And the robot waiter brings back the response, fast and consistent.",
     "sfx": "pop"
+  },
+  {
+    "speaker": "YUNA",
+    "text": "Database Transaction-ன்னா ₹500 fee payment மாதிரி, All-or-Nothing guarantee.",
+    "sfx": "boing"
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "If any step fails, whole payment rolls back, no partial charge!",
+    "sfx": "click"
+  },
+  {
+    "speaker": "YUNA",
+    "text": "So interview-ல் இவைகளை சொல்லினால், எல்லாம் smooth sailing!",
+    "sfx": "ding"
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "Ready for the next query, teammates!",
+    "sfx": "whoosh"
   }
 ]

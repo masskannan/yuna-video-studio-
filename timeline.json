@@ -1,21 +1,58 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 30,
-  "mode": "cartoon",
+  "reel_sec": 55,
+  "mode": "cinema",
   "grade": "warm",
   "fx_mode": "HYBRID",
   "render_target": "reel",
-  "use_manim": true,
-  "use_blender": true,
+  "use_manim": false,
+  "use_blender": false,
   "scenes": [
     {
       "part": 1,
-      "heading": "Online Scam-லிருந்து தப்பிக்க 3 Golden Rules",
-      "accent": "#38BDF8",
-      "bgTop": "#0F172A",
       "start_sec": 0,
-      "end_sec": 15
+      "end_sec": 15,
+      "setting": "tea_shop",
+      "time_of_day": "morning",
+      "location": "ROCKFORT • TRICHY",
+      "pose": "listen_ear",
+      "prop": "camera",
+      "char_pos": "left",
+      "metaphor": "card_rain",
+      "heading": "Morning Query",
+      "accent": "#38BDF8",
+      "bgTop": "#0F172A"
+    },
+    {
+      "part": 2,
+      "start_sec": 15,
+      "end_sec": 40,
+      "setting": "village_street",
+      "time_of_day": "sunset",
+      "location": "ROCKFORT • TRICHY",
+      "pose": "wave",
+      "prop": "none",
+      "char_pos": "right",
+      "metaphor": "neon_topics",
+      "heading": "Sunset Explanation",
+      "accent": "#38BDF8",
+      "bgTop": "#0F172A"
+    },
+    {
+      "part": 3,
+      "start_sec": 40,
+      "end_sec": 55,
+      "setting": "village_street",
+      "time_of_day": "night",
+      "location": "ROCKFORT • TRICHY",
+      "pose": "arms_up",
+      "prop": "none",
+      "char_pos": "around",
+      "metaphor": "payment_stamp",
+      "heading": "Night Wrap",
+      "accent": "#38BDF8",
+      "bgTop": "#0F172A"
     }
   ]
 }
