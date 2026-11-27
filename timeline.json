@@ -1,9 +1,9 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 44,
+  "reel_sec": 41,
   "mode": "cartoon",
-  "grade": "warm",
+  "grade": "cyber",
   "fx_mode": "HYBRID",
   "render_target": "reel",
   "use_manim": false,
@@ -12,76 +12,76 @@
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 14,
-      "setting": "tea_shop",
+      "end_sec": 12,
+      "setting": "village_street",
       "time_of_day": "morning",
-      "location": "TEA STALL",
+      "location": "TECH HUB",
       "pose": "listen_ear",
       "prop": "camera",
-      "char_pos": "around",
+      "char_pos": "left",
       "metaphor": "card_rain",
       "topics": [
-        "AI Future",
-        "Tea Shop",
-        "Job Safety"
+        "AI JOB FEAR",
+        "LAYOFF TRUTH",
+        "2026 FUTURE"
       ],
       "metaphor_items": [
-        "Automation",
-        "Robot Maker",
-        "Human Touch"
+        "AI Hype",
+        "Job Fear",
+        "Layoffs"
       ],
-      "heading": "AI in Tea Shops",
+      "heading": "AI vs JOBS 2026",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 14,
+      "start_sec": 12,
       "end_sec": 28,
       "setting": "tea_shop",
       "time_of_day": "sunset",
-      "location": "TECH HUB",
+      "location": "TEA STALL",
       "pose": "wave",
-      "prop": "headband",
-      "char_pos": "left",
-      "metaphor": "bus_balancer",
+      "prop": "none",
+      "char_pos": "around",
+      "metaphor": "hotel_menu",
       "topics": [
-        "Server",
-        "API",
-        "Smart Work"
+        "SMART HUMANS",
+        "10 SEC WORK",
+        "CALCULATOR EFFECT"
       ],
       "metaphor_items": [
-        "YUNA EXPRESS",
-        "Fast API",
-        "Cloud Server"
+        "Smart Operators",
+        "Speed Upgrade",
+        "Calculators"
       ],
-      "heading": "Smart Integration",
+      "heading": "THE SMART SHIFT",
       "accent": "#F59E0B",
       "bgTop": "#1E1B4B"
     },
     {
       "part": 3,
       "start_sec": 28,
-      "end_sec": 44,
-      "setting": "village_street",
+      "end_sec": 41,
+      "setting": "house_room",
       "time_of_day": "night",
       "location": "YUNA STUDIO",
       "pose": "arms_up",
-      "prop": "none",
+      "prop": "headband",
       "char_pos": "right",
       "metaphor": "payment_stamp",
       "topics": [
-        "UPI",
-        "Digital Master",
-        "Assistant"
+        "PROMPT TOOLS",
+        "ADAPT OR EXIT",
+        "FUTURE READY"
       ],
       "metaphor_items": [
-        "Scan QR",
-        "VERIFIED ✓"
+        "PROMPT SKILLS",
+        "ADAPT TODAY"
       ],
-      "heading": "Digital Master",
+      "heading": "2026 SURVIVAL KEY",
       "accent": "#10B981",
-      "bgTop": "#064E3B"
+      "bgTop": "#022C22"
     }
   ]
 }

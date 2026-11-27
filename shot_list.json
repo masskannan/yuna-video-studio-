@@ -10,11 +10,11 @@
       "time_of_day": "morning",
       "camera": {
         "move": "punch_in",
-        "focus": "KUMAR"
+        "focus": "KANNAN"
       },
       "cast": [
         {
-          "name": "KUMAR",
+          "name": "KANNAN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -22,8 +22,8 @@
         }
       ],
       "line": {
-        "speaker": "KUMAR",
-        "text": "2026-ல இந்த AI வந்துட்டா நம்ம டீக்கடை வேலைக்கு என்ன ஆகுறது Boss?",
+        "speaker": "KANNAN",
+        "text": "2026-ல AI நம்ம JOB-அ தூக்கிடுமா Yuna? I am SCARED!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
@@ -39,11 +39,11 @@
       "time_of_day": "sunset",
       "camera": {
         "move": "punch_in",
-        "focus": "SHARMA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "SHARMA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -51,12 +51,12 @@
         }
       ],
       "line": {
-        "speaker": "SHARMA",
-        "text": "கவலைப்படாதப்பா, AI-க்கு டீ போடத் தெரியும், ஆனா கஸ்டமரோட பேச நீதான் வேணும்!",
+        "speaker": "YUNA",
+        "text": "Stop Kannan! AI உன் JOB-அ தூக்காது!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "ding",
+      "sfx": "whoosh",
       "notes": ""
     },
     {
@@ -68,11 +68,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "KUMAR"
+        "focus": "KANNAN"
       },
       "cast": [
         {
-          "name": "KUMAR",
+          "name": "KANNAN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -80,12 +80,12 @@
         }
       ],
       "line": {
-        "speaker": "KUMAR",
-        "text": "அப்போ நாமளும் அந்த AI-யோட சேர்ந்துதான் வேலை செய்யணுமா?",
+        "speaker": "KANNAN",
+        "text": "அப்புறம் ஏன் daily thousands of LAYOFFS நடக்குது?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "whoosh",
+      "sfx": "click",
       "notes": ""
     },
     {
@@ -97,11 +97,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "SHARMA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "SHARMA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -109,12 +109,12 @@
         }
       ],
       "line": {
-        "speaker": "SHARMA",
-        "text": "கரெக்ட்! AI ஒரு Server மாதிரி, நீ அதோட API-யை கரெக்டா யூஸ் பண்ணு!",
+        "speaker": "YUNA",
+        "text": "AI operate பண்ற SMART human உன்னை replace பண்றான்!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "click",
+      "sfx": "ding",
       "notes": ""
     },
     {
@@ -126,11 +126,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "KUMAR"
+        "focus": "KANNAN"
       },
       "cast": [
         {
-          "name": "KUMAR",
+          "name": "KANNAN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -138,12 +138,12 @@
         }
       ],
       "line": {
-        "speaker": "KUMAR",
-        "text": "சரி, அந்த AI-க்கிட்ட எப்படி ஆர்டர் வாங்குறதுனு சொல்லிக் கொடுங்க!",
+        "speaker": "KANNAN",
+        "text": "10 hours WORK... 10 SECONDS-ல முடியுமா?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "pop",
+      "sfx": "boing",
       "notes": ""
     },
     {
@@ -155,11 +155,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "SHARMA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "SHARMA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -167,12 +167,12 @@
         }
       ],
       "line": {
-        "speaker": "SHARMA",
-        "text": "அதுக்குத்தான் ஒரு UPI-மாடல்ல கிளாஸ் போகுதே, அங்க போய் கத்துக்கோ!",
+        "speaker": "YUNA",
+        "text": "Calculator வந்தப்போ Maths அழியல! SPEED தான் மாறுச்சு!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "ding",
+      "sfx": "pop",
       "notes": ""
     },
     {
@@ -184,11 +184,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "KUMAR"
+        "focus": "KANNAN"
       },
       "cast": [
         {
-          "name": "KUMAR",
+          "name": "KANNAN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -196,12 +196,12 @@
         }
       ],
       "line": {
-        "speaker": "KUMAR",
-        "text": "ஓஹோ! அப்ப இனிமே நம்மளும் டிஜிட்டல் டீ மாஸ்டர் ஆயிடலாமா?",
+        "speaker": "KANNAN",
+        "text": "அப்போ 2026-ல survive பண்ண Prompt tool தான் KEY-ஆ?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "boing",
+      "sfx": "ding",
       "notes": ""
     },
     {
@@ -213,11 +213,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "SHARMA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "SHARMA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -225,12 +225,41 @@
         }
       ],
       "line": {
-        "speaker": "SHARMA",
-        "text": "EXACTLY! AI-யை எதிர்க்காதே, அதை உன்னோட அசிஸ்டன்ட் ஆக்கிக்கோ!",
+        "speaker": "YUNA",
+        "text": "Exactly! Adapt ஆகலனா 2026-ல NO EXIT!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
       "sfx": "whoosh",
+      "notes": ""
+    },
+    {
+      "id": "008",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "house_room",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "KANNAN"
+      },
+      "cast": [
+        {
+          "name": "KANNAN",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": 1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "KANNAN",
+        "text": "அப்போ முதல்ல இருந்தே Prompt tool கத்துப்போம்!",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "pop",
       "notes": ""
     }
   ]
