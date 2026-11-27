@@ -194,6 +194,7 @@ jobs:
           which ffmpeg >/dev/null 2>&1 || ((sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends ffmpeg)
           mkdir -p final
           ls chunks/chunk-0* >/dev/null 2>&1 && python3 scripts/verify_merge.py || true
+          python3 scripts/cutaway_merge.py || true
           if [ -f chunks/chunk-reel/reel_9x16.mp4 ]; then VDUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 chunks/chunk-reel/reel_9x16.mp4); VDUR=${VDUR:-35}; ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af "apad=whole_dur=${VDUR}" -t "${VDUR}" -c:v copy -c:a aac -b:a 192k final/reel_9x16.mp4; fi
           cp chunks/master-audio/captions.srt final/captions.srt || true
       - name: Verify G01-G15 Gates & Social Pack
