@@ -410,6 +410,7 @@ async function runDirectorAndCommit(env, topic) {
     try {
       const gr = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
+        signal: AbortSignal.timeout(8000),
         headers: { "Authorization": `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
         body: JSON.stringify({ model, response_format: { type: "json_object" }, temperature: 0.2, messages: [{ role: "system", content: sys }, { role: "user", content: `Optimized Script:\n${cleanScript}` }] })
       });
@@ -460,7 +461,7 @@ async function runDirectorAndCommit(env, topic) {
   const treeRes = await (await gh("/git/trees", env, { method: "POST", body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: Object.entries(files).map(([path, content]) => ({ path, mode: "100644", type: "blob", content })) }) })).json();
   const newCommit = await (await gh("/git/commits", env, { method: "POST", body: JSON.stringify({ message: `feat(director): ${topic.slice(0, 50).replace(/\s+/g, " ")}`, tree: treeRes.sha, parents: [baseSha] }) })).json();
   const patchRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
-  return { ok: patchRes.ok, sha: (newCommit.sha || "").slice(0, 7) };
+  return { ok: patchRes.ok, status: patchRes.status, sha: (newCommit.sha || "").slice(0, 7) };
 }
 
 
@@ -590,7 +591,7 @@ async function callGeminiFirst(env, messages, jsonMode = false) {
         if (sysMsg) body.systemInstruction = { parts: [{ text: sysMsg }] };
         const gr = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${gm}:generateContent`, {
           method: "POST",
-          signal: AbortSignal.timeout(9000),
+          signal: AbortSignal.timeout(18000),
           headers: { "x-goog-api-key": env.GEMINI_API_KEY, "content-type": "application/json" },
           body: JSON.stringify(body)
         });
@@ -1208,7 +1209,7 @@ export default {
             if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Topic அல்லது Script-ஐச் சேர்த்து அனுப்புங்கள்!" }); return; }
             await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `⚡ <b>Target:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script-ஐத் தயார் செய்கிறது...` });
             const res = await runDirectorAndCommitV2(env, topic, target, useCameo);
-            await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: res.ok ? `🚀 <b>Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nLines: ${res.lines} | Target: <code>${escH(res.target)}</code>` : "❌ GitHub commit failed!" });
+            await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: res.ok ? `🚀 <b>Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nLines: ${res.lines} | Target: <code>${escH(res.target)}</code>` : `❌ GitHub commit failed! (HTTP ${res.status || "?"})` });
           } catch (err) {
             if (env.TG_CHAT_ID) await tgApi(env, "sendMessage", { chat_id: String(env.TG_CHAT_ID), text: `Director error: ${String(err).slice(0, 200)}` }).catch(() => {});
           }
