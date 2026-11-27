@@ -1,0 +1,70 @@
+{
+  "source_size": [
+    311,
+    424
+  ],
+  "cropped_size": [
+    310,
+    423
+  ],
+  "body_profile": {
+    "type": "chubby",
+    "width_ratio": 0.733,
+    "head_ratio": 0.201,
+    "torso_ratio": 0.248,
+    "leg_ratio": 0.551
+  },
+  "physics_adapt": {
+    "squash_bias": 1.22,
+    "arm_clearance_mult": 1.25,
+    "stride_px_mult": 1.35,
+    "cycle_hz_mult": 0.75
+  },
+  "anchors_norm": {
+    "neck_y": 0.201,
+    "hip_y": 0.449,
+    "torso_x": [
+      0.226,
+      0.777
+    ],
+    "shoulder_l": [
+      0.226,
+      0.231
+    ],
+    "shoulder_r": [
+      0.777,
+      0.231
+    ],
+    "mouth_box": [
+      0.38,
+      0.131,
+      0.24,
+      0.036
+    ],
+    "eye_box": [
+      0.3,
+      0.08,
+      0.4,
+      0.036
+    ],
+    "foot_center": [
+      0.5,
+      1.0
+    ]
+  },
+  "character_name": "arjun",
+  "angles": [
+    "front",
+    "three_quarter",
+    "side",
+    "back"
+  ],
+  "face_cuts": [
+    "face_neutral",
+    "face_happy",
+    "face_angry",
+    "face_surprised",
+    "face_blink",
+    "face_mouth"
+  ]
+}
