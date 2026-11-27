@@ -1,87 +1,88 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 41,
+  "reel_sec": 49,
   "mode": "cartoon",
-  "grade": "cyber",
+  "grade": "warm",
   "fx_mode": "HYBRID",
-  "render_target": "reel",
-  "use_manim": false,
-  "use_blender": false,
+  "render_target": "both",
+  "use_manim": true,
+  "use_blender": true,
   "scenes": [
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 14,
-      "setting": "village_street",
+      "end_sec": 12,
+      "setting": "tea_shop",
       "time_of_day": "morning",
-      "location": "YUNA STUDIO",
+      "location": "TECH HUB",
       "pose": "listen_ear",
       "prop": "camera",
-      "char_pos": "around",
+      "char_pos": "left",
       "metaphor": "card_rain",
       "topics": [
-        "AI Future",
-        "Job Shift",
-        "Tech 2026"
+        "SERVER CRASH",
+        "1000 LINES",
+        "BUG FIX"
       ],
       "metaphor_items": [
-        "Myth",
-        "Fear",
-        "Reality"
+        "Auto Fix",
+        "AI Agent",
+        "Zero Code"
       ],
-      "heading": "AI Job Shift",
+      "heading": "AI AGENTS IN 2026",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 14,
+      "start_sec": 12,
       "end_sec": 28,
-      "setting": "tea_shop",
+      "setting": "village_street",
       "time_of_day": "sunset",
-      "location": "TEA STALL",
+      "location": "YUNA STUDIO",
       "pose": "wave",
       "prop": "none",
-      "char_pos": "left",
+      "char_pos": "around",
       "metaphor": "bus_balancer",
       "topics": [
-        "Method Change",
-        "AI Pods",
-        "Workflow"
+        "C++ PYTHON",
+        "PROMPT TECH",
+        "SELF HEAL"
       ],
       "metaphor_items": [
-        "Driver",
-        "Fleet BOSS",
-        "Voice Command"
+        "Legacy Code",
+        "AI Agent",
+        "System Design"
       ],
-      "heading": "The New Method",
+      "heading": "OLD CODE VS NEW SKILLS",
       "accent": "#F59E0B",
       "bgTop": "#1E1B4B"
     },
     {
       "part": 3,
       "start_sec": 28,
-      "end_sec": 41,
+      "end_sec": 49,
       "setting": "house_room",
       "time_of_day": "night",
-      "location": "TECH HUB",
+      "location": "FUTURE HUB",
       "pose": "arms_up",
       "prop": "headband",
       "char_pos": "right",
       "metaphor": "payment_stamp",
       "topics": [
-        "Mastery",
-        "Success",
-        "KING"
+        "SYSTEM DESIGN",
+        "VISION",
+        "RECYCLE BIN"
       ],
       "metaphor_items": [
-        "No Fear",
-        "AI Power"
+        "Vision Defined",
+        "Autonomous AI",
+        "VERIFIED ✓"
       ],
-      "heading": "Be The King",
+      "heading": "FUTURE CODING AGENTS",
       "accent": "#10B981",
-      "bgTop": "#02231A"
+      "bgTop": "#022C22"
     }
   ]
 }

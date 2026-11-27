@@ -23,7 +23,7 @@
       ],
       "line": {
         "speaker": "KANNAN",
-        "text": "2026-ல இந்த AI என் வேலையை தூக்கிடுமா!?",
+        "text": "Machan! SERVER crash ஆயிடுச்சு, thousand lines CODE எப்படி fix பண்றது?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
@@ -39,11 +39,11 @@
       "time_of_day": "sunset",
       "camera": {
         "move": "punch_in",
-        "focus": "VARUN"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "VARUN",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -51,9 +51,9 @@
         }
       ],
       "line": {
-        "speaker": "VARUN",
-        "text": "பயப்படாதீங்க மாமா! AI உங்க வேலையை பறிக்காது!",
-        "voice": "ta-IN-PallaviNeural"
+        "speaker": "YUNA",
+        "text": "Relax Kannan! 2026-ல யாரும் manual-ஆ CODE எழுதறது இல்ல!",
+        "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
       "sfx": "pop",
@@ -81,11 +81,11 @@
       ],
       "line": {
         "speaker": "KANNAN",
-        "text": "அப்புறம் எதைத்தான் மாத்துது இந்த System?",
+        "text": "அப்புறம் எப்படி BUG clear ஆச்சு? You spent ZERO hours!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "click",
+      "sfx": "boing",
       "notes": ""
     },
     {
@@ -97,11 +97,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "VARUN"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "VARUN",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -109,9 +109,9 @@
         }
       ],
       "line": {
-        "speaker": "VARUN",
-        "text": "குதிரை வண்டி போயி கார் வந்த மாதிரி, வேலை செய்யுற METHOD மாறும்!",
-        "voice": "ta-IN-PallaviNeural"
+        "speaker": "YUNA",
+        "text": "Just one Autonomous AI AGENT! அதுவே self-heal பண்ணி DEPLOY பண்ணிடுச்சு!",
+        "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
       "sfx": "ding",
@@ -139,7 +139,7 @@
       ],
       "line": {
         "speaker": "KANNAN",
-        "text": "புரியுற மாதிரி சொல்லு! நாளைக்கு நான் என்ன பண்ணனும்?",
+        "text": "Wait! அப்போ 5 years படிச்ச C++ and PYTHON?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
@@ -155,11 +155,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "VARUN"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "VARUN",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -167,12 +167,12 @@
         }
       ],
       "line": {
-        "speaker": "VARUN",
-        "text": "ஸ்டீயரிங் பிடிக்காம, பத்து AI Pods-ஐ ஒரு Voice Command-ல இயக்குவீங்க!",
-        "voice": "ta-IN-PallaviNeural"
+        "speaker": "YUNA",
+        "text": "History! 2026-ல PROMPT engineering கூட OLD style!",
+        "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "pop",
+      "sfx": "click",
       "notes": ""
     },
     {
@@ -197,11 +197,11 @@
       ],
       "line": {
         "speaker": "KANNAN",
-        "text": "அப்போ ஓட்டுனர் இல்லை... நான் தான் Fleet BOSS-ஆ!?",
+        "text": "Then what is the NEW skill now?!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "boing",
+      "sfx": "whoosh",
       "notes": ""
     },
     {
@@ -213,11 +213,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "VARUN"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "VARUN",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -225,9 +225,9 @@
         }
       ],
       "line": {
-        "speaker": "VARUN",
-        "text": "EXACTLY! AI-ஐ சரியா பயன்படுத்துறவன் ஜெயிப்பான்!",
-        "voice": "ta-IN-PallaviNeural"
+        "speaker": "YUNA",
+        "text": "Just SYSTEM DESIGN and defining the VISION!",
+        "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
       "sfx": "ding",
@@ -255,7 +255,36 @@
       ],
       "line": {
         "speaker": "KANNAN",
-        "text": "அப்போ 2026-ல நாம பயப்பட தேவையில்லை... நாம தான் KING!",
+        "text": "Shit! அப்போ என் பழைய CODE எல்லாம்?",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "boing",
+      "notes": ""
+    },
+    {
+      "id": "009",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "village_street",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "YUNA"
+      },
+      "cast": [
+        {
+          "name": "YUNA",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": -1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "YUNA",
+        "text": "RECYCLE bin-ல போட்டு, NEW project start பண்ணு!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",

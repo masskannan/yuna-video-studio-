@@ -1,74 +1,82 @@
 [
   {
     "speaker": "KANNAN",
-    "text": "2026-ல இந்த AI என் வேலையை தூக்கிடுமா!?",
+    "text": "Machan! SERVER crash ஆயிடுச்சு, thousand lines CODE எப்படி fix பண்றது?",
     "sfx": "whoosh",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
     "meme": ""
   },
   {
-    "speaker": "VARUN",
-    "text": "பயப்படாதீங்க மாமா! AI உங்க வேலையை பறிக்காது!",
+    "speaker": "YUNA",
+    "text": "Relax Kannan! 2026-ல யாரும் manual-ஆ CODE எழுதறது இல்ல!",
     "sfx": "pop",
-    "voice": "ta-IN-PallaviNeural",
-    "pitch": 1.06,
-    "meme": ""
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "அப்புறம் எதைத்தான் மாத்துது இந்த System?",
-    "sfx": "click",
     "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.96,
-    "meme": ""
-  },
-  {
-    "speaker": "VARUN",
-    "text": "குதிரை வண்டி போயி கார் வந்த மாதிரி, வேலை செய்யுற METHOD மாறும்!",
-    "sfx": "ding",
-    "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
     "meme": ""
   },
   {
     "speaker": "KANNAN",
-    "text": "புரியுற மாதிரி சொல்லு! நாளைக்கு நான் என்ன பண்ணனும்?",
-    "sfx": "whoosh",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.96,
-    "meme": ""
-  },
-  {
-    "speaker": "VARUN",
-    "text": "ஸ்டீயரிங் பிடிக்காம, பத்து AI Pods-ஐ ஒரு Voice Command-ல இயக்குவீங்க!",
-    "sfx": "pop",
-    "voice": "ta-IN-PallaviNeural",
-    "pitch": 1.06,
-    "meme": ""
-  },
-  {
-    "speaker": "KANNAN",
-    "text": "அப்போ ஓட்டுனர் இல்லை... நான் தான் Fleet BOSS-ஆ!?",
+    "text": "அப்புறம் எப்படி BUG clear ஆச்சு? You spent ZERO hours!",
     "sfx": "boing",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
     "meme": ""
   },
   {
-    "speaker": "VARUN",
-    "text": "EXACTLY! AI-ஐ சரியா பயன்படுத்துறவன் ஜெயிப்பான்!",
+    "speaker": "YUNA",
+    "text": "Just one Autonomous AI AGENT! அதுவே self-heal பண்ணி DEPLOY பண்ணிடுச்சு!",
     "sfx": "ding",
-    "voice": "ta-IN-PallaviNeural",
+    "voice": "ta-IN-ValluvarNeural",
     "pitch": 1.06,
     "meme": ""
   },
   {
     "speaker": "KANNAN",
-    "text": "அப்போ 2026-ல நாம பயப்பட தேவையில்லை... நாம தான் KING!",
-    "sfx": "pop",
+    "text": "Wait! அப்போ 5 years படிச்ச C++ and PYTHON?",
+    "sfx": "whoosh",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "YUNA",
+    "text": "History! 2026-ல PROMPT engineering கூட OLD style!",
+    "sfx": "click",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 1.06,
+    "meme": ""
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "Then what is the NEW skill now?!",
+    "sfx": "whoosh",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "YUNA",
+    "text": "Just SYSTEM DESIGN and defining the VISION!",
+    "sfx": "ding",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 1.06,
+    "meme": ""
+  },
+  {
+    "speaker": "KANNAN",
+    "text": "Shit! அப்போ என் பழைய CODE எல்லாம்?",
+    "sfx": "boing",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "YUNA",
+    "text": "RECYCLE bin-ல போட்டு, NEW project start பண்ணு!",
+    "sfx": "pop",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 1.06,
     "meme": ""
   }
 ]

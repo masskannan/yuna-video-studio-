@@ -10,7 +10,7 @@
     "glasses": "none",
     "voice": "ta-IN-ValluvarNeural"
   },
-  "VARUN": {
+  "YUNA": {
     "type": "character",
     "body_color": "#D99B66",
     "dress_style": "casual",
@@ -19,6 +19,6 @@
     "hat": "none",
     "mustache": "none",
     "glasses": "none",
-    "voice": "ta-IN-KaniNeural"
+    "voice": "ta-IN-ValluvarNeural"
   }
 }
