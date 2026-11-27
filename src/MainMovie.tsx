@@ -98,8 +98,10 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         const isPunch = Boolean(activeWord?.word && (/[!?]$/.test(activeWord.word) || (activeWord.word.length >= 4 && activeWord.word === activeWord.word.toUpperCase())));
         const shakeX = isPunch ? Math.sin(frame * 1.9) * 4 : 0;
         const shakeY = isPunch ? Math.cos(frame * 2.3) * 3 : 0;
-        const zoom = interpolate(frame, [sc.startFrame, sc.endFrame], [1.04, 1.11], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + (isPunch ? 0.025 : 0);
-        const panX = interpolate(frame, [sc.startFrame, sc.endFrame], [idx % 2 === 0 ? -12 : 12, idx % 2 === 0 ? 12 : -12], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+        const spIdx = charEntries.findIndex(([cn]) => cn === activeSpeaker);
+        const spBias = spIdx === 0 ? (wide ? 28 : 18) : spIdx >= 1 ? (wide ? -28 : -18) : 0;
+        const zoom = interpolate(frame, [sc.startFrame, sc.endFrame], [1.06, 1.13], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) + (isPunch ? 0.025 : 0);
+        const panX = spBias + interpolate(frame, [sc.startFrame, sc.endFrame], [idx % 2 === 0 ? -8 : 8, idx % 2 === 0 ? 8 : -8], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
         const cloudX = (frame * 0.6 + idx * 120) % 1200 - 150;
         const rawSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === sc.part) || {};
         const stg = String(rawSc.setting || (sc as any).setting || (idx % 3 === 0 ? "village_street" : idx % 3 === 1 ? "tea_shop" : "house_room"));

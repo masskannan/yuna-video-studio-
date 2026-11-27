@@ -239,6 +239,15 @@ def main():
 
     for idx, ln in enumerate(lines):
         wpath, meta = process_line(ln)
+        trim_path = os.path.join(OUT_DIR, f"trim_{idx}.wav")
+        if subprocess.run(["ffmpeg", "-y", "-i", wpath, "-af", "areverse,silenceremove=start_periods=1:start_duration=0.08:start_threshold=-42dB,areverse", trim_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0 and os.path.exists(trim_path):
+            td = get_duration(trim_path)
+            if td > 0.25:
+                wpath = trim_path
+                meta["duration"] = td
+                for _w in meta["words"]:
+                    _w["end"] = min(_w["end"], td)
+                    _w["start"] = min(_w["start"], _w["end"])
         next_sp = lines[idx + 1]["speaker"] if idx + 1 < len(lines) else None
         if next_sp and next_sp != ln["speaker"]:
             pad_path = os.path.join(OUT_DIR, f"pad_{idx}.wav")
