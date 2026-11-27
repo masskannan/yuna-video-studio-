@@ -45,7 +45,7 @@ export const Captions: React.FC = () => {
           {speakerName}
         </div>
       ) : null}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: isVertical ? 10 : 14, padding: "2px 6px", fontFamily: "'Space Grotesk', 'Noto Sans Tamil', sans-serif", fontWeight: 900, fontSize: isVertical ? 46 : 44, lineHeight: 1.25, textAlign: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: isVertical ? "8px 18px" : "8px 20px", padding: "2px 6px", fontFamily: "'Space Grotesk', 'Noto Sans Tamil', sans-serif", fontWeight: 900, fontSize: isVertical ? 46 : 44, lineHeight: 1.25, textAlign: "center" }}>
         {group.map((w, idx) => {
           const isActive = time >= w.start && time <= w.end + 0.05;
           const c = w.color || "#FDE047";
@@ -57,13 +57,13 @@ export const Captions: React.FC = () => {
               key={idx}
               style={{
                 color: isActive ? c : "#FFFFFF",
-                transform: isActive ? "scale(1.1)" : "scale(1)",
+                transform: isActive ? "scale(1.06)" : "scale(1)",
                 WebkitTextStroke: isVertical ? "2.4px #020617" : "2px #020617",
                 paintOrder: "stroke fill",
                 textShadow: isActive
                   ? `0 4px 0 #020617, 0 0 18px ${c}88, 0 8px 16px rgba(0,0,0,0.95)`
                   : "0 4px 0 #020617, 0 8px 16px rgba(0,0,0,0.95)",
-                paddingInline: 3,
+                paddingInline: 6,
                 letterSpacing: 0.3,
                 display: "inline-block",
               }}

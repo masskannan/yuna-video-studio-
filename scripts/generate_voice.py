@@ -27,6 +27,8 @@ def apply_glossary(text):
         if isinstance(glossary, dict):
             for k, v in glossary.items():
                 text = text.replace(str(k), str(v))
+    import re as _re
+    text = _re.sub(r'(\d+)-(la|ல|nu|னு|ku|கு|oda|ஓட)\b', r'\1 \2', text, flags=_re.IGNORECASE)
     return text.strip()
 
 def load_lines():

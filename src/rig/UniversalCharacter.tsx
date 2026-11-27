@@ -65,8 +65,9 @@ export const UniversalCharacter: React.FC<UniversalCharProps> = ({
   const bobY = isPair ? wave * 6 : (act?.slice_motion?.head?.bob_y || 0.015) * wave * 180 * amp;
   const shiftX = isPair ? lookDir * 28 : 0;
   const torsoTilt = isPair ? lookDir * 6 : (act?.slice_motion?.torso?.tilt_deg || 0) * (0.6 + 0.4 * wave) * amp;
-  const sx = 1 + ((act?.slice_motion?.torso?.squash_x || 1) - 1) * (preset.squash_mult || 1) * (adapt.squash_bias || 1);
-  const sy = 1 + ((act?.slice_motion?.torso?.stretch_y || 1) - 1) * (preset.squash_mult || 1);
+  const talkBounce = active && mouth !== "X" && mouth !== "M" ? 1.02 : 1.0;
+  const sx = (1 + ((act?.slice_motion?.torso?.squash_x || 1) - 1) * (preset.squash_mult || 1) * (adapt.squash_bias || 1)) * talkBounce;
+  const sy = (1 + ((act?.slice_motion?.torso?.stretch_y || 1) - 1) * (preset.squash_mult || 1)) * talkBounce;
   const surfaceY = (act?.surface_anchor?.y_offset || 0) * 260;
 
   let angle = "front";
@@ -74,44 +75,28 @@ export const UniversalCharacter: React.FC<UniversalCharProps> = ({
   else if (actKey.includes("back")) angle = "back";
   else if (isPair || (active && Math.abs(lookDir) > 0.5)) angle = "three_quarter";
 
-  const isBlink = frame % 105 >= 100;
-  const isTalking = active && mouth !== "X" && mouth !== "M";
-  const faceName = isBlink ? "face_blink" : isTalking ? "face_mouth" : "face_neutral";
   const basePath = `approved/chars/${key}`;
-  const boxH = 380;
+  const boxH = 460;
   const ratio = rig.body_profile?.width_ratio || 0.45;
   const boxW = Math.round(boxH * ratio);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: Math.max(180, boxW),
-        height: boxH,
-        transform: `translate(${shiftX}px, ${bobY + surfaceY}px) scaleX(${lookDir < 0 ? -1 : 1}) scale(${sx}, ${sy}) rotate(${torsoTilt}deg)`,
-        transformOrigin: "bottom center",
-        filter: active ? `drop-shadow(0 0 18px ${accent}66)` : "drop-shadow(0 8px 16px rgba(0,0,0,0.55))",
-      }}
-    >
-      <Img
-        src={staticFile(`${basePath}/${angle}.png`)}
-        style={{ width: "100%", height: "100%", objectFit: "contain", transform: `rotate(${headRot * 0.25}deg)` }}
-      />
+    <div style={{ position: "relative", width: Math.max(210, boxW), height: boxH, display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
+      <div style={{ position: "absolute", bottom: -8, width: "68%", height: 22, borderRadius: "50%", background: "radial-gradient(ellipse at center, rgba(2,6,23,0.72) 0%, transparent 72%)", pointerEvents: "none" }} />
       <div
         style={{
-          position: "absolute",
-          top: 6,
-          right: 6,
-          width: 48,
-          height: 48,
-          borderRadius: 999,
-          overflow: "hidden",
-          border: `2px solid ${accent}`,
-          backgroundColor: "rgba(15,23,42,0.75)",
-          opacity: active ? 0.95 : 0,
+          position: "relative",
+          width: "100%",
+          height: "100%",
+          transform: `translate(${shiftX}px, ${bobY + surfaceY}px) scaleX(${lookDir < 0 ? -1 : 1}) scale(${sx}, ${sy}) rotate(${torsoTilt}deg)`,
+          transformOrigin: "bottom center",
+          filter: active ? `drop-shadow(0 0 20px ${accent}77)` : "drop-shadow(0 10px 18px rgba(0,0,0,0.6))",
         }}
       >
-        <Img src={staticFile(`${basePath}/${faceName}.png`)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <Img
+          src={staticFile(`${basePath}/${angle}.png`)}
+          style={{ width: "100%", height: "100%", objectFit: "contain", transform: `rotate(${headRot * 0.25}deg)` }}
+        />
       </div>
     </div>
   );

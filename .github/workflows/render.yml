@@ -132,7 +132,7 @@ jobs:
           mkdir -p out
           OUT="out/chunk_${{ matrix.id }}.mp4"
           for attempt in 1 2 3; do
-            if npx remotion render src/index.ts MainMovie "$OUT" --frames=${{ matrix.range }} --muted --concurrency=2; then
+            if npx remotion render src/index.ts MainMovie "$OUT" --frames=${{ matrix.range }} --muted --concurrency=2 --gl=angle; then
               DUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$OUT" 2>/dev/null || ([ "$(wc -c < "$OUT")" -gt 50000 ] && echo "1.0" || echo "0"))
               if [ -n "$DUR" ] && awk "BEGIN {exit !($DUR > 0.5)}"; then exit 0; fi
             fi
@@ -174,7 +174,7 @@ jobs:
       - name: Render Reel 9x16
         run: |
           mkdir -p out
-          npx remotion render src/index.ts Reel9x16 out/reel_9x16.mp4 --muted --concurrency=2
+          npx remotion render src/index.ts Reel9x16 out/reel_9x16.mp4 --muted --concurrency=2 --gl=angle
       - uses: actions/upload-artifact@v4
         with:
           name: chunk-reel

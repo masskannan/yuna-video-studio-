@@ -119,7 +119,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
             </div>
           )}
         </>)}
-            <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice" style={{ opacity: ["village_street", "tea_shop", "house_room"].includes(stg) && (timeline.fx_mode || "SAFE") !== "SAFE" ? 0.38 : 1 }}>
+            <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice" style={{ display: ["village_street", "tea_shop", "house_room"].includes(stg) && (timeline.fx_mode || "SAFE") !== "SAFE" ? "none" : "block" }}>
               <defs>
                 <linearGradient id={`sky${idx}`} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={stg === "house_room" ? "#1E293B" : sky1} />
@@ -218,7 +218,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
                 return hasCustomRig ? (
                   <UniversalCharacter key={cname} name={cname} cfg={ccfg} mouth={activeSpeaker === cname && activeLip ? activeLip.mouth : "X"} frame={frame} active={activeSpeaker === cname} accent={active.accent} lookDir={cIdx === 0 ? 1 : -1} pose={rSc.pose} prop={rSc.prop} action={rSc.action || ""} />
                 ) : (
-                  <CharacterRig
+                  <div key={cname} style={{ transform: "scale(1.42)", transformOrigin: "bottom center" }}><CharacterRig
                     key={cname}
                     name={cname}
                     cfg={ccfg}
@@ -229,7 +229,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
                     lookDir={cIdx === 0 ? 1 : -1}
                     pose={rSc.pose || (cIdx === 0 ? (active.part % 2 === 1 ? "listen_ear" : "wave") : "hand_on_hip")}
                     prop={rSc.prop || (active.part === 2 ? "headband" : "camera")}
-                  />
+                  /></div>
                 );
               })}
             </div>
@@ -276,7 +276,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
       <OverlayLayer />
       <Captions />
       <SafeZoneGuide />
-          <FxLayer fxMode={(timeline.fx_mode as any) ?? "SAFE"} scenes={timeline.scenes} />
+          {frame >= 75 && <FxLayer fxMode={(timeline.fx_mode as any) ?? "SAFE"} scenes={timeline.scenes} />}
     </AbsoluteFill>
   );
 };
