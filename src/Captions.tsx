@@ -50,7 +50,9 @@ export const Captions: React.FC = () => {
           const isActive = time >= w.start && time <= w.end + 0.05;
           const c = w.color || "#FDE047";
           const m = w.word.match(/^(.+?)([.,!?;:]+)$/);
-          const core = m ? m[1] : w.word;
+          const DISPLAY_FIX: Record<string, string> = { "ஏ.ஐ": "AI", "ஏ.பி.ஐ": "API", "சி.டி.ஓ": "CTO", "யூ.பி.ஐ": "UPI", "ஜி.பீ.யூ": "GPU", "சி.பீ.யூ": "CPU" };
+          const rawCore = m ? m[1] : w.word;
+          const core = DISPLAY_FIX[rawCore] || rawCore;
           const punct = m ? m[2] : "";
           return (
             <span

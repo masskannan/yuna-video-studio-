@@ -209,8 +209,8 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         </div>
 
         {(mode === "cartoon" || mode === "cinema") && charEntries.length ? (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 48 : 195 }}>
-            {(timeline.fx_mode || "SAFE") === "SAFE" ? (<div style={{ padding: "12px 24px", borderRadius: 16, backgroundColor: "rgba(15, 23, 42, 0.78)", border: `1.5px solid ${active.accent}88`, fontSize: wide ? 36 : 38, fontWeight: 800, textAlign: "center", maxWidth: "92%", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>{active.heading}</div>) : null}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 145 : 275 }}>
+            {(timeline.fx_mode || "SAFE") === "SAFE" && frame >= 75 ? (<div style={{ padding: "12px 24px", borderRadius: 16, backgroundColor: "rgba(15, 23, 42, 0.78)", border: `1.5px solid ${active.accent}88`, fontSize: wide ? 36 : 38, fontWeight: 800, textAlign: "center", maxWidth: "92%", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>{active.heading}</div>) : null}
             <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "space-around", alignItems: "flex-end", paddingTop: 26 }}>
             {charEntries.map(([cname, ccfg], cIdx) => {
                 const rSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {};
@@ -276,7 +276,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
       <OverlayLayer />
       <Captions />
       <SafeZoneGuide />
-          {frame >= 75 && <FxLayer fxMode={(timeline.fx_mode as any) ?? "SAFE"} scenes={timeline.scenes} />}
+          {frame >= 135 && <FxLayer fxMode={(timeline.fx_mode as any) ?? "SAFE"} scenes={timeline.scenes} />}
     </AbsoluteFill>
   );
 };

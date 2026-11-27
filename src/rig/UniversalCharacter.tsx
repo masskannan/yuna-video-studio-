@@ -98,6 +98,7 @@ export const UniversalCharacter: React.FC<UniversalCharProps> = ({
           style={{ width: "100%", height: "100%", objectFit: "contain", transform: `rotate(${headRot * 0.25}deg)` }}
         />
       </div>
+      <div style={{ position: "absolute", bottom: -26, padding: "2px 12px", borderRadius: 999, backgroundColor: "rgba(15,23,42,0.88)", border: `1.5px solid ${active ? accent : "#475569"}`, color: active ? accent : "#CBD5E1", fontSize: 15, fontWeight: 800, letterSpacing: 0.8 }}>{name.toUpperCase()}</div>
     </div>
   );
 };

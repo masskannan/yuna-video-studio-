@@ -174,11 +174,15 @@ jobs:
       - name: Render Reel 9x16
         run: |
           mkdir -p out
+          npx remotion still src/index.ts MainMovie out/thumb_9x16.png --frame=15 --gl=angle || true
+          mkdir -p out
           npx remotion render src/index.ts Reel9x16 out/reel_9x16.mp4 --muted --concurrency=2 --gl=angle
       - uses: actions/upload-artifact@v4
         with:
           name: chunk-reel
-          path: out/reel_9x16.mp4
+          path: |
+            out/reel_9x16.mp4
+            out/thumb_9x16.png
           retention-days: 1
 
   merge-final:
@@ -198,6 +202,7 @@ jobs:
           python3 scripts/cutaway_merge.py || true
           if [ -f chunks/chunk-reel/reel_9x16.mp4 ]; then VDUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 chunks/chunk-reel/reel_9x16.mp4); VDUR=${VDUR:-35}; ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af "apad=whole_dur=${VDUR}" -t "${VDUR}" -c:v copy -c:a aac -b:a 192k final/reel_9x16.mp4; fi
           cp chunks/master-audio/captions.srt final/captions.srt || true
+          [ -f chunks/chunk-reel/thumb_9x16.png ] && cp chunks/chunk-reel/thumb_9x16.png final/thumb_9x16.png || true
       - name: Verify G01-G15 Gates & Social Pack
         run: git fetch --tags -q && python3 -m pip install -q pyyaml && python3 scripts/qa_check.py && (if [ -f final/final_master.mp4 ]; then python3 scripts/verify_g0_g15.py; fi) && (python3 scripts/social_pack.py || true)
       - name: Generate A/B Thumbnails (Pre-Send)
