@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "rig_layers": {
     "normalized_box": {
       "w": 1.0,
@@ -108,7 +108,7 @@
       "phase_offset": 0.1
     }
   },
-  "total_actions": 83,
+  "total_actions": 89,
   "actions": {
     "idle_breathe": {
       "category": "idle",
@@ -3027,6 +3027,110 @@
         "pose": "idle",
         "expression": "surprised"
       }
+    },
+    "pair_handshake": {
+      "category": "pair_interaction",
+      "loop_type": "hold_pose",
+      "meet_anchor": "hand_right",
+      "partner_anchor": "hand_right",
+      "partner_flip_x": true,
+      "meet_world_x": 0.5,
+      "meet_world_y_mode": "avg_shoulder_waist",
+      "arm_angle_deg": 55,
+      "bob_hz": 2.2,
+      "sfx_cue": "ding",
+      "rig_fallback": {
+        "pose": "wave",
+        "expression": "happy"
+      }
+    },
+    "pair_high_five": {
+      "category": "pair_interaction",
+      "loop_type": "one_shot",
+      "meet_anchor": "hand_right",
+      "partner_anchor": "hand_right",
+      "partner_flip_x": true,
+      "meet_world_x": 0.5,
+      "meet_world_y_mode": "head_top",
+      "arm_angle_deg": 135,
+      "sfx_cue": "pop",
+      "vfx_cue": "speed_lines",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "pair_fist_bump": {
+      "category": "pair_interaction",
+      "loop_type": "one_shot",
+      "meet_anchor": "hand_right",
+      "partner_anchor": "hand_right",
+      "partner_flip_x": true,
+      "meet_world_x": 0.5,
+      "meet_world_y_mode": "chest",
+      "arm_angle_deg": 80,
+      "sfx_cue": "pop",
+      "vfx_cue": "camera_shake",
+      "rig_fallback": {
+        "pose": "point_up",
+        "expression": "happy"
+      }
+    },
+    "pair_hug": {
+      "category": "pair_interaction",
+      "loop_type": "hold_pose",
+      "meet_anchor": "torso_center",
+      "partner_anchor": "torso_center",
+      "partner_flip_x": true,
+      "meet_world_x": 0.5,
+      "meet_world_y_mode": "chest",
+      "arm_angle_deg": 40,
+      "sfx_cue": "ding",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "pair_back_to_back_cool": {
+      "category": "pair_interaction",
+      "loop_type": "hold_pose",
+      "meet_anchor": "torso_back",
+      "partner_anchor": "torso_back",
+      "partner_flip_x": true,
+      "meet_world_x": 0.5,
+      "meet_world_y_mode": "chest",
+      "arm_angle_deg": 0,
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "hand_on_hip",
+        "expression": "neutral"
+      }
+    },
+    "pair_argue_face_to_face": {
+      "category": "pair_interaction",
+      "loop_type": "loop",
+      "meet_anchor": "head_front",
+      "partner_anchor": "head_front",
+      "partner_flip_x": true,
+      "meet_world_x": 0.5,
+      "meet_world_y_mode": "head_center",
+      "arm_angle_deg": 95,
+      "vfx_cue": "anger_vein",
+      "rig_fallback": {
+        "pose": "point_up",
+        "expression": "angry"
+      }
     }
+  },
+  "auto_rig_schema": {
+    "mode": "auto_dimensional_silhouette",
+    "supports_dynamic_aspect": true,
+    "parts": [
+      "head",
+      "torso",
+      "arm_l",
+      "arm_r",
+      "legs"
+    ]
   }
 }
