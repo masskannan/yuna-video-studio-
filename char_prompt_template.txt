@@ -1,0 +1,17 @@
+Create a 3D-ready Character Turnaround Reference Sheet in 16:9 horizontal layout on a pure solid white (#FFFFFF) background with soft even studio lighting (no cast shadows, no text labels, no grid lines, no watermarks).
+
+[CHARACTER DESCRIPTION: Paste your character idea here — any style, any species, any body shape, any outfit]
+
+Strict Layout Rules (must match exact 2-row arrangement with clear white gaps between each figure):
+- TOP ROW (4 Full-Body Orthographic Views, left-to-right, same height scale, full head-to-foot visible, arms in clean A-pose slightly away from torso, no overlapping):
+  1. Front View (0 deg)
+  2. 3/4 Side View (45 deg)
+  3. Side Profile View (90 deg facing right)
+  4. Back View (180 deg)
+- BOTTOM ROW (6 Front-Facing Face-Cut Close-Ups, left-to-right, consistent head angle):
+  1. Neutral
+  2. Happy Smile
+  3. Angry
+  4. Surprised
+  5. Eyes Closed (Blink)
+  6. Talking Mouth Open
