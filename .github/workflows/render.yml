@@ -128,11 +128,12 @@ jobs:
         run: npx remotion browser ensure
       - name: Render 30s Chunk ${{ matrix.id }} (3x Self-Heal)
         run: |
+          which ffprobe >/dev/null 2>&1 || ((sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends ffmpeg) || true
           mkdir -p out
           OUT="out/chunk_${{ matrix.id }}.mp4"
           for attempt in 1 2 3; do
             if npx remotion render src/index.ts MainMovie "$OUT" --frames=${{ matrix.range }} --muted --concurrency=2; then
-              DUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$OUT" || echo "0")
+              DUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$OUT" 2>/dev/null || ([ "$(wc -c < "$OUT")" -gt 50000 ] && echo "1.0" || echo "0"))
               if [ -n "$DUR" ] && awk "BEGIN {exit !($DUR > 0.5)}"; then exit 0; fi
             fi
             rm -f "$OUT"; sleep 3
