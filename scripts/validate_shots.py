@@ -19,15 +19,24 @@ def norm_look(v):
     except Exception:
         return 0
 
+def safe_loc(loc):
+    if loc in VALID_LOCATIONS and os.path.exists(f"public/approved/bg_{loc}.jpg"):
+        return loc, False
+    return "house_room", True
+
 def normalize_shot_list(data):
     if not isinstance(data, dict) or not isinstance(data.get("shots"), list) or not data["shots"]:
         raise ValueError("shot_list.json must be an object with non-empty 'shots' list")
     out_shots = []
+    fallbacks = 0
     for i, s in enumerate(data["shots"]):
         if not isinstance(s, dict):
             continue
         tool = str(s.get("tool", "remotion")).lower()
-        loc = str(s.get("location", "house_room"))
+        raw_loc = str(s.get("location", "house_room"))
+        loc, did_fb = safe_loc(raw_loc)
+        if did_fb and raw_loc != loc:
+            fallbacks += 1
         tod = str(s.get("time_of_day", "morning"))
         sfx = str(s.get("sfx", ""))
         cast_out = []
@@ -49,7 +58,7 @@ def normalize_shot_list(data):
             "duration_s": max(2, min(20, int(s.get("duration_s", 5) or 5))),
             "tool": tool if tool in VALID_TOOLS else "remotion",
             "fallback": "preset",
-            "location": loc if loc in VALID_LOCATIONS else "house_room",
+            "location": loc,
             "time_of_day": tod if tod in VALID_TOD else "morning",
             "camera": s.get("camera") if isinstance(s.get("camera"), dict) else {"move": "punch_in", "focus": "KANNAN"},
             "cast": cast_out,
@@ -62,7 +71,7 @@ def normalize_shot_list(data):
             "sfx": sfx if sfx in VALID_SFX else "",
             "notes": str(s.get("notes", ""))
         })
-    return {"version": "1.0", "shots": out_shots}
+    return {"version": "1.0", "shots": out_shots}, fallbacks
 
 if __name__ == "__main__":
     path = sys.argv[1] if len(sys.argv) > 1 else "shot_list.json"
@@ -70,7 +79,7 @@ if __name__ == "__main__":
         print("SHOT_LIST_SKIP: file not present (V2.3 compatible)")
         sys.exit(0)
     raw = json.load(open(path, encoding="utf-8"))
-    norm = normalize_shot_list(raw)
+    norm, fb = normalize_shot_list(raw)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(norm, f, ensure_ascii=False, indent=2)
-    print(f"SHOTS_VALIDATED_OK: {len(norm['shots'])} shots")
+    print(f"SHOTS_VALIDATED_OK: {len(norm['shots'])} shots (safe_fallbacks={fb})")

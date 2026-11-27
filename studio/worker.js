@@ -1207,9 +1207,12 @@ export default {
             else if (/^(\/\s*)?yt\b/i.test(txt)) target = "yt";
             const topic = txt.replace(/^(\/\s*)?(reel|cameo|yt|both|video|script)\s*/i, "").trim();
             if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Topic அல்லது Script-ஐச் சேர்த்து அனுப்புங்கள்!" }); return; }
-            await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `⚡ <b>Target:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script-ஐத் தயார் செய்கிறது...` });
+            const stMsg = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ chat_id: cid, parse_mode: "HTML", text: `🧠 <b>Brain:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script &amp; shots தயாராகிறது...` }) }).then(r => r.json()).catch(() => null);
             const res = await runDirectorAndCommitV2(env, topic, target, useCameo);
-            await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: res.ok ? `🚀 <b>Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nLines: ${res.lines} | Target: <code>${escH(res.target)}</code>` : `❌ GitHub commit failed! (HTTP ${res.status || "?"})` });
+            const finalTxt = res.ok ? `🧠 <b>Brain ✓</b> → 🎙 <b>Voice &amp; 🎨 Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nShots: ${res.lines} | Target: <code>${escH(res.target)}</code>` : `❌ GitHub commit failed! (HTTP ${res.status || "?"})`;
+            const mid = stMsg?.result?.message_id;
+            if (mid) await tgApi(env, "editMessageText", { chat_id: cid, message_id: mid, parse_mode: "HTML", text: finalTxt }).catch(() => tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: finalTxt }));
+            else await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: finalTxt });
           } catch (err) {
             if (env.TG_CHAT_ID) await tgApi(env, "sendMessage", { chat_id: String(env.TG_CHAT_ID), text: `Director error: ${String(err).slice(0, 200)}` }).catch(() => {});
           }
