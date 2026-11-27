@@ -4,7 +4,7 @@ import { CounterHook } from "./modes/CounterHook";
 import { SafeZoneGuide } from "./SafeZoneGuide";
 import { OverlayLayer } from "./OverlayLayer";
 import React from "react";
-import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig, Img, staticFile };
+import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig, Img, staticFile } from "remotion";
 import timelineRaw from "../timeline.json";
 import brandRaw from "../brand.json";
 import charsRaw from "../characters.json";
