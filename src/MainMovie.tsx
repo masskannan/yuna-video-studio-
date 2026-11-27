@@ -109,7 +109,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         const sky3 = tod === "night" ? "#312E81" : tod === "sunset" ? "#FDE047" : "#FEF3C7";
         return (
           <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX + shakeX}px, ${shakeY}px, 0)` }}>
-        {["village_street", "tea_shop", "house_room"].includes(stg) && fx_mode !== "SAFE" && (
+        {["village_street", "tea_shop", "house_room"].includes(stg) && fx_mode !== "SAFE" && (<>
           <Img src={staticFile(`approved/bg_${stg}.jpg`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.92 }} />
           <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 480, background: "linear-gradient(to top, rgba(2,6,23,0.82), transparent)", pointerEvents: "none" }} />
           {/* YUNA_KINETIC_HOOK */}
@@ -118,7 +118,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
               <div style={{ fontSize: 38, fontWeight: 900, color: "#FACC15", textShadow: "0 3px 12px rgba(0,0,0,0.9)", lineHeight: 1.2 }}>⚡ {String(timeline.title || sc.heading || "YUNA Studio").slice(0, 56)}</div>
             </div>
           )}
-        )}
+        </>)}
             <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice" style={{ opacity: ["village_street", "tea_shop", "house_room"].includes(stg) && fx_mode !== "SAFE" ? 0.38 : 1 }}>
               <defs>
                 <linearGradient id={`sky${idx}`} x1="0" y1="0" x2="0" y2="1">
