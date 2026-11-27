@@ -1,31 +1,31 @@
 [
   {
     "speaker": "KANNAN",
-    "text": "2026-ல AI நம்ம JOB-அ தூக்கிடுமா Yuna? I am SCARED!",
-    "sfx": "pop",
+    "text": "2026-ல இந்த AI என் வேலையை தூக்கிடுமா!?",
+    "sfx": "whoosh",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
     "meme": ""
   },
   {
-    "speaker": "YUNA",
-    "text": "Stop Kannan! AI உன் JOB-அ தூக்காது!",
-    "sfx": "whoosh",
+    "speaker": "VARUN",
+    "text": "பயப்படாதீங்க மாமா! AI உங்க வேலையை பறிக்காது!",
+    "sfx": "pop",
     "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
     "meme": ""
   },
   {
     "speaker": "KANNAN",
-    "text": "அப்புறம் ஏன் daily thousands of LAYOFFS நடக்குது?",
+    "text": "அப்புறம் எதைத்தான் மாத்துது இந்த System?",
     "sfx": "click",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
     "meme": ""
   },
   {
-    "speaker": "YUNA",
-    "text": "AI operate பண்ற SMART human உன்னை replace பண்றான்!",
+    "speaker": "VARUN",
+    "text": "குதிரை வண்டி போயி கார் வந்த மாதிரி, வேலை செய்யுற METHOD மாறும்!",
     "sfx": "ding",
     "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
@@ -33,15 +33,15 @@
   },
   {
     "speaker": "KANNAN",
-    "text": "10 hours WORK... 10 SECONDS-ல முடியுமா?",
-    "sfx": "boing",
+    "text": "புரியுற மாதிரி சொல்லு! நாளைக்கு நான் என்ன பண்ணனும்?",
+    "sfx": "whoosh",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
     "meme": ""
   },
   {
-    "speaker": "YUNA",
-    "text": "Calculator வந்தப்போ Maths அழியல! SPEED தான் மாறுச்சு!",
+    "speaker": "VARUN",
+    "text": "ஸ்டீயரிங் பிடிக்காம, பத்து AI Pods-ஐ ஒரு Voice Command-ல இயக்குவீங்க!",
     "sfx": "pop",
     "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
@@ -49,23 +49,23 @@
   },
   {
     "speaker": "KANNAN",
-    "text": "அப்போ 2026-ல survive பண்ண Prompt tool தான் KEY-ஆ?",
-    "sfx": "ding",
+    "text": "அப்போ ஓட்டுனர் இல்லை... நான் தான் Fleet BOSS-ஆ!?",
+    "sfx": "boing",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
     "meme": ""
   },
   {
-    "speaker": "YUNA",
-    "text": "Exactly! Adapt ஆகலனா 2026-ல NO EXIT!",
-    "sfx": "whoosh",
+    "speaker": "VARUN",
+    "text": "EXACTLY! AI-ஐ சரியா பயன்படுத்துறவன் ஜெயிப்பான்!",
+    "sfx": "ding",
     "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
     "meme": ""
   },
   {
     "speaker": "KANNAN",
-    "text": "அப்போ முதல்ல இருந்தே Prompt tool கத்துப்போம்!",
+    "text": "அப்போ 2026-ல நாம பயப்பட தேவையில்லை... நாம தான் KING!",
     "sfx": "pop",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,

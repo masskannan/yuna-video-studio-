@@ -12,50 +12,50 @@
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 12,
+      "end_sec": 14,
       "setting": "village_street",
       "time_of_day": "morning",
-      "location": "TECH HUB",
+      "location": "YUNA STUDIO",
       "pose": "listen_ear",
       "prop": "camera",
-      "char_pos": "left",
+      "char_pos": "around",
       "metaphor": "card_rain",
       "topics": [
-        "AI JOB FEAR",
-        "LAYOFF TRUTH",
-        "2026 FUTURE"
+        "AI Future",
+        "Job Shift",
+        "Tech 2026"
       ],
       "metaphor_items": [
-        "AI Hype",
-        "Job Fear",
-        "Layoffs"
+        "Myth",
+        "Fear",
+        "Reality"
       ],
-      "heading": "AI vs JOBS 2026",
+      "heading": "AI Job Shift",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 12,
+      "start_sec": 14,
       "end_sec": 28,
       "setting": "tea_shop",
       "time_of_day": "sunset",
       "location": "TEA STALL",
       "pose": "wave",
       "prop": "none",
-      "char_pos": "around",
-      "metaphor": "hotel_menu",
+      "char_pos": "left",
+      "metaphor": "bus_balancer",
       "topics": [
-        "SMART HUMANS",
-        "10 SEC WORK",
-        "CALCULATOR EFFECT"
+        "Method Change",
+        "AI Pods",
+        "Workflow"
       ],
       "metaphor_items": [
-        "Smart Operators",
-        "Speed Upgrade",
-        "Calculators"
+        "Driver",
+        "Fleet BOSS",
+        "Voice Command"
       ],
-      "heading": "THE SMART SHIFT",
+      "heading": "The New Method",
       "accent": "#F59E0B",
       "bgTop": "#1E1B4B"
     },
@@ -65,23 +65,23 @@
       "end_sec": 41,
       "setting": "house_room",
       "time_of_day": "night",
-      "location": "YUNA STUDIO",
+      "location": "TECH HUB",
       "pose": "arms_up",
       "prop": "headband",
       "char_pos": "right",
       "metaphor": "payment_stamp",
       "topics": [
-        "PROMPT TOOLS",
-        "ADAPT OR EXIT",
-        "FUTURE READY"
+        "Mastery",
+        "Success",
+        "KING"
       ],
       "metaphor_items": [
-        "PROMPT SKILLS",
-        "ADAPT TODAY"
+        "No Fear",
+        "AI Power"
       ],
-      "heading": "2026 SURVIVAL KEY",
+      "heading": "Be The King",
       "accent": "#10B981",
-      "bgTop": "#022C22"
+      "bgTop": "#02231A"
     }
   ]
 }
