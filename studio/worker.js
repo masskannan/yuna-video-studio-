@@ -892,6 +892,65 @@ export default {
             if (cb) {
               const cid = String(cb.message?.chat?.id || "");
               if (!env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return;
+              if (cb.data && (cb.data.startsWith("gpu_app:") || cb.data.startsWith("gpu_reg:") || cb.data.startsWith("gpu_skip:"))) {
+                const tgAns = async (txt) => fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/answerCallbackQuery`, {
+                  method: "POST", headers: { "content-type": "application/json" },
+                  body: JSON.stringify({ callback_query_id: cb.id, text: txt })
+                });
+                const tgLock = async (label) => fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/editMessageReplyMarkup`, {
+                  method: "POST", headers: { "content-type": "application/json" },
+                  body: JSON.stringify({ chat_id: cid, message_id: cb.message?.message_id, reply_markup: { inline_keyboard: [[{ text: label, callback_data: "noop" }]] } })
+                });
+                const [act, rawKey] = cb.data.split(":", 2);
+                const assetKey = (rawKey || "asset").replace(/[^a-zA-Z0-9_-]/g, "");
+                if (act === "gpu_skip") {
+                  await tgAns("Skipped ❌");
+                  await tgLock("❌ Skipped");
+                  return;
+                }
+                if (act === "gpu_reg") {
+                  await tgAns("Queued for next Kaggle GPU run 🔄");
+                  await tgLock("🔄 Queued for Regenerate");
+                  return;
+                }
+                if (act === "gpu_app") {
+                  await tgAns("Saving to GitHub Library...");
+                  const ghH = { "Authorization": `Bearer ${env.GITHUB_TOKEN}`, "Accept": "application/vnd.github+json", "User-Agent": "YUNA-Video-Studio" };
+                  const photos = cb.message?.photo || [];
+                  if (photos.length && env.GITHUB_TOKEN) {
+                    const fid = photos[photos.length - 1].file_id;
+                    const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${encodeURIComponent(fid)}`).then(r => r.json()).catch(() => null);
+                    if (gf?.ok && gf.result?.file_path) {
+                      const buf = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${gf.result.file_path}`).then(r => r.arrayBuffer());
+                      const bytes = new Uint8Array(buf);
+                      let bin = "";
+                      for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+                      const b64 = btoa(bin);
+                      const apPath = `assets/approved/${assetKey}.jpg`;
+                      const ex = await fetch(`https://api.github.com/repos/masskannan/yuna-video-studio-/contents/${apPath}`, { headers: ghH }).then(r => r.ok ? r.json() : null).catch(() => null);
+                      await fetch(`https://api.github.com/repos/masskannan/yuna-video-studio-/contents/${apPath}`, {
+                        method: "PUT", headers: { ...ghH, "content-type": "application/json" },
+                        body: JSON.stringify({ message: `feat(assets): approve GPU asset ${assetKey}`, content: b64, ...(ex?.sha ? { sha: ex.sha } : {}) })
+                      });
+                    }
+                  }
+                  if (env.GITHUB_TOKEN) {
+                    const mf = await fetch("https://api.github.com/repos/masskannan/yuna-video-studio-/contents/assets_manifest.json", { headers: ghH }).then(r => r.ok ? r.json() : null).catch(() => null);
+                    if (mf?.content) {
+                      const mObj = JSON.parse(atob(mf.content.replace(/\n/g, "")));
+                      mObj.approved_gpu_assets = mObj.approved_gpu_assets || {};
+                      mObj.approved_gpu_assets[assetKey] = { approved_at: new Date().toISOString(), status: "approved", msg_id: cb.message?.message_id || 0 };
+                      const mB64 = btoa(unescape(encodeURIComponent(JSON.stringify(mObj, null, 2) + "\n")));
+                      await fetch("https://api.github.com/repos/masskannan/yuna-video-studio-/contents/assets_manifest.json", {
+                        method: "PUT", headers: { ...ghH, "content-type": "application/json" },
+                        body: JSON.stringify({ message: `chore(manifest): approve ${assetKey}`, content: mB64, sha: mf.sha })
+                      });
+                    }
+                  }
+                  await tgLock(`✅ Approved: ${assetKey}`);
+                  return;
+                }
+              }
               if (cb.data === "approve") {
                 const r = await gh("/actions/runs?per_page=1", env);
                 const run = ((await r.json()).workflow_runs || [])[0];
