@@ -46,7 +46,7 @@ for wins, clip in [(manim_win, manim_clips[0] if manim_clips else None), (blende
         continue
     inputs += ["-stream_loop", "-1", "-i", clip]
     cond = "+".join([f"between(t,{a:.2f},{b:.2f})" for a, b in wins])
-    fchains.append(f"[{idx}:v]scale=-2:1120,setsar=1,format=yuv420p,pad=iw+16:ih+16:8:8:color=0x06B6D4,pad=iw+8:ih+8:4:4:color=0x0F172A[ov{idx}]")
+    fchains.append(f"[{idx}:v]scale=-2:1120,setsar=1,format=yuv420p,pad=iw+14:ih+14:7:7:color=0x06B6D4,pad=iw+16:ih+16:8:8:color=0x020617[ov{idx}]")
     fchains.append(f"{last_v}[ov{idx}]overlay=(W-w)/2:240:enable='{cond}'[v{idx}]")
     last_v = f"[v{idx}]"
     idx += 1

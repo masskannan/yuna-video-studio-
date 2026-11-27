@@ -110,6 +110,12 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         {["village_street", "tea_shop", "house_room"].includes(stg) && fx_mode !== "SAFE" && (
           <Img src={staticFile(`approved/bg_${stg}.jpg`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.92 }} />
           <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 480, background: "linear-gradient(to top, rgba(2,6,23,0.82), transparent)", pointerEvents: "none" }} />
+          {/* YUNA_KINETIC_HOOK */}
+          {idx === 0 && frame < 75 && fx_mode !== "SAFE" && (
+            <div style={{ position: "absolute", top: 155, left: 64, right: 64, zIndex: 35, padding: "18px 26px", borderRadius: 20, background: "rgba(15,23,42,0.84)", border: "2px solid rgba(56,189,248,0.7)", boxShadow: "0 14px 36px rgba(0,0,0,0.55)", textAlign: "center", opacity: frame > 60 ? Math.max(0, (75 - frame) / 15) : Math.min(1, frame / 8), transform: `scale(${frame < 10 ? 0.88 + (frame * 0.012) : 1})` }}>
+              <div style={{ fontSize: 38, fontWeight: 900, color: "#FACC15", textShadow: "0 3px 12px rgba(0,0,0,0.9)", lineHeight: 1.2 }}>⚡ {String(timeline.title || sc.heading || "YUNA Studio").slice(0, 56)}</div>
+            </div>
+          )}
         )}
             <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice" style={{ opacity: ["village_street", "tea_shop", "house_room"].includes(stg) && fx_mode !== "SAFE" ? 0.38 : 1 }}>
               <defs>

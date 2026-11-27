@@ -134,3 +134,22 @@ if fres.returncode != 0 and vcodec != "libx264":
     fcmd[fcmd.index("h264_nvenc")] = "libx264"
     subprocess.run(fcmd, check=True)
 print("FINAL_KAGGLE_HYBRID_OK:", os.path.exists(final_mp4), os.path.getsize(final_mp4))
+
+# 4. REMBG_CHAR_CUTOUT: Conditional Transparent PNG Cutouts for assets/raw_chars/*
+raw_chars_dir = Path("assets/raw_chars")
+if raw_chars_dir.exists():
+    raw_imgs = [p for p in raw_chars_dir.iterdir() if p.suffix.lower() in (".jpg", ".jpeg", ".png", ".webp")]
+    need_cut = [p for p in raw_imgs if not Path(f"public/approved/chars/{p.stem}.png").exists()]
+    if need_cut:
+        subprocess.run(["pip", "install", "-q", "rembg", "onnxruntime"], check=False)
+        try:
+            from rembg import remove, new_session
+            sess = new_session("isnet-anime")
+            out_c = Path("/kaggle/working/out_chars")
+            out_c.mkdir(parents=True, exist_ok=True)
+            for p in need_cut:
+                res_bytes = remove(p.read_bytes(), session=sess, alpha_matting=False, post_process_mask=True)
+                (out_c / f"{p.stem}.png").write_bytes(res_bytes)
+                print("REMBG_CUTOUT_OK:", p.stem)
+        except Exception as re_e:
+            print("REMBG_SKIP:", re_e)
