@@ -1,75 +1,87 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 40,
+  "reel_sec": 48,
   "mode": "cartoon",
   "grade": "warm",
   "fx_mode": "HYBRID",
-  "render_target": "both",
-  "use_manim": true,
-  "use_blender": true,
+  "render_target": "reel",
+  "use_manim": false,
+  "use_blender": false,
   "scenes": [
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 12,
+      "end_sec": 14,
       "setting": "village_street",
       "time_of_day": "morning",
-      "location": "TECH HUB",
+      "location": "YUNA STUDIO",
       "pose": "listen_ear",
       "prop": "camera",
       "char_pos": "around",
       "metaphor": "card_rain",
       "topics": [
-        "2026 Coding",
-        "Autonomous AI",
-        "Zero Code"
+        "Gemini Code",
+        "Bug Fix",
+        "Audio Sync"
       ],
-      "metaphor_items": [],
-      "heading": "2026 AI AGENTS!",
+      "metaphor_items": [
+        "Code Check",
+        "Error Spot",
+        "Fixing Bug"
+      ],
+      "heading": "GEMINI CODE AUDIT",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 12,
+      "start_sec": 14,
       "end_sec": 28,
       "setting": "tea_shop",
       "time_of_day": "sunset",
-      "location": "YUNA STUDIO",
+      "location": "TEA STALL",
       "pose": "wave",
       "prop": "none",
       "char_pos": "left",
-      "metaphor": "hotel_menu",
-      "topics": [],
-      "metaphor_items": [
-        "Auto Server Deploy",
-        "Dynamic API Scaling",
-        "CTO Automation"
+      "metaphor": "bus_balancer",
+      "topics": [
+        "16-Audit",
+        "Lip-Sync",
+        "3D Animation"
       ],
-      "heading": "AI RUNS COMPANY!",
-      "accent": "#F59E0B",
+      "metaphor_items": [
+        "Frame Rate",
+        "Voice Match",
+        "Character Move"
+      ],
+      "heading": "ANIMATION SYNC",
+      "accent": "#F43F5E",
       "bgTop": "#1E1B4B"
     },
     {
       "part": 3,
       "start_sec": 28,
-      "end_sec": 40,
+      "end_sec": 48,
       "setting": "house_room",
       "time_of_day": "night",
-      "location": "FUTURE HUB",
+      "location": "TECH HUB",
       "pose": "arms_up",
       "prop": "headband",
       "char_pos": "right",
       "metaphor": "payment_stamp",
-      "topics": [],
-      "metaphor_items": [
-        "UPI Salary Credited",
-        "Status: Just USER ✓"
+      "topics": [
+        "Studio Level",
+        "YUNA Studio",
+        "Pro Result"
       ],
-      "heading": "SYSTEM ACTIVE!",
+      "metaphor_items": [
+        "Verified",
+        "Ready"
+      ],
+      "heading": "STUDIO LEVEL",
       "accent": "#10B981",
-      "bgTop": "#020617"
+      "bgTop": "#022C22"
     }
   ]
 }

@@ -23,11 +23,11 @@
       ],
       "line": {
         "speaker": "ARJUN",
-        "text": "2026-la Code எழுத வேண்டாம்-னு சொன்னப்போ... சிரிச்சேன்!",
+        "text": "ஜெமினி, நீ கோடு கரெக்டா எழுதி இருக்கியா? நீ பண்ணதுல தப்பு இருக்கு!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "boing",
+      "sfx": "whoosh",
       "notes": ""
     },
     {
@@ -39,11 +39,11 @@
       "time_of_day": "sunset",
       "camera": {
         "move": "punch_in",
-        "focus": "MAYA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "MAYA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -51,8 +51,8 @@
         }
       ],
       "line": {
-        "speaker": "MAYA",
-        "text": "ஆனா உன்னோட Autonomous Agent... இப்போ Company-யே Run பண்ணுது!",
+        "speaker": "YUNA",
+        "text": "தப்பு பண்ணிட்டேன் பாஸ், மன்னிச்சுக்கோங்க! இப்போ மறுபடியும் கரெக்டா பண்ணிடறேன்.",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
@@ -81,11 +81,11 @@
       ],
       "line": {
         "speaker": "ARJUN",
-        "text": "நிஜமாவா? வெறும் Prompt குடுத்தா... Server Deploy ஆகிடுமா?",
+        "text": "சும்மா சொல்லாத! முன்னாடி ஆடியோவும் வீடியோவும் வேற வேறயா ஓடுச்சு.",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "whoosh",
+      "sfx": "click",
       "notes": ""
     },
     {
@@ -97,11 +97,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "MAYA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "MAYA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -109,8 +109,8 @@
         }
       ],
       "line": {
-        "speaker": "MAYA",
-        "text": "Deploy மட்டும் இல்ல! Traffic பார்த்தும் Automatic API Scale பண்ணிடுச்சு!",
+        "speaker": "YUNA",
+        "text": "இப்போ அப்படி இல்ல பாஸ்! 16-க்கு 16 ஆடிட் போட்டு எல்லா பிழையையும் தூக்கிட்டேன்.",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
@@ -139,11 +139,11 @@
       ],
       "line": {
         "speaker": "ARJUN",
-        "text": "Wait! அப்போ என்னோட CTO Job?",
+        "text": "அப்போ என் அர்ஜுன் கேரக்டர் இப்போ கை அசைச்சு, வாய் அசைச்சுப் பேசுவானா?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "click",
+      "sfx": "whoosh",
       "notes": ""
     },
     {
@@ -155,11 +155,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "MAYA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "MAYA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -167,12 +167,12 @@
         }
       ],
       "line": {
-        "speaker": "MAYA",
-        "text": "AI உன்னை Terminate பண்ணல... உனக்கே Salary போட புது UPI Setup பண்ணிருக்கு!",
+        "speaker": "YUNA",
+        "text": "ஆமா பாஸ்! 5-Part 3D அசைவு, Lip-Sync, Speaker Zoom எல்லாம் உள்ளே ரெடி!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "ding",
+      "sfx": "pop",
       "notes": ""
     },
     {
@@ -197,11 +197,11 @@
       ],
       "line": {
         "speaker": "ARJUN",
-        "text": "மச்சான்... அப்போ இனி நான் என்ன பண்றது?",
+        "text": "சூப்பர்! இது உண்மையா இருந்தா இனி நம்ம ஸ்டுடியோ வேற லெவல்!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "whoosh",
+      "sfx": "ding",
       "notes": ""
     },
     {
@@ -213,11 +213,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "MAYA"
+        "focus": "YUNA"
       },
       "cast": [
         {
-          "name": "MAYA",
+          "name": "YUNA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -225,12 +225,12 @@
         }
       ],
       "line": {
-        "speaker": "MAYA",
-        "text": "தூங்கு! 2026-ல System இயக்குறது AI... நாம வெறும் USER!",
+        "speaker": "YUNA",
+        "text": "கண்டிப்பா பாஸ்! நீங்களும் சப்ஸ்கிரைப் பண்ணி நம்ம YUNA ஸ்டுடியோவைப் பாருங்க!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "pop",
+      "sfx": "boing",
       "notes": ""
     }
   ]
