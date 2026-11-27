@@ -1,0 +1,3032 @@
+{
+  "version": "2.0.0",
+  "rig_layers": {
+    "normalized_box": {
+      "w": 1.0,
+      "h": 1.0
+    },
+    "bands": {
+      "head": {
+        "y_min": 0.0,
+        "y_max": 0.32,
+        "pivot": [
+          0.5,
+          0.3
+        ]
+      },
+      "torso": {
+        "y_min": 0.32,
+        "y_max": 0.66,
+        "pivot": [
+          0.5,
+          0.64
+        ]
+      },
+      "legs": {
+        "y_min": 0.66,
+        "y_max": 1.0,
+        "pivot": [
+          0.5,
+          0.68
+        ]
+      }
+    },
+    "anchors": {
+      "mouth_box": [
+        0.43,
+        0.21,
+        0.14,
+        0.06
+      ],
+      "eye_box": [
+        0.38,
+        0.13,
+        0.24,
+        0.06
+      ],
+      "hand_left": [
+        0.22,
+        0.52
+      ],
+      "hand_right": [
+        0.78,
+        0.52
+      ],
+      "foot_center": [
+        0.5,
+        0.98
+      ]
+    }
+  },
+  "style_presets": {
+    "calm_boss": {
+      "speed_mult": 0.65,
+      "amp_mult": 0.7,
+      "squash_mult": 0.4,
+      "run_style": "realistic_stride",
+      "default_idle": "idle_arms_crossed",
+      "phase_offset": 0.0
+    },
+    "energetic_youth": {
+      "speed_mult": 1.25,
+      "amp_mult": 1.3,
+      "squash_mult": 1.25,
+      "run_style": "cartoon_wheel",
+      "default_idle": "idle_shift_weight",
+      "phase_offset": 0.15
+    },
+    "comedy_rubber": {
+      "speed_mult": 1.35,
+      "amp_mult": 1.5,
+      "squash_mult": 1.65,
+      "run_style": "cartoon_wheel",
+      "default_idle": "idle_tap_foot",
+      "phase_offset": 0.3
+    },
+    "tech_precise": {
+      "speed_mult": 1.0,
+      "amp_mult": 0.85,
+      "squash_mult": 0.6,
+      "run_style": "realistic_stride",
+      "default_idle": "idle_breathe",
+      "phase_offset": 0.05
+    },
+    "wise_elder": {
+      "speed_mult": 0.75,
+      "amp_mult": 0.75,
+      "squash_mult": 0.45,
+      "run_style": "realistic_stride",
+      "default_idle": "idle_hands_pocket",
+      "phase_offset": 0.2
+    },
+    "mass_hero": {
+      "speed_mult": 0.9,
+      "amp_mult": 1.2,
+      "squash_mult": 0.95,
+      "run_style": "realistic_stride",
+      "default_idle": "idle_arms_crossed",
+      "phase_offset": 0.1
+    }
+  },
+  "total_actions": 83,
+  "actions": {
+    "idle_breathe": {
+      "category": "idle",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 1,
+          "bob_y": 0.01
+        },
+        "torso": {
+          "tilt_deg": 0,
+          "squash_x": 1.01,
+          "stretch_y": 0.99
+        },
+        "legs": {
+          "mode": "stand"
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "idle_shift_weight": {
+      "category": "idle",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 3,
+          "bob_y": 0.01
+        },
+        "torso": {
+          "tilt_deg": 3,
+          "shift_x": 0.02
+        },
+        "legs": {
+          "mode": "shift"
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "idle_arms_crossed": {
+      "category": "idle",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -2,
+          "bob_y": 0.005
+        },
+        "torso": {
+          "tilt_deg": -2,
+          "squash_x": 1.02
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "hand_on_hip",
+        "expression": "neutral"
+      }
+    },
+    "idle_hands_pocket": {
+      "category": "idle",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 2,
+          "bob_y": 0.008
+        },
+        "torso": {
+          "tilt_deg": 2
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "idle_look_around": {
+      "category": "idle",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 10,
+          "bob_y": 0.01
+        },
+        "torso": {
+          "tilt_deg": 2
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "idle_tap_foot": {
+      "category": "idle",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 2,
+          "bob_y": 0.015
+        },
+        "torso": {
+          "tilt_deg": 0,
+          "squash_x": 1.0,
+          "stretch_y": 1.0,
+          "shift_x": 0.0
+        },
+        "legs": {
+          "mode": "tap",
+          "cycle_hz": 2.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "sit_chair_upright": {
+      "category": "surface",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "chair",
+        "y_offset": 0.18,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "chair",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 0,
+          "squash_x": 1.0,
+          "stretch_y": 1.0,
+          "shift_x": 0.0
+        },
+        "legs": {
+          "mode": "sit_tuck"
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "sit_chair_lean_back": {
+      "category": "surface",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "chair",
+        "y_offset": 0.2,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "chair",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": -10
+        },
+        "legs": {
+          "mode": "sit_tuck"
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "sit_chair_spin": {
+      "category": "surface",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "chair",
+        "y_offset": 0.18,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "chair",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 6,
+          "shift_x": 0.03
+        },
+        "legs": {
+          "mode": "sit_tuck"
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "sit_floor_crossed": {
+      "category": "surface",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.28,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 0,
+          "squash_x": 1.0,
+          "stretch_y": 1.0,
+          "shift_x": 0.0
+        },
+        "legs": {
+          "mode": "crossed"
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "sit_table_edge": {
+      "category": "surface",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "table_edge",
+        "y_offset": -0.12,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "table",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 0,
+          "squash_x": 1.0,
+          "stretch_y": 1.0,
+          "shift_x": 0.0
+        },
+        "legs": {
+          "mode": "dangle",
+          "cycle_hz": 1.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "lean_on_table": {
+      "category": "surface",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "table_top",
+        "y_offset": 0.05,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "table",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 14
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "climb_onto_table": {
+      "category": "surface",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "table_top",
+        "y_offset": -0.28,
+        "z_layer": "on_top"
+      },
+      "attach_prop": "table",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 12,
+          "stretch_y": 1.08
+        },
+        "legs": {
+          "mode": "climb",
+          "cycle_hz": 2.5
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "jump_off_table": {
+      "category": "surface",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": -0.18,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 8,
+          "stretch_y": 1.15
+        },
+        "legs": {
+          "mode": "tuck"
+        }
+      },
+      "vfx_cue": "dust_puff",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "table_slam_both_hands": {
+      "category": "surface",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "table_top",
+        "y_offset": 0.02,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "table",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -8,
+          "bob_y": 0.04
+        },
+        "torso": {
+          "tilt_deg": 18,
+          "squash_x": 1.12,
+          "stretch_y": 0.88
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "camera_shake",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "angry"
+      }
+    },
+    "walk_casual": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "realistic_stride",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 2,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 3
+        },
+        "legs": {
+          "mode": "stride",
+          "stride_amp": 0.35,
+          "cycle_hz": 1.8
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "walk_confident_strut": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "realistic_stride",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -3,
+          "bob_y": 0.03
+        },
+        "torso": {
+          "tilt_deg": -4,
+          "squash_x": 1.04
+        },
+        "legs": {
+          "mode": "stride",
+          "stride_amp": 0.45,
+          "cycle_hz": 2.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "hand_on_hip",
+        "expression": "neutral"
+      }
+    },
+    "walk_tiptoe_sneak": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "realistic_stride",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 6,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 14,
+          "stretch_y": 0.94
+        },
+        "legs": {
+          "mode": "tiptoe",
+          "stride_amp": 0.25,
+          "cycle_hz": 1.4
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "walk_heavy_tired": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "realistic_stride",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 10,
+          "bob_y": 0.03
+        },
+        "torso": {
+          "tilt_deg": 12,
+          "squash_x": 1.05,
+          "stretch_y": 0.92
+        },
+        "legs": {
+          "mode": "drag",
+          "stride_amp": 0.2,
+          "cycle_hz": 1.1
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "run_realistic_stride": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "realistic_stride",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 4,
+          "bob_y": 0.04
+        },
+        "torso": {
+          "tilt_deg": 14,
+          "stretch_y": 1.04
+        },
+        "legs": {
+          "mode": "stride",
+          "stride_amp": 0.75,
+          "cycle_hz": 3.5
+        }
+      },
+      "vfx_cue": "speed_lines",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "run_cartoon_wheel_legs": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "cartoon_wheel",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 5,
+          "bob_y": 0.03
+        },
+        "torso": {
+          "tilt_deg": 18,
+          "squash_x": 0.95,
+          "stretch_y": 1.06
+        },
+        "legs": {
+          "mode": "wheel_spin",
+          "stride_amp": 1.0,
+          "cycle_hz": 8.0
+        }
+      },
+      "vfx_cue": "speed_lines,dust_puff",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "run_sprint_lean_forward": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "realistic_stride",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 6,
+          "bob_y": 0.04
+        },
+        "torso": {
+          "tilt_deg": 24
+        },
+        "legs": {
+          "mode": "stride",
+          "stride_amp": 0.9,
+          "cycle_hz": 4.5
+        }
+      },
+      "vfx_cue": "speed_lines",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "cartoon_skid_stop": {
+      "category": "locomotion",
+      "loop_type": "one_shot",
+      "locomotion_style": "cartoon_wheel",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -10,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": -18,
+          "squash_x": 1.12,
+          "stretch_y": 0.9
+        },
+        "legs": {
+          "mode": "brake"
+        }
+      },
+      "vfx_cue": "dust_puff",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "moonwalk_slide": {
+      "category": "locomotion",
+      "loop_type": "loop",
+      "locomotion_style": "realistic_stride",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 5,
+          "bob_y": 0.015
+        },
+        "torso": {
+          "tilt_deg": -6
+        },
+        "legs": {
+          "mode": "slide",
+          "stride_amp": 0.4,
+          "cycle_hz": 2.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "jump_joy_hop": {
+      "category": "acrobatics",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "bob_y": -0.1
+        },
+        "torso": {
+          "squash_x": 0.92,
+          "stretch_y": 1.1
+        },
+        "legs": {
+          "mode": "hop",
+          "cycle_hz": 2.2
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "jump_high_leap": {
+      "category": "acrobatics",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "bob_y": -0.22
+        },
+        "torso": {
+          "squash_x": 0.88,
+          "stretch_y": 1.18
+        },
+        "legs": {
+          "mode": "tuck"
+        }
+      },
+      "vfx_cue": "dust_puff",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "neutral"
+      }
+    },
+    "jump_backflip": {
+      "category": "acrobatics",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -360,
+          "bob_y": -0.25
+        },
+        "torso": {
+          "tilt_deg": -360
+        },
+        "legs": {
+          "mode": "tuck"
+        }
+      },
+      "vfx_cue": "speed_lines",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "neutral"
+      }
+    },
+    "superhero_landing": {
+      "category": "acrobatics",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 8,
+          "bob_y": 0.08
+        },
+        "torso": {
+          "tilt_deg": 18,
+          "squash_x": 1.18,
+          "stretch_y": 0.82
+        },
+        "legs": {
+          "mode": "kneel"
+        }
+      },
+      "vfx_cue": "camera_shake,dust_puff",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "fall_slip_banana": {
+      "category": "acrobatics",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -35,
+          "bob_y": -0.12
+        },
+        "torso": {
+          "tilt_deg": -45
+        },
+        "legs": {
+          "mode": "kick_air"
+        }
+      },
+      "vfx_cue": "camera_shake",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "surprised"
+      }
+    },
+    "trip_stumble_recover": {
+      "category": "acrobatics",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 15,
+          "bob_y": 0.04
+        },
+        "torso": {
+          "tilt_deg": 22
+        },
+        "legs": {
+          "mode": "stumble"
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "surprised"
+      }
+    },
+    "float_levitate": {
+      "category": "acrobatics",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "bob_y": -0.14
+        },
+        "torso": {
+          "tilt_deg": 2
+        },
+        "legs": {
+          "mode": "hover"
+        }
+      },
+      "vfx_cue": "glow_aura",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "dance_kuthu_tamil": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 8,
+          "bob_y": 0.05
+        },
+        "torso": {
+          "tilt_deg": 10,
+          "squash_x": 1.08,
+          "stretch_y": 0.92
+        },
+        "legs": {
+          "mode": "kuthu_step",
+          "stride_amp": 0.55,
+          "cycle_hz": 3.0
+        }
+      },
+      "vfx_cue": "beat_pulse",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "dance_shoulder_bounce": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 4,
+          "bob_y": 0.03
+        },
+        "torso": {
+          "tilt_deg": 5,
+          "squash_x": 1.05,
+          "stretch_y": 0.95
+        },
+        "legs": {
+          "mode": "bounce",
+          "cycle_hz": 2.4
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "happy"
+      }
+    },
+    "dance_hiphop_grooves": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 10,
+          "bob_y": 0.04
+        },
+        "torso": {
+          "tilt_deg": 12,
+          "shift_x": 0.04
+        },
+        "legs": {
+          "mode": "groove",
+          "cycle_hz": 2.2
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "dance_robot_lock": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "step_cartoon"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 15
+        },
+        "torso": {
+          "tilt_deg": 8
+        },
+        "legs": {
+          "mode": "lock",
+          "cycle_hz": 2.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "dance_victory_shuffle": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -6,
+          "bob_y": 0.04
+        },
+        "torso": {
+          "tilt_deg": 6
+        },
+        "legs": {
+          "mode": "shuffle",
+          "stride_amp": 0.45,
+          "cycle_hz": 2.8
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "dance_salsa_spin": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 5,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 8,
+          "shift_x": 0.05
+        },
+        "legs": {
+          "mode": "spin",
+          "cycle_hz": 2.5
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "happy"
+      }
+    },
+    "dance_headbang_vibe": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 22,
+          "bob_y": 0.05
+        },
+        "torso": {
+          "tilt_deg": 8
+        },
+        "legs": {
+          "mode": "bounce",
+          "cycle_hz": 3.2
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "happy"
+      }
+    },
+    "dance_bhangra_hop": {
+      "category": "dance",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 6,
+          "bob_y": -0.06
+        },
+        "torso": {
+          "tilt_deg": 6,
+          "stretch_y": 1.06
+        },
+        "legs": {
+          "mode": "hop",
+          "cycle_hz": 2.6
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "talk_casual_gesture": {
+      "category": "talking",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 4,
+          "bob_y": 0.015
+        },
+        "torso": {
+          "tilt_deg": 3
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "happy"
+      }
+    },
+    "explain_point_board": {
+      "category": "talking",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -6,
+          "bob_y": 0.01
+        },
+        "torso": {
+          "tilt_deg": -4
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "point_up",
+        "expression": "neutral"
+      }
+    },
+    "explain_count_fingers": {
+      "category": "talking",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 3,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 2
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "point_up",
+        "expression": "neutral"
+      }
+    },
+    "explain_open_palms": {
+      "category": "talking",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 2,
+          "bob_y": 0.015
+        },
+        "torso": {
+          "squash_x": 1.04
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "neutral"
+      }
+    },
+    "shouting_megaphone_hands": {
+      "category": "talking",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -8,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": -6,
+          "squash_x": 1.08,
+          "stretch_y": 1.05
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "speed_lines",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "surprised"
+      }
+    },
+    "whisper_lean_in": {
+      "category": "talking",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 10,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 14,
+          "stretch_y": 1.04
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "listen_ear",
+        "expression": "neutral"
+      }
+    },
+    "mic_drop": {
+      "category": "talking",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "mic",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -5
+        },
+        "torso": {
+          "tilt_deg": -4
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "ding",
+      "rig_fallback": {
+        "pose": "hand_on_hip",
+        "expression": "happy"
+      }
+    },
+    "happy_fist_pump": {
+      "category": "reaction",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -5,
+          "bob_y": -0.04
+        },
+        "torso": {
+          "stretch_y": 1.08
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "ding",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "happy_clap_excited": {
+      "category": "reaction",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 4,
+          "bob_y": 0.03
+        },
+        "torso": {
+          "squash_x": 1.05,
+          "stretch_y": 0.96
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "laugh_hold_stomach": {
+      "category": "reaction",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -10,
+          "bob_y": 0.05
+        },
+        "torso": {
+          "tilt_deg": -8,
+          "squash_x": 1.08,
+          "stretch_y": 0.92
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "happy"
+      }
+    },
+    "shock_jaw_drop_pop": {
+      "category": "reaction",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -4,
+          "bob_y": -0.06
+        },
+        "torso": {
+          "squash_x": 0.9,
+          "stretch_y": 1.14
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "camera_shake",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "surprised"
+      }
+    },
+    "angry_steam_stomp": {
+      "category": "reaction",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 6,
+          "bob_y": 0.03
+        },
+        "torso": {
+          "tilt_deg": 8,
+          "squash_x": 1.08,
+          "stretch_y": 0.94
+        },
+        "legs": {
+          "mode": "stomp",
+          "cycle_hz": 3.0
+        }
+      },
+      "vfx_cue": "anger_vein,camera_shake",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "hand_on_hip",
+        "expression": "angry"
+      }
+    },
+    "sad_slump_sigh": {
+      "category": "reaction",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 14,
+          "bob_y": 0.04
+        },
+        "torso": {
+          "tilt_deg": 10,
+          "squash_x": 1.06,
+          "stretch_y": 0.9
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "confused_head_scratch": {
+      "category": "reaction",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 14,
+          "bob_y": 0.01
+        },
+        "torso": {
+          "tilt_deg": 4
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "question_mark",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "listen_ear",
+        "expression": "neutral"
+      }
+    },
+    "facepalm_disbelief": {
+      "category": "reaction",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 12,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 6
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "click",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "eye_roll_sarcastic": {
+      "category": "reaction",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -6
+        },
+        "torso": {
+          "tilt_deg": -3
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "hand_on_hip",
+        "expression": "neutral"
+      }
+    },
+    "mind_blown_recoil": {
+      "category": "reaction",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -15,
+          "bob_y": -0.05
+        },
+        "torso": {
+          "tilt_deg": -12,
+          "squash_x": 0.92,
+          "stretch_y": 1.12
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "speed_lines,camera_shake",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "surprised"
+      }
+    },
+    "squash_stretch_boing": {
+      "category": "cartoon_fx",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "squash_x": 1.25,
+          "stretch_y": 0.78
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "surprised"
+      }
+    },
+    "zip_dash_smear": {
+      "category": "cartoon_fx",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 28,
+          "squash_x": 1.3,
+          "stretch_y": 0.85
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "speed_lines,smear_blur",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "freeze_frame_pop": {
+      "category": "cartoon_fx",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 2,
+        "easing": "step_cartoon"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "squash_x": 1.08,
+          "stretch_y": 1.08
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "pop_outline",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "spin_tornado_blur": {
+      "category": "cartoon_fx",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "squash_x": 1.15,
+          "stretch_y": 1.05
+        },
+        "legs": {
+          "mode": "wheel_spin",
+          "cycle_hz": 12.0
+        }
+      },
+      "vfx_cue": "tornado_blur",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "peek_from_edge": {
+      "category": "cartoon_fx",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 18
+        },
+        "torso": {
+          "tilt_deg": 16,
+          "shift_x": -0.35
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "pop_up_from_bottom": {
+      "category": "cartoon_fx",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "bob_y": -0.15
+        },
+        "torso": {
+          "stretch_y": 1.12
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "type_laptop_fast": {
+      "category": "props",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "table_top",
+        "y_offset": 0.1,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "laptop",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 8,
+          "bob_y": 0.015
+        },
+        "torso": {
+          "tilt_deg": 8
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "click",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "scroll_phone_look": {
+      "category": "props",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "phone",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 12
+        },
+        "torso": {
+          "tilt_deg": 5
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "take_selfie_pose": {
+      "category": "props",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "camera",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -8
+        },
+        "torso": {
+          "tilt_deg": -5
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "click",
+      "rig_fallback": {
+        "pose": "wave",
+        "expression": "happy"
+      }
+    },
+    "drink_tea_cup": {
+      "category": "props",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "tea_cup",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -6,
+          "bob_y": 0.01
+        },
+        "torso": {
+          "tilt_deg": 0,
+          "squash_x": 1.0,
+          "stretch_y": 1.0,
+          "shift_x": 0.0
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "happy"
+      }
+    },
+    "read_book_nod": {
+      "category": "props",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "book",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 10,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 6
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "write_notes_fast": {
+      "category": "props",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "pen_pad",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 12,
+          "bob_y": 0.015
+        },
+        "torso": {
+          "tilt_deg": 10
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "hold_camera_shoot": {
+      "category": "props",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "camera",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 4
+        },
+        "torso": {
+          "tilt_deg": 0,
+          "squash_x": 1.0,
+          "stretch_y": 1.0,
+          "shift_x": 0.0
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "hand_on_hip",
+        "expression": "neutral"
+      }
+    },
+    "namaste_vanakkam": {
+      "category": "social",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 8,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 6
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "ding",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "happy"
+      }
+    },
+    "wave_hello_energetic": {
+      "category": "social",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -4,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": -4
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "wave",
+        "expression": "happy"
+      }
+    },
+    "thumbs_up_wink": {
+      "category": "social",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -5
+        },
+        "torso": {
+          "tilt_deg": -3
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "ding",
+      "rig_fallback": {
+        "pose": "wave",
+        "expression": "happy"
+      }
+    },
+    "salute_respect": {
+      "category": "social",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0
+        },
+        "torso": {
+          "stretch_y": 1.03
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "point_up",
+        "expression": "neutral"
+      }
+    },
+    "shrug_idk": {
+      "category": "social",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 10,
+          "bob_y": -0.02
+        },
+        "torso": {
+          "squash_x": 1.06,
+          "stretch_y": 0.96
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "neutral"
+      }
+    },
+    "finger_gun_cool": {
+      "category": "social",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -6
+        },
+        "torso": {
+          "tilt_deg": -5
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "pop",
+      "rig_fallback": {
+        "pose": "point_up",
+        "expression": "happy"
+      }
+    },
+    "punch_jab_quick": {
+      "category": "action",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 15,
+          "shift_x": 0.08
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "speed_lines",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "angry"
+      }
+    },
+    "karate_chop": {
+      "category": "action",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": 12,
+          "stretch_y": 1.05
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "speed_lines",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "angry"
+      }
+    },
+    "dodge_matrix_lean": {
+      "category": "action",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -25
+        },
+        "torso": {
+          "tilt_deg": -35
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "flex_muscles": {
+      "category": "action",
+      "loop_type": "hold_pose",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "squash_x": 1.14,
+          "stretch_y": 1.04
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "ding",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "happy"
+      }
+    },
+    "kick_high": {
+      "category": "action",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 0,
+          "bob_y": 0.0
+        },
+        "torso": {
+          "tilt_deg": -12
+        },
+        "legs": {
+          "mode": "high_kick"
+        }
+      },
+      "vfx_cue": "speed_lines",
+      "sfx_cue": "whoosh",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "yawn_stretch": {
+      "category": "low_energy",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -10,
+          "bob_y": -0.03
+        },
+        "torso": {
+          "stretch_y": 1.1
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "arms_up",
+        "expression": "neutral"
+      }
+    },
+    "sleep_desk_head_down": {
+      "category": "low_energy",
+      "loop_type": "loop",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "table_top",
+        "y_offset": 0.22,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "table",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": 25,
+          "bob_y": 0.02
+        },
+        "torso": {
+          "tilt_deg": 25
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "zzz_bubble",
+      "sfx_cue": "",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "neutral"
+      }
+    },
+    "faint_dramatic_drop": {
+      "category": "low_energy",
+      "loop_type": "one_shot",
+      "locomotion_style": "none",
+      "surface_anchor": {
+        "surface": "floor",
+        "y_offset": 0.0,
+        "z_layer": "in_front"
+      },
+      "attach_prop": "none",
+      "transition": {
+        "blend_frames": 8,
+        "easing": "spring"
+      },
+      "slice_motion": {
+        "head": {
+          "rot_deg": -45,
+          "bob_y": 0.35
+        },
+        "torso": {
+          "tilt_deg": -75
+        },
+        "legs": {
+          "mode": "stand",
+          "stride_amp": 0.0,
+          "cycle_hz": 0.0
+        }
+      },
+      "vfx_cue": "camera_shake",
+      "sfx_cue": "boing",
+      "rig_fallback": {
+        "pose": "idle",
+        "expression": "surprised"
+      }
+    }
+  }
+}
