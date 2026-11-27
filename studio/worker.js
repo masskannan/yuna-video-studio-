@@ -714,8 +714,9 @@ Return ONLY valid JSON:
   const rawJson = (p1Res.status === "fulfilled" && p1Res.value) ? p1Res.value : await callAiPool(env, [{ role: "system", content: sys }, { role: "user", content: usrSlice }], true);
   const a2Vis = (p2Res.status === "fulfilled" && p2Res.value) ? (p2Res.value.scenes_visual || []) : [];
   const a3Pkg = (p3Res.status === "fulfilled" && p3Res.value) ? p3Res.value : {};
-  const cleaned = rawJson.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
-  const parsed = JSON.parse(cleaned);
+  let parsed = safeParseAiJson(rawJson);
+  if (!parsed) { const fbRaw = await callAiPool(env, [{ role: "system", content: sysEff }, { role: "user", content: usrSlice }], true).catch(() => ""); parsed = safeParseAiJson(fbRaw); }
+  if (!parsed) throw new Error("AI_JSON_PARSE_FAILED");
   const tl = parsed.timeline || {};
   if (a3Pkg.title && !tl.title) tl.title = String(a3Pkg.title).slice(0, 90);
   if (Array.isArray(a3Pkg.hashtags) && a3Pkg.hashtags.length) tl.hashtags = a3Pkg.hashtags.slice(0, 6);
@@ -874,6 +875,15 @@ function buildShotList(dlgArr, rawShots) {
     };
   });
   return { version: "1.0", shots };
+}
+
+function safeParseAiJson(raw) {
+  if (!raw || typeof raw !== "string") return null;
+  const s = raw.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/i, "").trim();
+  try { return JSON.parse(s); } catch (_) {}
+  const m = s.match(/\{[\s\S]*\}/);
+  if (m) { try { return JSON.parse(m[0]); } catch (_) {} }
+  return null;
 }
 
 export default {
