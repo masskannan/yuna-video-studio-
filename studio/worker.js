@@ -1035,6 +1035,21 @@ export default {
             const cid = String(msg?.chat?.id || "");
             if (!cid || !env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return;
             let txt = String(msg?.text || msg?.caption || "").trim();
+            // WORKER_GPU_CMD
+            if (/^\/\s*gpu\b/i.test(txt) && env.TG_BOT_TOKEN) {
+              const ghH = { "Authorization": `Bearer ${env.GITHUB_TOKEN}`, "Accept": "application/vnd.github+json", "User-Agent": "YUNA-Video-Studio" };
+              const mfR = await fetch("https://api.github.com/repos/masskannan/yuna-video-studio-/contents/assets_manifest.json", { headers: ghH }).then(r => r.ok ? r.json() : null).catch(() => null);
+              let gMsg = "⚡ Kaggle 2x T4 GPU Studio: https://www.kaggle.com/code/masskannan/yuna-gpu-render";
+              if (mfR?.content) {
+                const mObj = JSON.parse(atob(mfR.content.replace(/\n/g, "")));
+                gMsg += `\n🎨 Approved Assets: ${Object.keys(mObj.approved_gpu_assets || {}).length} / ${(mObj.backgrounds || []).length}`;
+              }
+              await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`, {
+                method: "POST", headers: { "content-type": "application/json" },
+                body: JSON.stringify({ chat_id: cid, text: gMsg })
+              });
+              return;
+            }
             if (/^\/\s*addmeme\b/i.test(txt) && (msg?.voice || msg?.audio || msg?.document) && env.TG_BOT_TOKEN) {
               const mname = (txt.replace(/^\/\s*addmeme\s*/i, "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "_").slice(0, 24)) || ("meme_" + Date.now().toString().slice(-4));
               const fid = msg.voice?.file_id || msg.audio?.file_id || msg.document?.file_id;
