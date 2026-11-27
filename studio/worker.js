@@ -455,7 +455,7 @@ async function runDirectorAndCommit(env, topic) {
   const ref = await (await gh("/git/ref/heads/main", env)).json();
   const baseSha = ref.object.sha;
   const baseCommit = await (await gh(`/git/commits/${baseSha}`, env)).json();
-  const files = { "timeline.json": JSON.stringify(out.timeline, null, 2) + "\n", "characters.json": JSON.stringify(out.characters, null, 2) + "\n", "dialogue.json": JSON.stringify(out.dialogue, null, 2) + "\n" };
+  const files = { "timeline.json": JSON.stringify(out.timeline, null, 2) + "\n", "characters.json": JSON.stringify(out.characters, null, 2) + "\n", "dialogue.json": JSON.stringify(out.dialogue, null, 2) + "\n", "shot_list.json": JSON.stringify(buildShotList(out.dialogue, out.shots), null, 2) + "\n" };
   const treeRes = await (await gh("/git/trees", env, { method: "POST", body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: Object.entries(files).map(([path, content]) => ({ path, mode: "100644", type: "blob", content })) }) })).json();
   const newCommit = await (await gh("/git/commits", env, { method: "POST", body: JSON.stringify({ message: `feat(director): ${topic.slice(0, 50).replace(/\s+/g, " ")}`, tree: treeRes.sha, parents: [baseSha] }) })).json();
   const patchRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
@@ -803,7 +803,8 @@ Return ONLY valid JSON:
         tree: [
           { path: "timeline.json", mode: "100644", type: "blob", content: JSON.stringify(tl, null, 2) },
           { path: "characters.json", mode: "100644", type: "blob", content: JSON.stringify(chars, null, 2) },
-          { path: "dialogue.json", mode: "100644", type: "blob", content: JSON.stringify(dlg, null, 2) }
+          { path: "dialogue.json", mode: "100644", type: "blob", content: JSON.stringify(dlg, null, 2) },
+          { path: "shot_list.json", mode: "100644", type: "blob", content: JSON.stringify(buildShotList(dlg, null), null, 2) }
         ]
       })
     });
@@ -818,6 +819,61 @@ Return ONLY valid JSON:
     await new Promise(r => setTimeout(r, 400));
   }
   return { ok: upRes.ok, sha: String(ncData.sha || "").slice(0, 7), mode: tl.mode, grade: tl.grade, lines: dlg.length, target };
+}
+
+function buildShotList(dlgArr, rawShots) {
+  const TOOLS = new Set(["remotion", "manim", "blender"]);
+  const LOCS = new Set(["village_street", "tea_shop", "house_room"]);
+  const TODS = new Set(["morning", "sunset", "night"]);
+  const POSES = new Set(["idle", "hand_on_hip", "listen_ear", "wave", "arms_up", "point_up"]);
+  const PROPS = new Set(["none", "camera", "headband", "mic"]);
+  const EXPRS = new Set(["happy", "angry", "surprised", "neutral"]);
+  const SFXS = new Set(["", "pop", "whoosh", "click", "ding", "boing"]);
+  const normLook = (v) => {
+    if (typeof v === "number" && Number.isFinite(v)) return Math.max(-1, Math.min(1, v));
+    const s = String(v || "").trim().toLowerCase();
+    if (s === "left") return -1;
+    if (s === "right") return 1;
+    const n = Number(s);
+    return Number.isFinite(n) ? Math.max(-1, Math.min(1, n)) : 0;
+  };
+  const src = Array.isArray(rawShots) && rawShots.length ? rawShots : (Array.isArray(dlgArr) ? dlgArr : []);
+  const shots = src.map((item, i) => {
+    const d = (Array.isArray(dlgArr) && dlgArr[i]) ? dlgArr[i] : {};
+    const s = (item && typeof item === "object") ? item : {};
+    const tool = String(s.tool || "remotion").toLowerCase();
+    const loc = String(s.location || (i % 3 === 0 ? "village_street" : i % 3 === 1 ? "tea_shop" : "house_room"));
+    const tod = String(s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night"));
+    const sfx = String(s.sfx || d.sfx || "");
+    const spk = String(s.line?.speaker || d.speaker || "KANNAN");
+    const castIn = Array.isArray(s.cast) && s.cast.length ? s.cast : [{ name: spk, pose: "hand_on_hip", expression: "happy", lookDir: i % 2 === 0 ? 1 : -1, prop: "mic" }];
+    const cast = castIn.map((c) => ({
+      name: String(c?.name || spk),
+      pose: POSES.has(c?.pose) ? c.pose : "hand_on_hip",
+      expression: EXPRS.has(c?.expression) ? c.expression : "happy",
+      lookDir: normLook(c?.lookDir ?? 0),
+      prop: PROPS.has(c?.prop) ? c.prop : "none"
+    }));
+    return {
+      id: String(i).padStart(3, "0"),
+      duration_s: Math.max(2, Math.min(20, Number(s.duration_s) || 5)),
+      tool: TOOLS.has(tool) ? tool : "remotion",
+      fallback: "preset",
+      location: LOCS.has(loc) ? loc : "house_room",
+      time_of_day: TODS.has(tod) ? tod : "morning",
+      camera: (s.camera && typeof s.camera === "object") ? s.camera : { move: "punch_in", focus: spk },
+      cast,
+      line: {
+        speaker: spk,
+        text: String(s.line?.text || d.text || ""),
+        voice: String(s.line?.voice || d.voice || "ta-IN-ValluvarNeural")
+      },
+      widget: String(s.widget || "NeonTopicRow"),
+      sfx: SFXS.has(sfx) ? sfx : "",
+      notes: String(s.notes || "")
+    };
+  });
+  return { version: "1.0", shots };
 }
 
 export default {
