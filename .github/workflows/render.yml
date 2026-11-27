@@ -56,7 +56,7 @@ jobs:
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
-          sudo apt-get update && sudo apt-get install -y ffmpeg python3-pip
+          (sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends ffmpeg python3-pip
           pip3 install --quiet --break-system-packages edge-tts
           mkdir -p out_audio
           python3 scripts/generate_voice.py
@@ -79,7 +79,7 @@ jobs:
           path: ~/.cache/pip
           key: manim-pip-v1
       - name: Render Manim
-        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev libpango1.0-dev ffmpeg && pip install manim && mkdir -p out_pro && manim -ql scenes/manim_scene.py ProScene -o manim_clip.mp4 && cp media/videos/manim_scene/*/manim_clip.mp4 out_pro/ || true
+        run: (sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends libcairo2-dev libpango1.0-dev ffmpeg && pip install manim && mkdir -p out_pro && manim -ql scenes/manim_scene.py ProScene -o manim_clip.mp4 && cp media/videos/manim_scene/*/manim_clip.mp4 out_pro/ || true
       - uses: actions/upload-artifact@v4
         with:
           name: pro-manim-clip
@@ -91,7 +91,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Render Blender EEVEE
-        run: sudo apt-get update && sudo apt-get install -y blender xvfb && mkdir -p out_pro && xvfb-run -a blender --background --python scenes/blender_scene.py || true
+        run: (sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends blender xvfb && mkdir -p out_pro && xvfb-run -a blender --background --python scenes/blender_scene.py || true
       - uses: actions/upload-artifact@v4
         with:
           name: pro-blender-clip
@@ -170,6 +170,8 @@ jobs:
         run: "[ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund"
       - name: Ensure Remotion Browser
         run: npx remotion browser ensure
+      - name: Render Reel 9x16
+        run: |
           mkdir -p out
           npx remotion render src/index.ts Reel9x16 out/reel_9x16.mp4 --muted --concurrency=2
       - uses: actions/upload-artifact@v4
@@ -189,7 +191,7 @@ jobs:
           path: chunks
       - name: Quality Gate, Mux Audio & Build 480p Proxy
         run: |
-          which ffmpeg >/dev/null 2>&1 || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+          which ffmpeg >/dev/null 2>&1 || ((sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends ffmpeg)
           mkdir -p final
           ls chunks/chunk-0* >/dev/null 2>&1 && python3 scripts/verify_merge.py || true
           if [ -f chunks/chunk-reel/reel_9x16.mp4 ]; then VDUR=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 chunks/chunk-reel/reel_9x16.mp4); VDUR=${VDUR:-35}; ffmpeg -y -i chunks/chunk-reel/reel_9x16.mp4 -i chunks/master-audio/master_audio.mp3 -af "apad=whole_dur=${VDUR}" -t "${VDUR}" -c:v copy -c:a aac -b:a 192k final/reel_9x16.mp4; fi

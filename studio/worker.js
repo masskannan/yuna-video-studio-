@@ -457,7 +457,7 @@ async function runDirectorAndCommit(env, topic) {
   const ref = await (await gh("/git/ref/heads/main", env)).json();
   const baseSha = ref.object.sha;
   const baseCommit = await (await gh(`/git/commits/${baseSha}`, env)).json();
-  const files = { "timeline.json": JSON.stringify(out.timeline, null, 2) + "\n", "characters.json": JSON.stringify(out.characters, null, 2) + "\n", "dialogue.json": JSON.stringify(out.dialogue, null, 2) + "\n", "shot_list.json": JSON.stringify(buildShotList(out.dialogue, out.shots), null, 2) + "\n" };
+  const files = { "timeline.json": JSON.stringify(out.timeline, null, 2) + "\n", "characters.json": JSON.stringify(out.characters, null, 2) + "\n", "dialogue.json": JSON.stringify(out.dialogue, null, 2) + "\n", "shot_list.json": JSON.stringify(buildShotList(out.dialogue, out.shots, out.timeline), null, 2) + "\n" };
   const treeRes = await (await gh("/git/trees", env, { method: "POST", body: JSON.stringify({ base_tree: baseCommit.tree.sha, tree: Object.entries(files).map(([path, content]) => ({ path, mode: "100644", type: "blob", content })) }) })).json();
   const newCommit = await (await gh("/git/commits", env, { method: "POST", body: JSON.stringify({ message: `feat(director): ${topic.slice(0, 50).replace(/\s+/g, " ")}`, tree: treeRes.sha, parents: [baseSha] }) })).json();
   const patchRes = await gh("/git/refs/heads/main", env, { method: "PATCH", body: JSON.stringify({ sha: newCommit.sha }) });
@@ -825,7 +825,7 @@ Return ONLY valid JSON:
   return { ok: upRes.ok, sha: String(ncData.sha || "").slice(0, 7), mode: tl.mode, grade: tl.grade, lines: dlg.length, target };
 }
 
-function buildShotList(dlgArr, rawShots) {
+function buildShotList(dlgArr, rawShots, tl = null) {
   const TOOLS = new Set(["remotion", "manim", "blender"]);
   const LOCS = new Set(["village_street", "tea_shop", "house_room"]);
   const TODS = new Set(["morning", "sunset", "night"]);
@@ -845,7 +845,10 @@ function buildShotList(dlgArr, rawShots) {
   const shots = src.map((item, i) => {
     const d = (Array.isArray(dlgArr) && dlgArr[i]) ? dlgArr[i] : {};
     const s = (item && typeof item === "object") ? item : {};
-    const tool = String(s.tool || "remotion").toLowerCase();
+    let defTool = "remotion";
+    if (tl?.use_manim && i >= 2 && i <= 3) defTool = "manim";
+    else if (tl?.use_blender && i >= 4 && i <= 5) defTool = "blender";
+    const tool = String(s.tool || defTool).toLowerCase();
     const loc = String(s.location || (i % 3 === 0 ? "village_street" : i % 3 === 1 ? "tea_shop" : "house_room"));
     const tod = String(s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night"));
     const sfx = String(s.sfx || d.sfx || "");
@@ -1048,6 +1051,12 @@ export default {
             const cid = String(msg?.chat?.id || "");
             if (!cid || !env.TG_CHAT_ID || cid !== String(env.TG_CHAT_ID)) return;
             let txt = String(msg?.text || msg?.caption || "").trim();
+            // WORKER_MENU_CMD
+            if (/^\/\s*menu\b/i.test(txt) && env.TG_BOT_TOKEN) {
+              const mTxt = "🎬 <b>YUNA Studio Quick Menu</b>\n\n• <code>/reel &lt;topic&gt;</code> — Auto 9:16 Reel\n• <code>/mix &lt;topic&gt;</code> — All-in-One (Story + Tech + Manim + 3D)\n• <code>EXACT: &lt;lines&gt;</code> — Exact Script Mode\n\n<b>Combo Tags (2-3 கலக்க):</b>\n<code>/reel +story +math AI 2026</code>\n<code>/reel +story +tech +3d Future Jobs</code>\nTags: <code>+story</code> <code>+tech</code> <code>+math</code> <code>+3d</code> <code>+fast</code>\n\n<b>Tools:</b> <code>/gpu</code> • <code>/status</code> • <code>/cast</code> • <code>/memes</code> • <code>/cancel</code>";
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: mTxt });
+              return;
+            }
             // WORKER_GPU_CMD
             if (/^\/\s*gpu\b/i.test(txt) && env.TG_BOT_TOKEN) {
               const ghH = { "Authorization": `Bearer ${env.GITHUB_TOKEN}`, "Accept": "application/vnd.github+json", "User-Agent": "YUNA-Video-Studio" };
@@ -1205,10 +1214,22 @@ export default {
             const useCameo = /^(\/\s*)?cameo\b/i.test(txt);
             if (/^(\/\s*)?(reel|cameo)\b/i.test(txt)) target = "reel";
             else if (/^(\/\s*)?yt\b/i.test(txt)) target = "yt";
-            const topic = txt.replace(/^(\/\s*)?(reel|cameo|yt|both|video|script)\s*/i, "").trim();
+            const isMix = /^(\/\s*)?mix\b/i.test(txt);
+            if (isMix) target = "reel";
+            const tgOpts = {};
+            if (isMix) { tgOpts.dim = "5d"; tgOpts.mode = "ui_ux"; tgOpts.grade = "cyber"; }
+            if (/\+story\b/i.test(txt)) { tgOpts.mode = "cartoon"; tgOpts.grade = "warm"; }
+            if (/\+tech\b/i.test(txt)) { tgOpts.mode = "ui_ux"; tgOpts.grade = "cyber"; }
+            const hasMath = /\+math\b/i.test(txt);
+            const has3d = /\+3d\b/i.test(txt);
+            if (hasMath && has3d) tgOpts.dim = "5d";
+            else if (hasMath && !tgOpts.dim) tgOpts.dim = "manim";
+            else if (has3d && !tgOpts.dim) tgOpts.dim = "blender";
+            if (/\+fast\b/i.test(txt)) tgOpts.fx_mode = "SAFE";
+            const topic = txt.replace(/^(\/\s*)?(reel|mix|cameo|yt|both|video|script)\s*/i, "").replace(/\+(story|tech|math|3d|fast)\b/gi, "").replace(/\s+/g, " ").trim();
             if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Topic அல்லது Script-ஐச் சேர்த்து அனுப்புங்கள்!" }); return; }
             const stMsg = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ chat_id: cid, parse_mode: "HTML", text: `🧠 <b>Brain:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script &amp; shots தயாராகிறது...` }) }).then(r => r.json()).catch(() => null);
-            const res = await runDirectorAndCommitV2(env, topic, target, useCameo);
+            const res = await runDirectorAndCommitV2(env, topic, target, useCameo, tgOpts);
             const finalTxt = res.ok ? `🧠 <b>Brain ✓</b> → 🎙 <b>Voice &amp; 🎨 Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nShots: ${res.lines} | Target: <code>${escH(res.target)}</code>` : `❌ GitHub commit failed! (HTTP ${res.status || "?"})`;
             const mid = stMsg?.result?.message_id;
             if (mid) await tgApi(env, "editMessageText", { chat_id: cid, message_id: mid, parse_mode: "HTML", text: finalTxt }).catch(() => tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: finalTxt }));
