@@ -163,7 +163,7 @@ jobs:
             ~/.cache/remotion
           key: remotion-v2-${{ hashFiles('package.json') }}
       - run: |
-          sudo apt-get update && sudo apt-get install -y fonts-noto-core fonts-lohit-taml
+          (sudo apt-get update -qq || true) && (sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-core || sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-ui-core || true)
           [ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund
           npx remotion browser ensure
           mkdir -p out
@@ -194,7 +194,7 @@ jobs:
         run: git fetch --tags -q && python3 -m pip install -q pyyaml && python3 scripts/qa_check.py && (if [ -f final/final_master.mp4 ]; then python3 scripts/verify_g0_g15.py; fi) && (python3 scripts/social_pack.py || true)
       - name: Generate A/B Thumbnails (Pre-Send)
         run: |
-          sudo apt-get update && sudo apt-get install -y fonts-noto-core fonts-lohit-taml python3-pil libraqm0
+          (sudo apt-get update -qq || true) && (sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-core || sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-ui-core || true)
           python3 scripts/generate_thumbnails.py || true
       - name: Send 480p Proxy to Telegram (if configured)
         env:
