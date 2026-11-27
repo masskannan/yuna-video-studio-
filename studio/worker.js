@@ -739,6 +739,7 @@ Return ONLY valid JSON:
   if (opts.fx_mode && ["SAFE", "HYBRID", "PRO"].includes(opts.fx_mode)) tl.fx_mode = opts.fx_mode;
   if (opts.dim === "manim" || opts.dim === "5d") tl.use_manim = true;
   if (opts.dim === "blender" || opts.dim === "5d") tl.use_blender = true;
+  if (opts.tg_msg_id) tl.tg_msg_id = String(opts.tg_msg_id);
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
   tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; return { ...s, part: s.part || i + 1, start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
@@ -1258,6 +1259,7 @@ export default {
             const topic = txt.replace(/^(\/\s*)?(reel|mix|cameo|yt|both|video|script)\s*/i, "").replace(/\+(story|tech|math|3d|fast)\b/gi, "").replace(/\s+/g, " ").trim();
             if (!topic) { await tgApi(env, "sendMessage", { chat_id: cid, text: "Topic அல்லது Script-ஐச் சேர்த்து அனுப்புங்கள்!" }); return; }
             const stMsg = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ chat_id: cid, parse_mode: "HTML", text: `🧠 <b>Brain:</b> <code>${target.toUpperCase()}</code> | <b>FX:</b> <code>HYBRID</code>\nAI Director script &amp; shots தயாராகிறது...` }) }).then(r => r.json()).catch(() => null);
+            if (stMsg?.result?.message_id) tgOpts.tg_msg_id = stMsg.result.message_id;
             const res = await runDirectorAndCommitV2(env, topic, target, useCameo, tgOpts);
             const finalTxt = res.ok ? `🧠 <b>Brain ✓</b> → 🎙 <b>Voice &amp; 🎨 Render Queued!</b>\nCommit: <code>${escH(res.sha)}</code> | Mode: <code>${escH(res.mode)}</code> | Grade: <code>${escH(res.grade)}</code>\nShots: ${res.lines} | Target: <code>${escH(res.target)}</code>` : `❌ GitHub commit failed! (HTTP ${res.status || "?"})`;
             const mid = stMsg?.result?.message_id;

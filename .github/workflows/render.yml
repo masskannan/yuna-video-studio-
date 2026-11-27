@@ -59,7 +59,7 @@ jobs:
           (sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends ffmpeg python3-pip
           pip3 install --quiet --break-system-packages edge-tts
           mkdir -p out_audio
-          python3 scripts/generate_voice.py
+          python3 scripts/generate_voice.py && BOT="${{ secrets.TELEGRAM_BOT_TOKEN }}" CHAT="${{ secrets.TELEGRAM_CHAT_ID }}" python3 scripts/tg_progress.py "🧠 <b>Brain ✓</b> → 🎙 <b>Voice ✓</b> → 🎨 <b>Rendering 9:16...</b>" || true
           python3 scripts/plan_finalize.py
           ONLY_CHUNK="${{ github.event.inputs.only_chunk }}" python3 scripts/plan_chunks.py
       - uses: actions/upload-artifact@v4
@@ -229,6 +229,7 @@ jobs:
             [ -f final/reel_thumb.jpg ] && RTHM=(-F "thumbnail=@final/reel_thumb.jpg")
             curl -s -F "chat_id=$CHAT" -F "video=@final/reel_9x16.mp4" -F "duration=${RDUR:-35}" -F "width=1080" -F "height=1920" -F "supports_streaming=true" "${RTHM[@]}" -F "caption=YUNA 9:16 Reel Ready" -F 'reply_markup={"inline_keyboard":[[{"text":"✅ Approve & Tag","callback_data":"approve"}]]}' "https://api.telegram.org/bot${BOT}/sendVideo" > /dev/null || true
             [ -f final/social_tg.txt ] && curl -s -F "chat_id=$CHAT" -F "text=<final/social_tg.txt" "https://api.telegram.org/bot${BOT}/sendMessage" > /dev/null || true
+            python3 scripts/tg_progress.py "✅ <b>100% Ready!</b> 🧠 Brain ✓ • 🎙 Voice ✓ • 🎨 Render ✓ • 🎬 Video Delivered 👇" || true
           fi
       - uses: actions/upload-artifact@v4
         with:
