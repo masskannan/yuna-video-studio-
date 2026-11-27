@@ -1,0 +1,35 @@
+name: Character Sheet Auto-Ingest
+on:
+  push:
+    paths:
+      - 'assets/raw_chars/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  parse-chars:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Pillow & NumPy
+        run: pip install --quiet pillow numpy
+      - name: Parse Character Sheets
+        run: |
+          python3 - << 'PYEOF'
+          import glob, os, subprocess
+          for p in sorted(glob.glob("assets/raw_chars/*_sheet.*")):
+              base = os.path.basename(p)
+              cname = base.split("_sheet.")[0]
+              subprocess.run(["python3", "scripts/parse_char_sheet.py", p, cname], check=True)
+          PYEOF
+      - name: Commit Approved Character Rigs
+        run: |
+          git config user.name "yuna-bot"
+          git config user.email "yuna-bot@users.noreply.github.com"
+          git add public/approved/chars/
+          git diff --staged --quiet || (git commit -m "chore(chars): auto-parsed 4-angle + 6-face rig [skip ci]" && git push)

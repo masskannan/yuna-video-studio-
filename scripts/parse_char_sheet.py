@@ -86,9 +86,8 @@ def parse_sheet(sheet_path, char_name, out_root="public/approved/chars"):
     top_img = img.crop((0, top_y0, W, top_y1))
     col_blobs = find_blobs_1d(mask[top_y0:top_y1, :].sum(axis=0), min_size=max(10, int(W * 0.04)), merge_gap=max(6, int(W * 0.02)))
     angle_names = ["front", "three_quarter", "side", "back"]
-    if len(col_blobs) >= 4:
-        top4 = sorted(sorted(col_blobs, key=lambda b: b[1] - b[0], reverse=True)[:4], key=lambda b: b[0])
-        for name, (x0, x1) in zip(angle_names, top4):
+    if len(col_blobs) == 4:
+        for name, (x0, x1) in zip(angle_names, col_blobs):
             crop_tight(top_img.crop((x0, 0, x1, top_img.height))).save(os.path.join(out_dir, f"{name}.png"))
     else:
         step = W // 4
@@ -98,9 +97,8 @@ def parse_sheet(sheet_path, char_name, out_root="public/approved/chars"):
     bot_img = img.crop((0, bot_y0, W, bot_y1))
     face_blobs = find_blobs_1d(mask[bot_y0:bot_y1, :].sum(axis=0), min_size=max(8, int(W * 0.03)), merge_gap=max(4, int(W * 0.015)))
     face_names = ["face_neutral", "face_happy", "face_angry", "face_surprised", "face_blink", "face_mouth"]
-    if len(face_blobs) >= 6:
-        top6 = sorted(sorted(face_blobs, key=lambda b: b[1] - b[0], reverse=True)[:6], key=lambda b: b[0])
-        for name, (x0, x1) in zip(face_names, top6):
+    if len(face_blobs) == 6:
+        for name, (x0, x1) in zip(face_names, face_blobs):
             crop_tight(bot_img.crop((x0, 0, x1, bot_img.height))).save(os.path.join(out_dir, f"{name}.png"))
     else:
         step = W // 6

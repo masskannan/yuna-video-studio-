@@ -1053,7 +1053,7 @@ export default {
             let txt = String(msg?.text || msg?.caption || "").trim();
             // WORKER_MENU_CMD
             if (/^\/\s*menu\b/i.test(txt) && env.TG_BOT_TOKEN) {
-              const mTxt = "🎬 <b>YUNA Studio Quick Menu</b>\n\n• <code>/reel &lt;topic&gt;</code> — Auto 9:16 Reel\n• <code>/mix &lt;topic&gt;</code> — All-in-One (Story + Tech + Manim + 3D)\n• <code>EXACT: &lt;lines&gt;</code> — Exact Script Mode\n\n<b>Combo Tags (2-3 கலக்க):</b>\n<code>/reel +story +math AI 2026</code>\n<code>/reel +story +tech +3d Future Jobs</code>\nTags: <code>+story</code> <code>+tech</code> <code>+math</code> <code>+3d</code> <code>+fast</code>\n\n<b>Tools:</b> <code>/gpu</code> • <code>/status</code> • <code>/cast</code> • <code>/memes</code> • <code>/cancel</code>";
+              const mTxt = "🎬 <b>YUNA Studio Quick Menu</b>\n\n• <code>/reel &lt;topic&gt;</code> — Auto 9:16 Reel\n• <code>/mix &lt;topic&gt;</code> — All-in-One (Story + Tech + Manim + 3D)\n• <code>/charprompt [idea]</code> — 3D Character Chart Prompt\n• <code>/setchar &lt;name&gt;</code> + Photo — Save Character Sheet\n• <code>EXACT: &lt;lines&gt;</code> — Exact Script Mode\n\n<b>Combo Tags (2-3 கலக்க):</b>\n<code>/reel +story +math AI 2026</code>\n<code>/reel +story +tech +3d Future Jobs</code>\nTags: <code>+story</code> <code>+tech</code> <code>+math</code> <code>+3d</code> <code>+fast</code>\n\n<b>Tools:</b> <code>/gpu</code> • <code>/status</code> • <code>/cast</code> • <code>/memes</code> • <code>/cancel</code>";
               await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: mTxt });
               return;
             }
@@ -1070,6 +1070,35 @@ export default {
                 method: "POST", headers: { "content-type": "application/json" },
                 body: JSON.stringify({ chat_id: cid, text: gMsg })
               });
+              return;
+            }
+            // WORKER_CHARPROMPT_CMD
+            if (/^\/\s*charprompt\b/i.test(txt) && env.TG_BOT_TOKEN) {
+              const idea = txt.replace(/^\/\s*charprompt\s*/i, "").trim() || "Write your character look, outfit, and style here";
+              const promptTxt = `Create a 3D-ready Character Turnaround Reference Sheet in 16:9 horizontal layout on a pure solid white (#FFFFFF) background with soft even studio lighting (no cast shadows, no text labels, no grid lines, no watermarks).\n\n[CHARACTER DESCRIPTION: ${idea}]\n\nStrict Layout Rules (must match exact 2-row arrangement with clear white gaps between each figure):\n- TOP ROW (4 Full-Body Orthographic Views, left-to-right, same height scale, full head-to-foot visible, arms in clean A-pose slightly away from torso, no overlapping):\n  1. Front View (0 deg)\n  2. 3/4 Side View (45 deg)\n  3. Side Profile View (90 deg facing right)\n  4. Back View (180 deg)\n- BOTTOM ROW (6 Front-Facing Face-Cut Close-Ups, left-to-right, consistent head angle):\n  1. Neutral\n  2. Happy Smile\n  3. Angry\n  4. Surprised\n  5. Eyes Closed (Blink)\n  6. Talking Mouth Open`;
+              const reply = `🎨 <b>Tap below to copy Master 3D Character Prompt:</b>\n\n<pre>${escH(promptTxt)}</pre>\n\n📌 Gemini / ChatGPT-இல் இதை உருவாக்கி, வரும் படத்தை <code>/setchar &lt;name&gt;</code> என்ற தலைப்புடன் இங்கே அனுப்புங்கள்!`;
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: reply });
+              return;
+            }
+            // WORKER_SETCHAR_CMD
+            if (/^\/\s*setchar\b/i.test(txt) && ((Array.isArray(msg?.photo) && msg.photo.length) || msg?.document) && env.TG_BOT_TOKEN) {
+              const cname = (txt.replace(/^\/\s*setchar\s*/i, "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "_").slice(0, 24)) || ("char_" + Date.now().toString().slice(-4));
+              const fid = (Array.isArray(msg?.photo) && msg.photo.length) ? msg.photo[msg.photo.length - 1].file_id : msg.document?.file_id;
+              const gf = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/getFile?file_id=${fid}`).then(r => r.json());
+              const fp = gf?.result?.file_path || "";
+              if (fp) {
+                const ext = (fp.split(".").pop() || "png").toLowerCase();
+                const ab = await fetch(`https://api.telegram.org/file/bot${env.TG_BOT_TOKEN}/${fp}`).then(r => r.arrayBuffer());
+                const bytes = new Uint8Array(ab);
+                let bin = "";
+                for (let i = 0; i < bytes.length; i += 8192) {
+                  bin += String.fromCharCode(...bytes.subarray(i, i + 8192));
+                }
+                const path = `assets/raw_chars/${cname}_sheet.${ext}`;
+                const exC = await gh(`/contents/${path}?ref=main`, env).then(x => x.json()).catch(() => ({}));
+                await gh(`/contents/${path}`, env, { method: "PUT", body: JSON.stringify({ message: `feat(char): upload ${cname} turnaround sheet`, content: btoa(bin), sha: exC.sha }) });
+                await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Character Sheet Saved:</b> <code>${escH(cname)}</code>\n📁 <code>${escH(path)}</code>\n⚙️ GitHub Actions-இல் 4 Angles + 6 Face Cuts + Auto-Rig தானாக வெட்டப்பட்டு வருகிறது!` });
+              }
               return;
             }
             if (/^\/\s*addmeme\b/i.test(txt) && (msg?.voice || msg?.audio || msg?.document) && env.TG_BOT_TOKEN) {
