@@ -120,10 +120,12 @@ jobs:
             node_modules
             ~/.cache/remotion
           key: remotion-v2-${{ hashFiles('package.json') }}
-      - run: |
-          sudo apt-get update -qq || true; sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-core || sudo apt-get install -y --no-install-recommends fonts-lohit-taml || true
-          [ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund
-          npx remotion browser ensure
+      - name: Install Tamil Fonts
+        run: sudo apt-get update -qq || true; sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-core || sudo apt-get install -y --no-install-recommends fonts-lohit-taml || true
+      - name: Install Node Dependencies
+        run: "[ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund"
+      - name: Ensure Remotion Browser
+        run: npx remotion browser ensure
       - name: Render 30s Chunk ${{ matrix.id }} (3x Self-Heal)
         run: |
           mkdir -p out
@@ -162,10 +164,12 @@ jobs:
             node_modules
             ~/.cache/remotion
           key: remotion-v2-${{ hashFiles('package.json') }}
-      - run: |
-          sudo apt-get update -qq || true; sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-core || sudo apt-get install -y --no-install-recommends fonts-lohit-taml || true
-          [ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund
-          npx remotion browser ensure
+      - name: Install Tamil Fonts
+        run: sudo apt-get update -qq || true; sudo apt-get install -y --no-install-recommends fonts-lohit-taml fonts-noto-core || sudo apt-get install -y --no-install-recommends fonts-lohit-taml || true
+      - name: Install Node Dependencies
+        run: "[ -d node_modules ] || npm install --legacy-peer-deps --no-audit --no-fund"
+      - name: Ensure Remotion Browser
+        run: npx remotion browser ensure
           mkdir -p out
           npx remotion render src/index.ts Reel9x16 out/reel_9x16.mp4 --muted --concurrency=2
       - uses: actions/upload-artifact@v4
