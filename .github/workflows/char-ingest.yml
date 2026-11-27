@@ -18,18 +18,25 @@ jobs:
           python-version: '3.11'
       - name: Install Pillow & NumPy
         run: pip install --quiet pillow numpy
-      - name: Parse Character Sheets
+      - name: Parse Character Sheets & Update Manifest
         run: |
           python3 - << 'PYEOF'
-          import glob, os, subprocess
+          import glob, os, json, subprocess
           for p in sorted(glob.glob("assets/raw_chars/*_sheet.*")):
-              base = os.path.basename(p)
-              cname = base.split("_sheet.")[0]
+              cname = os.path.basename(p).split("_sheet.")[0]
               subprocess.run(["python3", "scripts/parse_char_sheet.py", p, cname], check=True)
+          manifest = {}
+          for r in sorted(glob.glob("public/approved/chars/*/char_rig.json")):
+              cname = os.path.basename(os.path.dirname(r))
+              with open(r, "r", encoding="utf-8") as f:
+                  manifest[cname.lower()] = json.load(f)
+          with open("src/rig/chars_manifest.json", "w", encoding="utf-8") as f:
+              json.dump(manifest, f, indent=2)
+          print("MANIFEST_UPDATED:", list(manifest.keys()))
           PYEOF
       - name: Commit Approved Character Rigs
         run: |
           git config user.name "yuna-bot"
           git config user.email "yuna-bot@users.noreply.github.com"
-          git add public/approved/chars/
-          git diff --staged --quiet || (git commit -m "chore(chars): auto-parsed 4-angle + 6-face rig [skip ci]" && git push)
+          git add public/approved/chars/ src/rig/chars_manifest.json
+          git diff --staged --quiet || (git commit -m "chore(chars): auto-parsed 4-angle + 6-face rig + manifest [skip ci]" && git push)

@@ -12,6 +12,8 @@ import wordsRaw from "./words.json";
 import lipsyncRaw from "./lipsync.json";
 import { Captions } from "./Captions";
 import { CharacterRig, CharConfig } from "./rig/CharacterRig";
+import { UniversalCharacter } from "./rig/UniversalCharacter";
+import charsManifest from "./rig/chars_manifest.json";
 import { UiUxOverlay } from "./modes/UiUxOverlay";
 
 const timeline = timelineRaw as Record<string, any>;
@@ -212,7 +214,10 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
             <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "space-around", alignItems: "flex-end", paddingTop: 26 }}>
             {charEntries.map(([cname, ccfg], cIdx) => {
                 const rSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {};
-                return (
+                const hasCustomRig = Boolean((charsManifest as Record<string, any>)[cname.toLowerCase()]);
+                return hasCustomRig ? (
+                  <UniversalCharacter key={cname} name={cname} cfg={ccfg} mouth={activeSpeaker === cname && activeLip ? activeLip.mouth : "X"} frame={frame} active={activeSpeaker === cname} accent={active.accent} lookDir={cIdx === 0 ? 1 : -1} pose={rSc.pose} prop={rSc.prop} action={rSc.action || ""} />
+                ) : (
                   <CharacterRig
                     key={cname}
                     name={cname}

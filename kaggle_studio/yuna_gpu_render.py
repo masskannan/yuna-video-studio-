@@ -153,3 +153,25 @@ if raw_chars_dir.exists():
                 print("REMBG_CUTOUT_OK:", p.stem)
         except Exception as re_e:
             print("REMBG_SKIP:", re_e)
+
+
+# 5. TRIPOSR_3D_MESH: Auto .glb 3D Model generation when shot_list uses blender + custom char exists
+try:
+    sl_data = json.loads(Path("shot_list.json").read_text(encoding="utf-8")) if Path("shot_list.json").exists() else {}
+    has_3d_shot = any(s.get("tool") == "blender" for s in sl_data.get("shots", []))
+except Exception:
+    has_3d_shot = False
+
+if has_3d_shot:
+    for fp in Path("public/approved/chars").glob("*/front.png"):
+        cname = fp.parent.name
+        out_3d = Path(f"/kaggle/working/out_chars/{cname}_3d")
+        if not out_3d.exists() and not (fp.parent / "model.glb").exists():
+            try:
+                if not Path("/kaggle/working/TripoSR").exists():
+                    subprocess.run(["git", "clone", "-q", "https://github.com/VAST-AI-Research/TripoSR.git", "/kaggle/working/TripoSR"], check=True)
+                    subprocess.run(["pip", "install", "-q", "-r", "/kaggle/working/TripoSR/requirements.txt"], check=False)
+                subprocess.run(["python3", "/kaggle/working/TripoSR/run.py", str(fp), "--output-dir", str(out_3d), "--model-save-format", "glb", "--bake-texture"], check=True)
+                print("TRIPOSR_3D_OK:", cname)
+            except Exception as te:
+                print("TRIPOSR_SKIP:", cname, te)
