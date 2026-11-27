@@ -395,6 +395,7 @@ async function runDirectorAndCommit(env, topic) {
   try {
     const optRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
+      signal: AbortSignal.timeout(7000),
       headers: { "Authorization": `Bearer ${env.GROQ_API_KEY}`, "content-type": "application/json" },
       body: JSON.stringify({ model: "llama-3.3-70b-versatile", temperature: 0.3, max_tokens: 600, messages: [
         { role: "system", content: "You are a Script Optimizer Agent. Convert ANY raw ChatGPT/Gemini article, notes, or topic into a crisp 90-second 2-or-3-character dialogue script (max 160 words, 6-10 short alternating lines). Strip markdown/URLs/hashtags. Keep the same language (Tamil or English). Format: SPEAKER: line." },
@@ -580,7 +581,7 @@ async function callGeminiFirst(env, messages, jsonMode = false) {
   if (env.GEMINI_API_KEY) {
     const sysMsg = messages.filter(m => m.role === "system").map(m => m.content).join("\n");
     const usrMsg = messages.filter(m => m.role !== "system").map(m => m.content).join("\n");
-    for (const gm of ["gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash-lite"]) {
+    for (const gm of ["gemini-3.6-flash", "gemini-3.5-flash-lite", "gemini-3.8-flash"]) {
       try {
         const body = {
           contents: [{ role: "user", parts: [{ text: usrMsg }] }],
@@ -589,6 +590,7 @@ async function callGeminiFirst(env, messages, jsonMode = false) {
         if (sysMsg) body.systemInstruction = { parts: [{ text: sysMsg }] };
         const gr = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${gm}:generateContent`, {
           method: "POST",
+          signal: AbortSignal.timeout(9000),
           headers: { "x-goog-api-key": env.GEMINI_API_KEY, "content-type": "application/json" },
           body: JSON.stringify(body)
         });
