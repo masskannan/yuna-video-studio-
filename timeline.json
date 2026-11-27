@@ -1,88 +1,87 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 49,
+  "reel_sec": 40,
   "mode": "cartoon",
   "grade": "warm",
   "fx_mode": "HYBRID",
   "render_target": "both",
-  "use_manim": true,
-  "use_blender": true,
+  "use_manim": false,
+  "use_blender": false,
   "scenes": [
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 12,
-      "setting": "tea_shop",
+      "end_sec": 14,
+      "setting": "village_street",
       "time_of_day": "morning",
-      "location": "TECH HUB",
+      "location": "YUNA STUDIO",
       "pose": "listen_ear",
       "prop": "camera",
-      "char_pos": "left",
+      "char_pos": "around",
       "metaphor": "card_rain",
       "topics": [
-        "SERVER CRASH",
-        "1000 LINES",
-        "BUG FIX"
+        "GitHub Actions",
+        "API",
+        "Auth Token"
       ],
       "metaphor_items": [
-        "Auto Fix",
-        "AI Agent",
-        "Zero Code"
+        "Log Error",
+        "Workflow Fail",
+        "Token Check"
       ],
-      "heading": "AI AGENTS IN 2026",
+      "heading": "GitHub Workflow Audit",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 12,
+      "start_sec": 14,
       "end_sec": 28,
-      "setting": "village_street",
+      "setting": "tea_shop",
       "time_of_day": "sunset",
-      "location": "YUNA STUDIO",
+      "location": "TEA STALL",
       "pose": "wave",
       "prop": "none",
-      "char_pos": "around",
+      "char_pos": "left",
       "metaphor": "bus_balancer",
       "topics": [
-        "C++ PYTHON",
-        "PROMPT TECH",
-        "SELF HEAL"
+        "Job ID",
+        "Log Parser",
+        "Redirect"
       ],
       "metaphor_items": [
-        "Legacy Code",
-        "AI Agent",
-        "System Design"
+        "Find Failure",
+        "Extract Lines",
+        "Debug Stream"
       ],
-      "heading": "OLD CODE VS NEW SKILLS",
+      "heading": "Job Log Extraction",
       "accent": "#F59E0B",
-      "bgTop": "#1E1B4B"
+      "bgTop": "#1E293B"
     },
     {
       "part": 3,
       "start_sec": 28,
-      "end_sec": 49,
+      "end_sec": 40,
       "setting": "house_room",
       "time_of_day": "night",
-      "location": "FUTURE HUB",
+      "location": "TECH HUB",
       "pose": "arms_up",
       "prop": "headband",
       "char_pos": "right",
       "metaphor": "payment_stamp",
       "topics": [
-        "SYSTEM DESIGN",
-        "VISION",
-        "RECYCLE BIN"
+        "Audit Complete",
+        "Python Script",
+        "Success"
       ],
       "metaphor_items": [
-        "Vision Defined",
-        "Autonomous AI",
-        "VERIFIED ✓"
+        "Script Run",
+        "Logs Printed"
       ],
-      "heading": "FUTURE CODING AGENTS",
+      "heading": "Python Debugger Execution",
       "accent": "#10B981",
-      "bgTop": "#022C22"
+      "bgTop": "#0F172A"
     }
   ]
 }

@@ -23,7 +23,7 @@
       ],
       "line": {
         "speaker": "KANNAN",
-        "text": "Machan! SERVER crash ஆயிடுச்சு, thousand lines CODE எப்படி fix பண்றது?",
+        "text": "Hey YUNA, இந்த GitHub workflow log-ல error எங்கு இருக்குன்னு தேடி கண்டுபிடிக்க ஒரு Python script போட முடியுமா?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
@@ -52,11 +52,11 @@
       ],
       "line": {
         "speaker": "YUNA",
-        "text": "Relax Kannan! 2026-ல யாரும் manual-ஆ CODE எழுதறது இல்ல!",
-        "voice": "ta-IN-ValluvarNeural"
+        "text": "Sure KANNAN! GitHub API-ல இருந்து job ID எடுத்து, logs-ஐ fetch பண்ணி, error line-ஐ print பண்ற script ready!",
+        "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "pop",
+      "sfx": "ding",
       "notes": ""
     },
     {
@@ -81,11 +81,11 @@
       ],
       "line": {
         "speaker": "KANNAN",
-        "text": "அப்புறம் எப்படி BUG clear ஆச்சு? You spent ZERO hours!",
+        "text": "Super! Auth redirect-ல authorization header வராம இருக்க இந்த script கரெக்டா வொர்க் ஆகுமா?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "boing",
+      "sfx": "pop",
       "notes": ""
     },
     {
@@ -110,185 +110,11 @@
       ],
       "line": {
         "speaker": "YUNA",
-        "text": "Just one Autonomous AI AGENT! அதுவே self-heal பண்ணி DEPLOY பண்ணிடுச்சு!",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "ding",
-      "notes": ""
-    },
-    {
-      "id": "004",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "tea_shop",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "KANNAN"
-      },
-      "cast": [
-        {
-          "name": "KANNAN",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": 1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "KANNAN",
-        "text": "Wait! அப்போ 5 years படிச்ச C++ and PYTHON?",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "whoosh",
-      "notes": ""
-    },
-    {
-      "id": "005",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "house_room",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "YUNA"
-      },
-      "cast": [
-        {
-          "name": "YUNA",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": -1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "YUNA",
-        "text": "History! 2026-ல PROMPT engineering கூட OLD style!",
-        "voice": "ta-IN-ValluvarNeural"
+        "text": "Exactly! NoAuthRedirect handler போட்டு இருக்கோம், so secure-ஆக logs எல்லாமே print ஆகும்!",
+        "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
       "sfx": "click",
-      "notes": ""
-    },
-    {
-      "id": "006",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "village_street",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "KANNAN"
-      },
-      "cast": [
-        {
-          "name": "KANNAN",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": 1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "KANNAN",
-        "text": "Then what is the NEW skill now?!",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "whoosh",
-      "notes": ""
-    },
-    {
-      "id": "007",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "tea_shop",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "YUNA"
-      },
-      "cast": [
-        {
-          "name": "YUNA",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": -1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "YUNA",
-        "text": "Just SYSTEM DESIGN and defining the VISION!",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "ding",
-      "notes": ""
-    },
-    {
-      "id": "008",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "house_room",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "KANNAN"
-      },
-      "cast": [
-        {
-          "name": "KANNAN",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": 1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "KANNAN",
-        "text": "Shit! அப்போ என் பழைய CODE எல்லாம்?",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "boing",
-      "notes": ""
-    },
-    {
-      "id": "009",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "village_street",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "YUNA"
-      },
-      "cast": [
-        {
-          "name": "YUNA",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": -1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "YUNA",
-        "text": "RECYCLE bin-ல போட்டு, NEW project start பண்ணு!",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "pop",
       "notes": ""
     }
   ]
