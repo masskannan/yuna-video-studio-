@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "shots": [
+    {
+      "id": "000",
+      "duration_s": 6,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "village_street",
+      "time_of_day": "morning",
+      "camera": {
+        "move": "punch_in",
+        "focus": "KANNAN"
+      },
+      "cast": [
+        {
+          "name": "KANNAN",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": 1.0,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "KANNAN",
+        "text": "Boss vs Fresher: AI காலத்தில் வேலை தப்பிக்க 3 முக்கிய Skills!",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "pop",
+      "notes": "Initial V2.3 compatible director shot"
+    }
+  ]
+}
