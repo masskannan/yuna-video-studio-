@@ -29,7 +29,7 @@ def apply_glossary(text):
                 text = text.replace(str(k), str(v))
     import re as _re
     text = _re.sub(r'(\d+)-(la|ல|nu|னு|ku|கு|oda|ஓட)\b', r'\1 \2', text, flags=_re.IGNORECASE)
-        if os.path.exists("pronunciation_map.json"):
+    if os.path.exists("pronunciation_map.json"):
         with open("pronunciation_map.json", "r", encoding="utf-8") as _pf:
             for _k, _v in json.load(_pf).items():
                 text = _re.sub(rf"\b{_re.escape(_k)}\b", _v, text)
