@@ -4,60 +4,52 @@
   "reel_sec": 40,
   "mode": "cartoon",
   "grade": "warm",
-  "fx_mode": "SAFE",
+  "fx_mode": "HYBRID",
   "render_target": "both",
-  "use_manim": false,
-  "use_blender": false,
+  "use_manim": true,
+  "use_blender": true,
   "scenes": [
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 14,
+      "end_sec": 12,
       "setting": "village_street",
       "time_of_day": "morning",
-      "location": "YUNA STUDIO",
+      "location": "TECH HUB",
       "pose": "listen_ear",
       "prop": "camera",
       "char_pos": "around",
       "metaphor": "card_rain",
       "topics": [
-        "GitHub Actions",
-        "API",
-        "Auth Token"
+        "2026 Coding",
+        "Autonomous AI",
+        "Zero Code"
       ],
-      "metaphor_items": [
-        "Log Error",
-        "Workflow Fail",
-        "Token Check"
-      ],
-      "heading": "GitHub Workflow Audit",
+      "metaphor_items": [],
+      "heading": "2026 AI AGENTS!",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
     {
       "part": 2,
-      "start_sec": 14,
+      "start_sec": 12,
       "end_sec": 28,
       "setting": "tea_shop",
       "time_of_day": "sunset",
-      "location": "TEA STALL",
+      "location": "YUNA STUDIO",
       "pose": "wave",
       "prop": "none",
       "char_pos": "left",
-      "metaphor": "bus_balancer",
-      "topics": [
-        "Job ID",
-        "Log Parser",
-        "Redirect"
-      ],
+      "metaphor": "hotel_menu",
+      "topics": [],
       "metaphor_items": [
-        "Find Failure",
-        "Extract Lines",
-        "Debug Stream"
+        "Auto Server Deploy",
+        "Dynamic API Scaling",
+        "CTO Automation"
       ],
-      "heading": "Job Log Extraction",
+      "heading": "AI RUNS COMPANY!",
       "accent": "#F59E0B",
-      "bgTop": "#1E293B"
+      "bgTop": "#1E1B4B"
     },
     {
       "part": 3,
@@ -65,23 +57,19 @@
       "end_sec": 40,
       "setting": "house_room",
       "time_of_day": "night",
-      "location": "TECH HUB",
+      "location": "FUTURE HUB",
       "pose": "arms_up",
       "prop": "headband",
       "char_pos": "right",
       "metaphor": "payment_stamp",
-      "topics": [
-        "Audit Complete",
-        "Python Script",
-        "Success"
-      ],
+      "topics": [],
       "metaphor_items": [
-        "Script Run",
-        "Logs Printed"
+        "UPI Salary Credited",
+        "Status: Just USER ✓"
       ],
-      "heading": "Python Debugger Execution",
+      "heading": "SYSTEM ACTIVE!",
       "accent": "#10B981",
-      "bgTop": "#0F172A"
+      "bgTop": "#020617"
     }
   ]
 }

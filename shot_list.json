@@ -10,11 +10,11 @@
       "time_of_day": "morning",
       "camera": {
         "move": "punch_in",
-        "focus": "KANNAN"
+        "focus": "ARJUN"
       },
       "cast": [
         {
-          "name": "KANNAN",
+          "name": "ARJUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -22,12 +22,12 @@
         }
       ],
       "line": {
-        "speaker": "KANNAN",
-        "text": "Hey YUNA, இந்த GitHub workflow log-ல error எங்கு இருக்குன்னு தேடி கண்டுபிடிக்க ஒரு Python script போட முடியுமா?",
+        "speaker": "ARJUN",
+        "text": "2026-la Code எழுத வேண்டாம்-னு சொன்னப்போ... சிரிச்சேன்!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "whoosh",
+      "sfx": "boing",
       "notes": ""
     },
     {
@@ -39,11 +39,11 @@
       "time_of_day": "sunset",
       "camera": {
         "move": "punch_in",
-        "focus": "YUNA"
+        "focus": "MAYA"
       },
       "cast": [
         {
-          "name": "YUNA",
+          "name": "MAYA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -51,12 +51,12 @@
         }
       ],
       "line": {
-        "speaker": "YUNA",
-        "text": "Sure KANNAN! GitHub API-ல இருந்து job ID எடுத்து, logs-ஐ fetch பண்ணி, error line-ஐ print பண்ற script ready!",
+        "speaker": "MAYA",
+        "text": "ஆனா உன்னோட Autonomous Agent... இப்போ Company-யே Run பண்ணுது!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "ding",
+      "sfx": "pop",
       "notes": ""
     },
     {
@@ -68,11 +68,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "KANNAN"
+        "focus": "ARJUN"
       },
       "cast": [
         {
-          "name": "KANNAN",
+          "name": "ARJUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -80,12 +80,12 @@
         }
       ],
       "line": {
-        "speaker": "KANNAN",
-        "text": "Super! Auth redirect-ல authorization header வராம இருக்க இந்த script கரெக்டா வொர்க் ஆகுமா?",
+        "speaker": "ARJUN",
+        "text": "நிஜமாவா? வெறும் Prompt குடுத்தா... Server Deploy ஆகிடுமா?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "pop",
+      "sfx": "whoosh",
       "notes": ""
     },
     {
@@ -97,11 +97,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "YUNA"
+        "focus": "MAYA"
       },
       "cast": [
         {
-          "name": "YUNA",
+          "name": "MAYA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -109,12 +109,128 @@
         }
       ],
       "line": {
-        "speaker": "YUNA",
-        "text": "Exactly! NoAuthRedirect handler போட்டு இருக்கோம், so secure-ஆக logs எல்லாமே print ஆகும்!",
+        "speaker": "MAYA",
+        "text": "Deploy மட்டும் இல்ல! Traffic பார்த்தும் Automatic API Scale பண்ணிடுச்சு!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
+      "sfx": "ding",
+      "notes": ""
+    },
+    {
+      "id": "004",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "tea_shop",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "ARJUN"
+      },
+      "cast": [
+        {
+          "name": "ARJUN",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": 1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "ARJUN",
+        "text": "Wait! அப்போ என்னோட CTO Job?",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
       "sfx": "click",
+      "notes": ""
+    },
+    {
+      "id": "005",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "house_room",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "MAYA"
+      },
+      "cast": [
+        {
+          "name": "MAYA",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": -1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "MAYA",
+        "text": "AI உன்னை Terminate பண்ணல... உனக்கே Salary போட புது UPI Setup பண்ணிருக்கு!",
+        "voice": "ta-IN-PallaviNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "ding",
+      "notes": ""
+    },
+    {
+      "id": "006",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "village_street",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "ARJUN"
+      },
+      "cast": [
+        {
+          "name": "ARJUN",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": 1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "ARJUN",
+        "text": "மச்சான்... அப்போ இனி நான் என்ன பண்றது?",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "whoosh",
+      "notes": ""
+    },
+    {
+      "id": "007",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "tea_shop",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "MAYA"
+      },
+      "cast": [
+        {
+          "name": "MAYA",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": -1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "MAYA",
+        "text": "தூங்கு! 2026-ல System இயக்குறது AI... நாம வெறும் USER!",
+        "voice": "ta-IN-PallaviNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "pop",
       "notes": ""
     }
   ]
