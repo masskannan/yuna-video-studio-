@@ -1,5 +1,29 @@
 {
-  "backgrounds": ["village_street", "tea_shop", "house_room"],
-  "characters": ["KANNAN", "YUNA", "BUGGY"],
-  "approved_gpu_assets": {}
+  "backgrounds": [
+    "village_street",
+    "tea_shop",
+    "house_room"
+  ],
+  "characters": [
+    "KANNAN",
+    "YUNA",
+    "BUGGY"
+  ],
+  "approved_gpu_assets": {
+    "bg_house_room": {
+      "status": "approved",
+      "source": "kaggle_sdxl_turbo_v2",
+      "file": "assets/approved/bg_house_room.jpg"
+    },
+    "bg_tea_shop": {
+      "status": "approved",
+      "source": "kaggle_sdxl_turbo_v2",
+      "file": "assets/approved/bg_tea_shop.jpg"
+    },
+    "bg_village_street": {
+      "status": "approved",
+      "source": "kaggle_sdxl_turbo_v2",
+      "file": "assets/approved/bg_village_street.jpg"
+    }
+  }
 }

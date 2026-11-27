@@ -4,7 +4,7 @@ import { CounterHook } from "./modes/CounterHook";
 import { SafeZoneGuide } from "./SafeZoneGuide";
 import { OverlayLayer } from "./OverlayLayer";
 import React from "react";
-import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig, Img, staticFile };
 import timelineRaw from "../timeline.json";
 import brandRaw from "../brand.json";
 import charsRaw from "../characters.json";
@@ -107,6 +107,9 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         const sky3 = tod === "night" ? "#312E81" : tod === "sunset" ? "#FDE047" : "#FEF3C7";
         return (
           <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX + shakeX}px, ${shakeY}px, 0)` }}>
+        {["village_street", "tea_shop", "house_room"].includes(stg) && fx_mode !== "SAFE" && (
+          <Img src={staticFile(`approved/bg_${stg}.jpg`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.30 }} />
+        )}
             <svg width="100%" height="100%" viewBox="0 0 1080 1920" preserveAspectRatio="xMidYMid slice">
               <defs>
                 <linearGradient id={`sky${idx}`} x1="0" y1="0" x2="0" y2="1">

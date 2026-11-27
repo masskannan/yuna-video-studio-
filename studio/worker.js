@@ -704,8 +704,10 @@ Return ONLY valid JSON:
   const usrSlice = scriptText.slice(0, 8000);
   const a2Sys = 'You are Agent 2 (Visual & 3D Asset Director). Return ONLY JSON: { scenes_visual: [{ part: 1, gpu_prompt: "Pixar 3D environment no people no text...", metaphor: "card_rain|neon_topics|bus_balancer|hotel_menu|payment_stamp", metaphor_items: ["Item 1","Item 2","Item 3"] }] }.';
   const a3Sys = 'You are Agent 3 (Audio & Packaging Director). Return ONLY JSON: { title: "Catchy Title", hashtags: ["#TamilTech","#Shorts"], sfx_mood: "tech|comedy|dramatic" }.';
+    const exact_script = /^(\/exact|EXACT:)/i.test(String(usrSlice || "").trim());
+  const sysEff = exact_script ? sys + "\nCRITICAL EXACT_SCRIPT MODE: Preserve user dialogue lines verbatim word-for-word without rewriting; only assign speakers, timings, and visual fx." : sys;
   const [p1Res, p2Res, p3Res] = await Promise.allSettled([
-    callGeminiFirst(env, [{ role: "system", content: sys }, { role: "user", content: usrSlice }], true),
+    callGeminiFirst(env, [{ role: "system", content: sysEff }, { role: "user", content: usrSlice }], true),
     callGroqAgent(env, a2Sys, usrSlice.slice(0, 2000)),
     callNvidiaAgent(env, a3Sys, usrSlice.slice(0, 1500))
   ]);
