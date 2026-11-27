@@ -1,36 +1,36 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 45,
-  "mode": "cinema",
-  "grade": "none",
+  "reel_sec": 44,
+  "mode": "cartoon",
+  "grade": "warm",
   "fx_mode": "HYBRID",
   "render_target": "reel",
-  "use_manim": true,
-  "use_blender": true,
+  "use_manim": false,
+  "use_blender": false,
   "scenes": [
     {
       "part": 1,
       "start_sec": 0,
       "end_sec": 14,
-      "setting": "village_street",
+      "setting": "tea_shop",
       "time_of_day": "morning",
-      "location": "YUNA STUDIO",
+      "location": "TEA STALL",
       "pose": "listen_ear",
       "prop": "camera",
       "char_pos": "around",
       "metaphor": "card_rain",
       "topics": [
-        "AI",
-        "Career",
-        "Skills"
+        "AI Future",
+        "Tea Shop",
+        "Job Safety"
       ],
       "metaphor_items": [
-        "Hook Card",
-        "Myth Card",
-        "Question Card"
+        "Automation",
+        "Robot Maker",
+        "Human Touch"
       ],
-      "heading": "Boss vs Fresher: AI காலத்தில் வேலை தப்பிக்க 3 முக்கிய Skills!",
+      "heading": "AI in Tea Shops",
       "accent": "#38BDF8",
       "bgTop": "#0F172A"
     },
@@ -39,50 +39,49 @@
       "start_sec": 14,
       "end_sec": 28,
       "setting": "tea_shop",
-      "time_of_day": "morning",
+      "time_of_day": "sunset",
       "location": "TECH HUB",
       "pose": "wave",
-      "prop": "none",
-      "char_pos": "right",
+      "prop": "headband",
+      "char_pos": "left",
       "metaphor": "bus_balancer",
       "topics": [
-        "Automation",
-        "Upskilling",
-        "Soft Skills"
+        "Server",
+        "API",
+        "Smart Work"
       ],
       "metaphor_items": [
         "YUNA EXPRESS",
-        "Lane 1: Coding",
-        "Lane 2: Data",
-        "Lane 3: Communication"
+        "Fast API",
+        "Cloud Server"
       ],
-      "heading": "Fast Debate & Concrete Metaphor",
-      "accent": "#38BDF8",
-      "bgTop": "#0F172A"
+      "heading": "Smart Integration",
+      "accent": "#F59E0B",
+      "bgTop": "#1E1B4B"
     },
     {
       "part": 3,
       "start_sec": 28,
-      "end_sec": 45,
-      "setting": "house_room",
-      "time_of_day": "morning",
+      "end_sec": 44,
+      "setting": "village_street",
+      "time_of_day": "night",
       "location": "YUNA STUDIO",
       "pose": "arms_up",
-      "prop": "headband",
-      "char_pos": "left",
+      "prop": "none",
+      "char_pos": "right",
       "metaphor": "payment_stamp",
       "topics": [
-        "Action Plan",
-        "Verification"
+        "UPI",
+        "Digital Master",
+        "Assistant"
       ],
       "metaphor_items": [
-        "Step 1: Learn",
-        "Step 2: Apply",
+        "Scan QR",
         "VERIFIED ✓"
       ],
-      "heading": "Twist & Loop Punchline",
-      "accent": "#38BDF8",
-      "bgTop": "#0F172A"
+      "heading": "Digital Master",
+      "accent": "#10B981",
+      "bgTop": "#064E3B"
     }
   ]
 }

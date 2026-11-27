@@ -1,10 +1,66 @@
 [
   {
-    "speaker": "KANNAN",
-    "text": "Boss vs Fresher: AI காலத்தில் வேலை தப்பிக்க 3 முக்கிய Skills!",
+    "speaker": "KUMAR",
+    "text": "2026-ல இந்த AI வந்துட்டா நம்ம டீக்கடை வேலைக்கு என்ன ஆகுறது Boss?",
     "sfx": "pop",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "SHARMA",
+    "text": "கவலைப்படாதப்பா, AI-க்கு டீ போடத் தெரியும், ஆனா கஸ்டமரோட பேச நீதான் வேணும்!",
+    "sfx": "ding",
+    "voice": "ta-IN-PallaviNeural",
+    "pitch": 1.06,
+    "meme": ""
+  },
+  {
+    "speaker": "KUMAR",
+    "text": "அப்போ நாமளும் அந்த AI-யோட சேர்ந்துதான் வேலை செய்யணுமா?",
+    "sfx": "whoosh",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "SHARMA",
+    "text": "கரெக்ட்! AI ஒரு Server மாதிரி, நீ அதோட API-யை கரெக்டா யூஸ் பண்ணு!",
+    "sfx": "click",
+    "voice": "ta-IN-PallaviNeural",
+    "pitch": 1.06,
+    "meme": ""
+  },
+  {
+    "speaker": "KUMAR",
+    "text": "சரி, அந்த AI-க்கிட்ட எப்படி ஆர்டர் வாங்குறதுனு சொல்லிக் கொடுங்க!",
+    "sfx": "pop",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "SHARMA",
+    "text": "அதுக்குத்தான் ஒரு UPI-மாடல்ல கிளாஸ் போகுதே, அங்க போய் கத்துக்கோ!",
+    "sfx": "ding",
+    "voice": "ta-IN-PallaviNeural",
+    "pitch": 1.06,
+    "meme": ""
+  },
+  {
+    "speaker": "KUMAR",
+    "text": "ஓஹோ! அப்ப இனிமே நம்மளும் டிஜிட்டல் டீ மாஸ்டர் ஆயிடலாமா?",
+    "sfx": "boing",
+    "voice": "ta-IN-ValluvarNeural",
+    "pitch": 0.96,
+    "meme": ""
+  },
+  {
+    "speaker": "SHARMA",
+    "text": "EXACTLY! AI-யை எதிர்க்காதே, அதை உன்னோட அசிஸ்டன்ட் ஆக்கிக்கோ!",
+    "sfx": "whoosh",
+    "voice": "ta-IN-PallaviNeural",
+    "pitch": 1.06,
     "meme": ""
   }
 ]

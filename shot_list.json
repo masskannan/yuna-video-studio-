@@ -3,32 +3,235 @@
   "shots": [
     {
       "id": "000",
-      "duration_s": 6,
+      "duration_s": 5,
       "tool": "remotion",
       "fallback": "preset",
       "location": "village_street",
       "time_of_day": "morning",
       "camera": {
         "move": "punch_in",
-        "focus": "KANNAN"
+        "focus": "KUMAR"
       },
       "cast": [
         {
-          "name": "KANNAN",
+          "name": "KUMAR",
           "pose": "hand_on_hip",
           "expression": "happy",
-          "lookDir": 1.0,
+          "lookDir": 1,
           "prop": "mic"
         }
       ],
       "line": {
-        "speaker": "KANNAN",
-        "text": "Boss vs Fresher: AI காலத்தில் வேலை தப்பிக்க 3 முக்கிய Skills!",
+        "speaker": "KUMAR",
+        "text": "2026-ல இந்த AI வந்துட்டா நம்ம டீக்கடை வேலைக்கு என்ன ஆகுறது Boss?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
       "sfx": "pop",
-      "notes": "Initial V2.3 compatible director shot"
+      "notes": ""
+    },
+    {
+      "id": "001",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "tea_shop",
+      "time_of_day": "sunset",
+      "camera": {
+        "move": "punch_in",
+        "focus": "SHARMA"
+      },
+      "cast": [
+        {
+          "name": "SHARMA",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": -1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "SHARMA",
+        "text": "கவலைப்படாதப்பா, AI-க்கு டீ போடத் தெரியும், ஆனா கஸ்டமரோட பேச நீதான் வேணும்!",
+        "voice": "ta-IN-PallaviNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "ding",
+      "notes": ""
+    },
+    {
+      "id": "002",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "house_room",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "KUMAR"
+      },
+      "cast": [
+        {
+          "name": "KUMAR",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": 1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "KUMAR",
+        "text": "அப்போ நாமளும் அந்த AI-யோட சேர்ந்துதான் வேலை செய்யணுமா?",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "whoosh",
+      "notes": ""
+    },
+    {
+      "id": "003",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "village_street",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "SHARMA"
+      },
+      "cast": [
+        {
+          "name": "SHARMA",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": -1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "SHARMA",
+        "text": "கரெக்ட்! AI ஒரு Server மாதிரி, நீ அதோட API-யை கரெக்டா யூஸ் பண்ணு!",
+        "voice": "ta-IN-PallaviNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "click",
+      "notes": ""
+    },
+    {
+      "id": "004",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "tea_shop",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "KUMAR"
+      },
+      "cast": [
+        {
+          "name": "KUMAR",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": 1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "KUMAR",
+        "text": "சரி, அந்த AI-க்கிட்ட எப்படி ஆர்டர் வாங்குறதுனு சொல்லிக் கொடுங்க!",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "pop",
+      "notes": ""
+    },
+    {
+      "id": "005",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "house_room",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "SHARMA"
+      },
+      "cast": [
+        {
+          "name": "SHARMA",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": -1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "SHARMA",
+        "text": "அதுக்குத்தான் ஒரு UPI-மாடல்ல கிளாஸ் போகுதே, அங்க போய் கத்துக்கோ!",
+        "voice": "ta-IN-PallaviNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "ding",
+      "notes": ""
+    },
+    {
+      "id": "006",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "village_street",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "KUMAR"
+      },
+      "cast": [
+        {
+          "name": "KUMAR",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": 1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "KUMAR",
+        "text": "ஓஹோ! அப்ப இனிமே நம்மளும் டிஜிட்டல் டீ மாஸ்டர் ஆயிடலாமா?",
+        "voice": "ta-IN-ValluvarNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "boing",
+      "notes": ""
+    },
+    {
+      "id": "007",
+      "duration_s": 5,
+      "tool": "remotion",
+      "fallback": "preset",
+      "location": "tea_shop",
+      "time_of_day": "night",
+      "camera": {
+        "move": "punch_in",
+        "focus": "SHARMA"
+      },
+      "cast": [
+        {
+          "name": "SHARMA",
+          "pose": "hand_on_hip",
+          "expression": "happy",
+          "lookDir": -1,
+          "prop": "mic"
+        }
+      ],
+      "line": {
+        "speaker": "SHARMA",
+        "text": "EXACTLY! AI-யை எதிர்க்காதே, அதை உன்னோட அசிஸ்டன்ட் ஆக்கிக்கோ!",
+        "voice": "ta-IN-PallaviNeural"
+      },
+      "widget": "NeonTopicRow",
+      "sfx": "whoosh",
+      "notes": ""
     }
   ]
 }

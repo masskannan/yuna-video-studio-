@@ -1,5 +1,5 @@
 {
-  "KANNAN": {
+  "KUMAR": {
     "type": "character",
     "body_color": "#D99B66",
     "dress_style": "casual",
@@ -8,9 +8,9 @@
     "hat": "none",
     "mustache": "none",
     "glasses": "none",
-    "voice": "high_energy"
+    "voice": "ta-IN-ValluvarNeural"
   },
-  "YUNA": {
+  "SHARMA": {
     "type": "character",
     "body_color": "#D99B66",
     "dress_style": "casual",
@@ -19,19 +19,6 @@
     "hat": "none",
     "mustache": "none",
     "glasses": "none",
-    "voice": "witty_clears"
-  },
-  "BUGGY": {
-    "name": "BUGGY",
-    "type": "worm",
-    "body_color": "#22C55E",
-    "dress_style": "none",
-    "expression": "happy",
-    "hat": "none",
-    "mustache": "none",
-    "glasses": "shades",
-    "voice": "ta-SG-VenbaNeural",
-    "role": "Sarcastic Comic Guest",
-    "personality": "Drops a funny twist or punchline at the end"
+    "voice": "ta-IN-KavithaNeural"
   }
 }
