@@ -28,6 +28,8 @@ def apply_glossary(text):
             for k, v in glossary.items():
                 text = text.replace(str(k), str(v))
     import re as _re
+    text = _re.sub(r'₹\s?(\d+)', r'\1 ரூபாய்', text)
+    text = _re.sub(r'(\d+)\s?%', r'\1 சதவீதம்', text)
     text = _re.sub(r'(\d+)-(la|ல|nu|னு|ku|கு|oda|ஓட)\b', r'\1 \2', text, flags=_re.IGNORECASE)
     if os.path.exists("pronunciation_map.json"):
         with open("pronunciation_map.json", "r", encoding="utf-8") as _pf:
@@ -196,14 +198,14 @@ def write_lipsync(words, out_path):
     if rh and os.path.exists(VOICE_WAV):
         try:
             rj = os.path.join(OUT_DIR, "rhubarb.json")
-            if subprocess.run([rh, "-r", "phonetic", "-f", "json", "-o", rj, VOICE_WAV], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=45).returncode == 0 and os.path.exists(rj):
+            if subprocess.run([rh, "-r", "phonetic", "-f", "json", "--extendedShapes", "GHX", "-o", rj, VOICE_WAV], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=45).returncode == 0 and os.path.exists(rj):
                 rc = json.load(open(rj, encoding="utf-8")).get("mouthCues", [])
                 lt = json.load(open(LINE_TIMINGS_JSON, encoding="utf-8")) if os.path.exists(LINE_TIMINGS_JSON) else []
                 cues = []
                 for m in rc:
                     st = float(m.get("start", 0))
                     sp = next((x["speaker"] for x in lt if x["start"] <= st <= x["end"]), words[0]["speaker"] if words else "YUNA")
-                    cues.append({"start": round(st, 3), "end": round(float(m.get("end", st + 0.1)), 3), "mouth": str(m.get("value", "X")), "speaker": sp})
+                    cues.append({"start": round(st, 3), "end": round(min(float(m.get("end", st + 0.1)), st + 0.45), 3), "mouth": str(m.get("value", "X")), "speaker": sp})
                 if cues:
                     json.dump(cues, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
                     print(f"RHUBARB_PHONETIC_OK: {len(cues)} cues")
