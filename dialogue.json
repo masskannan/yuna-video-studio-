@@ -1,66 +1,50 @@
 [
   {
-    "speaker": "ARUN",
-    "text": "Maya! Un oda VOICE-ல emergency-யா UPI money கேக்குறாங்க!",
+    "speaker": "ARJUN",
+    "text": "மாயா, ₹500 UPI cashback வந்திருக்கு, click பண்ணட்டுமா?",
     "sfx": "whoosh",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
-    "meme": ""
+    "meme": "",
+    "emotion": "thinking",
+    "hand_pose": "open_palm",
+    "pair_action": "none",
+    "camera_shot": "medium_punch"
   },
   {
     "speaker": "MAYA",
-    "text": "Hey STOP! நா பக்கத்துலதான இருக்கேன்? அது AI Voice Cloning!",
-    "sfx": "pop",
-    "voice": "ta-IN-PallaviNeural",
-    "pitch": 1.06,
-    "meme": ""
-  },
-  {
-    "speaker": "ARUN",
-    "text": "What? Audio exact-ஆ un tone-ல பேசுதே, Server HACK ஆயிடுச்சா?",
-    "sfx": "click",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.96,
-    "meme": ""
-  },
-  {
-    "speaker": "MAYA",
-    "text": "Un Insta Reels audio-வ வச்சு, AI Deepfake Model clean-ஆ generate பண்ணிடுச்சு!",
-    "sfx": "ding",
-    "voice": "ta-IN-PallaviNeural",
-    "pitch": 1.06,
-    "meme": ""
-  },
-  {
-    "speaker": "ARUN",
-    "text": "Damn! அப்போ நம்ம OTP கூட SAFE இல்லையா?!",
+    "text": "ஏய் STOP அர்ஜுன்! அது 100% fake scam link, பணம் போயிடும்!",
     "sfx": "boing",
-    "voice": "ta-IN-ValluvarNeural",
-    "pitch": 0.96,
-    "meme": ""
-  },
-  {
-    "speaker": "MAYA",
-    "text": "Simple! அந்த Call-ல Password கேளு... Bot freeze ஆயிடும்!",
-    "sfx": "pop",
     "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
-    "meme": ""
+    "meme": "",
+    "emotion": "angry",
+    "hand_pose": "fist",
+    "pair_action": "none",
+    "camera_shot": "wide_two_shot"
   },
   {
-    "speaker": "ARUN",
-    "text": "Machan... un first PET name என்ன?",
-    "sfx": "click",
+    "speaker": "ARJUN",
+    "text": "அடடா, எப்படிக் கண்டுபிடிச்ச?",
+    "sfx": "pop",
     "voice": "ta-IN-ValluvarNeural",
     "pitch": 0.96,
-    "meme": ""
+    "meme": "",
+    "emotion": "surprised",
+    "hand_pose": "open_palm",
+    "pair_action": "none",
+    "camera_shot": "closeup_snap"
   },
   {
     "speaker": "MAYA",
-    "text": "Call DISCONNECT ஆயிடுச்சு! Next time un Voice வந்தா... என்ன பண்ணுவ?",
+    "text": "பாருங்க, bank எப்போதும் APK link அனுப்பாது — எப்பவும் official app-ல check பண்ணுங்க!",
     "sfx": "ding",
     "voice": "ta-IN-PallaviNeural",
     "pitch": 1.06,
-    "meme": ""
+    "meme": "",
+    "emotion": "happy",
+    "hand_pose": "point",
+    "pair_action": "none",
+    "camera_shot": "wide_two_shot"
   }
 ]

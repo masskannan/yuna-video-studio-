@@ -1,7 +1,7 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 43,
+  "reel_sec": 30,
   "mode": "cartoon",
   "grade": "warm",
   "fx_mode": "HYBRID",
@@ -12,86 +12,90 @@
     {
       "part": 1,
       "start_sec": 0,
-      "end_sec": 14,
-      "setting": "village_street",
+      "end_sec": 6,
+      "setting": "tea_shop",
       "time_of_day": "morning",
-      "location": "YUNA STUDIO",
+      "location": "TECH HUB",
       "pose": "listen_ear",
-      "prop": "camera",
-      "char_pos": "around",
+      "prop": "none",
+      "char_pos": "left",
       "metaphor": "neon_topics",
       "topics": [
-        "Deepfake AI",
-        "Voice Clone",
-        "Cyber Alert"
+        "UPI Scam",
+        "Fake Link",
+        "Cashback Trap"
       ],
       "metaphor_items": [
-        "Audio Hack",
-        "Fake Call",
-        "Security Breach"
+        "₹500 Cashback",
+        "Click Link?",
+        "Fake Alert"
       ],
-      "heading": "AI VOICE SCAM!",
-      "accent": "#38BDF8",
+      "heading": "UPI CASHBACK SCAM",
+      "accent": "#EF4444",
       "bgTop": "#0F172A",
       "action": "talk_casual_gesture",
-      "media_name": "village_street"
+      "media_name": "tea_shop"
     },
     {
       "part": 2,
-      "start_sec": 14,
-      "end_sec": 28,
+      "start_sec": 6,
+      "end_sec": 12,
       "setting": "tea_shop",
       "time_of_day": "sunset",
-      "location": "TEA STALL",
+      "location": "TECH HUB",
       "pose": "wave",
-      "prop": "none",
-      "char_pos": "left",
+      "prop": "camera",
+      "char_pos": "around",
       "metaphor": "bus_balancer",
       "topics": [
-        "Insta Audio",
-        "Model Train",
-        "Server Safe"
+        "Scam Link",
+        "Fake APK",
+        "Loss Trap"
       ],
       "metaphor_items": [
-        "Reels Data",
-        "AI Model",
-        "Secure API"
+        "Fake APK",
+        "Scam Link",
+        "Money Lost"
       ],
-      "heading": "HOW IT WORKS",
-      "accent": "#F43F5E",
+      "heading": "STOP & CHECK",
+      "accent": "#F59E0B",
       "bgTop": "#1E1B4B",
       "action": "explain_point_board",
       "media_name": "tea_shop"
     },
     {
       "part": 3,
-      "start_sec": 28,
-      "end_sec": 43,
+      "start_sec": 12,
+      "end_sec": 30,
       "setting": "house_room",
       "time_of_day": "night",
-      "location": "TECH HUB",
-      "pose": "arms_up",
+      "location": "YUNA STUDIO",
+      "pose": "point_up",
       "prop": "headband",
       "char_pos": "right",
       "metaphor": "payment_stamp",
       "topics": [
-        "Secret Code",
-        "Bot Freeze",
-        "Safe UPI"
+        "No APK Link",
+        "Official App Only"
       ],
       "metaphor_items": [
-        "Password Check",
-        "Verified Safe"
+        "No APK via SMS",
+        "Check Official App"
       ],
-      "heading": "SMART TRICK",
+      "heading": "VERIFIED SAFETY TIP",
       "accent": "#10B981",
-      "bgTop": "#022C22",
+      "bgTop": "#064E3B",
       "action": "happy_fist_pump",
       "media_name": "house_room"
     }
   ],
-  "tg_msg_id": "337",
+  "tg_msg_id": "362",
   "bgm": "tech",
   "hook_text": "",
-  "counters": []
+  "counters": [],
+  "bg_niche": "bank_counter",
+  "neon_rim": {
+    "color": "#FBBF24",
+    "intensity": 0.25
+  }
 }

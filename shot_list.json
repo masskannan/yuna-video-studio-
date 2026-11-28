@@ -10,11 +10,11 @@
       "time_of_day": "morning",
       "camera": {
         "move": "punch_in",
-        "focus": "ARUN"
+        "focus": "ARJUN"
       },
       "cast": [
         {
-          "name": "ARUN",
+          "name": "ARJUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -22,8 +22,8 @@
         }
       ],
       "line": {
-        "speaker": "ARUN",
-        "text": "Maya! Un oda VOICE-ல emergency-யா UPI money கேக்குறாங்க!",
+        "speaker": "ARJUN",
+        "text": "மாயா, ₹500 UPI cashback வந்திருக்கு, click பண்ணட்டுமா?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
@@ -52,11 +52,11 @@
       ],
       "line": {
         "speaker": "MAYA",
-        "text": "Hey STOP! நா பக்கத்துலதான இருக்கேன்? அது AI Voice Cloning!",
+        "text": "ஏய் STOP அர்ஜுன்! அது 100% fake scam link, பணம் போயிடும்!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "pop",
+      "sfx": "boing",
       "notes": ""
     },
     {
@@ -68,11 +68,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "ARUN"
+        "focus": "ARJUN"
       },
       "cast": [
         {
-          "name": "ARUN",
+          "name": "ARJUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -80,12 +80,12 @@
         }
       ],
       "line": {
-        "speaker": "ARUN",
-        "text": "What? Audio exact-ஆ un tone-ல பேசுதே, Server HACK ஆயிடுச்சா?",
+        "speaker": "ARJUN",
+        "text": "அடடா, எப்படிக் கண்டுபிடிச்ச?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "click",
+      "sfx": "pop",
       "notes": ""
     },
     {
@@ -110,123 +110,7 @@
       ],
       "line": {
         "speaker": "MAYA",
-        "text": "Un Insta Reels audio-வ வச்சு, AI Deepfake Model clean-ஆ generate பண்ணிடுச்சு!",
-        "voice": "ta-IN-PallaviNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "ding",
-      "notes": ""
-    },
-    {
-      "id": "004",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "tea_shop",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "ARUN"
-      },
-      "cast": [
-        {
-          "name": "ARUN",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": 1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "ARUN",
-        "text": "Damn! அப்போ நம்ம OTP கூட SAFE இல்லையா?!",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "boing",
-      "notes": ""
-    },
-    {
-      "id": "005",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "house_room",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "MAYA"
-      },
-      "cast": [
-        {
-          "name": "MAYA",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": -1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "MAYA",
-        "text": "Simple! அந்த Call-ல Password கேளு... Bot freeze ஆயிடும்!",
-        "voice": "ta-IN-PallaviNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "pop",
-      "notes": ""
-    },
-    {
-      "id": "006",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "village_street",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "ARUN"
-      },
-      "cast": [
-        {
-          "name": "ARUN",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": 1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "ARUN",
-        "text": "Machan... un first PET name என்ன?",
-        "voice": "ta-IN-ValluvarNeural"
-      },
-      "widget": "NeonTopicRow",
-      "sfx": "click",
-      "notes": ""
-    },
-    {
-      "id": "007",
-      "duration_s": 5,
-      "tool": "remotion",
-      "fallback": "preset",
-      "location": "tea_shop",
-      "time_of_day": "night",
-      "camera": {
-        "move": "punch_in",
-        "focus": "MAYA"
-      },
-      "cast": [
-        {
-          "name": "MAYA",
-          "pose": "hand_on_hip",
-          "expression": "happy",
-          "lookDir": -1,
-          "prop": "mic"
-        }
-      ],
-      "line": {
-        "speaker": "MAYA",
-        "text": "Call DISCONNECT ஆயிடுச்சு! Next time un Voice வந்தா... என்ன பண்ணுவ?",
+        "text": "பாருங்க, bank எப்போதும் APK link அனுப்பாது — எப்பவும் official app-ல check பண்ணுங்க!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
