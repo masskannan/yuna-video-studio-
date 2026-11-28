@@ -16,16 +16,32 @@ bg = world.node_tree.nodes.get("Background")
 if bg:
     bg.inputs[0].default_value = (0.02, 0.04, 0.09, 1.0)
 
-bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=1.35, location=(0, 0, 0.3))
-core = bpy.context.active_object
-mat1 = bpy.data.materials.new("CoreMat")
-mat1.use_nodes = True
-bsdf = mat1.node_tree.nodes.get("Principled BSDF")
-if bsdf:
-    bsdf.inputs["Base Color"].default_value = (0.08, 0.65, 0.98, 1.0)
-    bsdf.inputs["Metallic"].default_value = 0.85
-    bsdf.inputs["Roughness"].default_value = 0.2
-core.data.materials.append(mat1)
+import glob as _glob
+_glb_files = sorted(_glob.glob("public/approved/props/*.glb"))
+_glb_loaded = False
+if _glb_files:
+    try:
+        bpy.ops.import_scene.gltf(filepath=_glb_files[0])
+        _meshes = [o for o in bpy.context.selected_objects if o.type == "MESH"]
+        if _meshes:
+            core = _meshes[0]
+            core.location = (0, 0, 0.3)
+            _glb_loaded = True
+    except Exception as _ge:
+        print("GLB_IMPORT_FALLBACK:", _ge)
+if not _glb_loaded:
+    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=1.35, location=(0, 0, 0.3))
+if not _glb_loaded:
+    core = bpy.context.active_object
+    mat1 = bpy.data.materials.new("CoreMat")
+if not _glb_loaded:
+    mat1.use_nodes = True
+    bsdf = mat1.node_tree.nodes.get("Principled BSDF")
+    if bsdf:
+        bsdf.inputs["Base Color"].default_value = (0.08, 0.65, 0.98, 1.0)
+        bsdf.inputs["Metallic"].default_value = 0.85
+        bsdf.inputs["Roughness"].default_value = 0.2
+    core.data.materials.append(mat1)
 
 bpy.ops.mesh.primitive_torus_add(major_radius=2.1, minor_radius=0.14, location=(0, 0, 0.3))
 ring = bpy.context.active_object

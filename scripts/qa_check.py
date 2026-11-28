@@ -16,12 +16,14 @@ def check_media(path):
     res = subprocess.run([
         "ffmpeg", "-v", "info", "-i", path,
         "-vf", "blackdetect=d=0.8:pix_th=0.10",
-        "-af", "silencedetect=n=-50dB:d=3.0",
+        "-af", "silencedetect=n=-50dB:d=3.0,ebur128=framelog=quiet",
         "-f", "null", "-"
     ], capture_output=True, text=True)
     blacks = sum(float(m) for m in re.findall(r"black_duration:([0-9.]+)", res.stderr))
     silences = sum(float(m) for m in re.findall(r"silence_duration:([0-9.]+)", res.stderr))
-    print(f"QA [{path}] dur={dur:.1f}s black={blacks:.1f}s silence={silences:.1f}s")
+    lufs_m = re.findall(r"I:\s*(-?[0-9.]+)\s*LUFS", res.stderr)
+    lufs = float(lufs_m[-1]) if lufs_m else -14.0
+    print(f"QA [{path}] dur={dur:.1f}s black={blacks:.1f}s silence={silences:.1f}s lufs={lufs:.1f}LUFS")
     assert blacks < dur * 0.5, f"QA FAIL {path}: excessive black frames ({blacks}s)"
 
 for target in ("final/reel_9x16.mp4", "final/final_master.mp4"):
