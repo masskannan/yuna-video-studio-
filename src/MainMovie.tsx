@@ -238,7 +238,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
             <div style={{ width: "92%", height: 14, borderRadius: 999, background: `linear-gradient(90deg, transparent, ${active.accent}, transparent)`, opacity: 0.75 }} />
             </div>
             ) : mode === "split_pip" ? (
-          <SplitPip wide={wide} frame={frame} accent={active.accent} heading={active.heading} charName={activeSpeaker} charCfg={characters[activeSpeaker] || charEntries[0]?.[1] || {}} mouth={activeLip ? activeLip.mouth : "X"} />
+          <SplitPip wide={wide} frame={frame} accent={active.accent} heading={active.heading} charName={activeSpeaker} charCfg={characters[activeSpeaker] || charEntries[0]?.[1] || {}} mouth={activeLip ? activeLip.mouth : "X"} pose={((Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {}).pose} prop={((Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {}).prop} action={((Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {}).action || ""} />
         ) : mode === "ui_ux" ? (
           <div style={{ paddingBottom: wide ? 70 : 280 }}>
             <UiUxOverlay frame={frame} accent={active.accent} heading={active.heading} wide={wide} />

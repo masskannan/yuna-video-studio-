@@ -696,7 +696,7 @@ OUR ENGINE CAPABILITIES (USE THESE FULLY):
    - "hotel_menu": "YUNA STUDIO BRIEF" checklist from metaphor_items[]
    - "payment_stamp": 2-step summary + "VERIFIED ✓" stamp from metaphor_items[]
 5. 3-Beat Viral Arc:
-   - Scene 1 (morning, 0-12s): Hook Question/Myth (pose: "listen_ear", metaphor: "card_rain"|"neon_topics")
+   - Scene 1 (morning, 0-12s): Hook Question/Myth (pose: "listen_ear", metaphor: "neon_topics"|"bus_balancer")
    - Scene 2 (sunset, 12-28s): Fast Debate + Concrete Metaphor (pose: "wave", metaphor: "bus_balancer"|"hotel_menu")
    - Scene 3 (night, 28-40s): Twist + Loop Punchline (pose: "arms_up", prop: "headband", metaphor: "payment_stamp") — NO boring "Subscribe" ending.
 
@@ -741,8 +741,9 @@ Return ONLY valid JSON:
   if (opts.dim === "blender" || opts.dim === "5d") tl.use_blender = true;
   if (opts.tg_msg_id) tl.tg_msg_id = String(opts.tg_msg_id);
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
+  tl.hook_text = String(tl.hook_text || tl.title || "").slice(0, 72);
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
-  tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; const _acts = ["talk_casual_gesture", "explain_point_board", "happy_fist_pump", "shock_jaw_drop_pop", "confused_head_scratch", "wave_hello_energetic"]; return { ...s, part: s.part || i + 1, action: String(s.action || _acts[i % _acts.length]), start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
+  tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; const _acts = ["talk_casual_gesture", "explain_point_board", "happy_fist_pump", "shock_jaw_drop_pop", "confused_head_scratch", "wave_hello_energetic"]; const _mets = ["neon_topics", "bus_balancer", "hotel_menu", "payment_stamp"]; return { ...s, part: s.part || i + 1, action: String(s.action || _acts[i % _acts.length]), metaphor: (!s.metaphor || s.metaphor === "card_rain") ? _mets[i % _mets.length] : s.metaphor, start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
   const parsedChars = (parsed.characters && typeof parsed.characters === "object") ? parsed.characters : {};
   const chars = {};
   const pKeys = Object.keys(parsedChars).slice(0, useCameo ? 2 : 3);
