@@ -175,3 +175,61 @@ if has_3d_shot:
                 print("TRIPOSR_3D_OK:", cname)
             except Exception as te:
                 print("TRIPOSR_SKIP:", cname, te)
+
+
+# 6. DEPTH_ANYTHING_V2_BOKEH: One-time DSLR Bokeh pass for public/approved/bg_*.jpg
+if has_gpu:
+    bokeh_targets = [Path(bp) for bp in loc_map.values() if Path(bp).exists() and not Path(bp).name.endswith("_bokeh.jpg")]
+    need_bokeh = [bp for bp in bokeh_targets if not Path(f"public/approved/{bp.stem}_bokeh.jpg").exists()]
+    if need_bokeh:
+        try:
+            from transformers import pipeline as hf_pipe
+            from PIL import ImageFilter
+            import numpy as np
+            depth_est = hf_pipe("depth-estimation", model="depth-anything/Depth-Anything-V2-Small-hf", device=0)
+            out_bk = Path("/kaggle/working/out_bokeh")
+            out_bk.mkdir(parents=True, exist_ok=True)
+            for bp in need_bokeh:
+                im = Image.open(bp).convert("RGB")
+                d_im = depth_est(im)["depth"].resize(im.size)
+                d_arr = np.array(d_im, dtype=np.float32) / 255.0
+                blur_im = im.filter(ImageFilter.GaussianBlur(radius=8))
+                fg = np.array(im, dtype=np.float32)
+                bg_b = np.array(blur_im, dtype=np.float32)
+                alpha = np.clip(d_arr, 0.0, 1.0)[..., None]
+                comp = (fg * alpha + bg_b * (1.0 - alpha)).astype(np.uint8)
+                Image.fromarray(comp).save(out_bk / f"{bp.stem}_bokeh.jpg", "JPEG", quality=92)
+                print("BOKEH_OK:", bp.stem)
+            del depth_est
+            torch.cuda.empty_cache()
+        except Exception as bk_e:
+            print("BOKEH_SKIP:", bk_e)
+
+# 7. MUSICGEN_3MOOD_BGM: One-time 3-mood royalty-free BGM pack (upbeat, tech, suspense)
+bgm_moods = {
+    "upbeat": "energetic upbeat lo-fi electronic Tamil tech vlog background beat, crisp drums, clean synth, no vocals",
+    "tech": "modern futuristic clean tech explainer ambient electronic pulse, subtle bass, no vocals",
+    "suspense": "cinematic tense mystery investigative documentary pulse, deep sub bass, no vocals",
+}
+need_bgm = {k: v for k, v in bgm_moods.items() if not Path(f"assets/audio/bgm_{k}.mp3").exists()}
+if has_gpu and need_bgm:
+    try:
+        from transformers import AutoProcessor, MusicgenForConditionalGeneration
+        import scipy.io.wavfile as wavfile
+        proc = AutoProcessor.from_pretrained("facebook/musicgen-small")
+        mg = MusicgenForConditionalGeneration.from_pretrained("facebook/musicgen-small").to("cuda:0")
+        out_au = Path("/kaggle/working/out_audio")
+        out_au.mkdir(parents=True, exist_ok=True)
+        for mk, mp in need_bgm.items():
+            inp = proc(text=[mp], padding=True, return_tensors="pt").to("cuda:0")
+            audio_vals = mg.generate(**inp, max_new_tokens=512)
+            sr = mg.config.audio_encoder.sampling_rate
+            w_tmp = out_au / f"bgm_{mk}.wav"
+            wavfile.write(str(w_tmp), rate=sr, data=audio_vals[0, 0].cpu().numpy())
+            subprocess.run(["ffmpeg", "-y", "-i", str(w_tmp), "-b:a", "192k", str(out_au / f"bgm_{mk}.mp3")], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            w_tmp.unlink(missing_ok=True)
+            print("MUSICGEN_BGM_OK:", mk)
+        del mg
+        torch.cuda.empty_cache()
+    except Exception as mg_e:
+        print("MUSICGEN_SKIP:", mg_e)
