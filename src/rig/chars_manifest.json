@@ -69,6 +69,76 @@
       "face_mouth"
     ]
   },
+  "arun": {
+    "source_size": [
+      151,
+      401
+    ],
+    "cropped_size": [
+      151,
+      397
+    ],
+    "body_profile": {
+      "type": "balanced",
+      "width_ratio": 0.38,
+      "head_ratio": 0.186,
+      "torso_ratio": 0.307,
+      "leg_ratio": 0.506
+    },
+    "physics_adapt": {
+      "squash_bias": 1.0,
+      "arm_clearance_mult": 1.0,
+      "stride_px_mult": 1.35,
+      "cycle_hz_mult": 0.75
+    },
+    "anchors_norm": {
+      "neck_y": 0.186,
+      "hip_y": 0.494,
+      "torso_x": [
+        0.066,
+        0.934
+      ],
+      "shoulder_l": [
+        0.066,
+        0.223
+      ],
+      "shoulder_r": [
+        0.934,
+        0.223
+      ],
+      "mouth_box": [
+        0.38,
+        0.121,
+        0.24,
+        0.034
+      ],
+      "eye_box": [
+        0.3,
+        0.075,
+        0.4,
+        0.034
+      ],
+      "foot_center": [
+        0.5,
+        1.0
+      ]
+    },
+    "character_name": "arun",
+    "angles": [
+      "front",
+      "three_quarter",
+      "side",
+      "back"
+    ],
+    "face_cuts": [
+      "face_neutral",
+      "face_happy",
+      "face_angry",
+      "face_surprised",
+      "face_blink",
+      "face_mouth"
+    ]
+  },
   "maya": {
     "source_size": [
       144,
