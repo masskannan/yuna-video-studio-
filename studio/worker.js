@@ -638,6 +638,75 @@ async function callNvidiaAgent(env, sys, usr) {
   } catch (_) { return null; }
 }
 
+function matchTermsV31(text, asciiTerms = [], tamilRoots = []) {
+  let hits = 0;
+  if
+
+ (asciiTerms.length) {
+    const reAscii = new RegExp(`(?<![A-Za-z0-9-])(${asciiTerms.join("|")})(?![A-Za-z0-9-])`, "gi");
+    hits += (text.match(reAscii) || []).length;
+  }
+  if (tamilRoots.length) {
+    const reTa = new RegExp(`(?<![\\p{L}\\p{M}])(${tamilRoots.join("|")})`, "giu");
+    hits += (text.match(reTa) || []).length;
+  }
+  return hits;
+}
+const BG_PRESETS_V31 = {
+  cyber_desk:      { en: ["hack", "scam", "otp", "cyber", "malware", "phishing", "password", "vpn", "ai", "coding", "server"], ta: ["மோசடி", "சைபர்", "ஹேக்"], rim: { color: "#22D3EE", intensity: 0.80 } },
+  bank_counter:    { en: ["bank", "upi", "loan", "emi", "rbi", "credit", "account", "tax", "gst", "pf"], ta: ["வங்கி", "கடன்", "பணம்"], rim: { color: "#FBBF24", intensity: 0.25 } },
+  tech_lab:        { en: ["gpu", "chip", "robot", "drone", "battery", "ev", "hardware", "5g", "gadget"], ta: ["தொழில்நுட்பம்", "ரோபோ"], rim: { color: "#38BDF8", intensity: 0.70 } },
+  modern_office:   { en: ["job", "salary", "hr", "interview", "startup", "company", "manager", "office"], ta: ["வேலை", "சம்பளம்", "அலுவலகம்"], rim: { color: "#FDE68A", intensity: 0.28 } },
+  mobile_studio:   { en: ["youtube", "reel", "shorts", "podcast", "creator", "edit", "video", "subscriber"], ta: ["வீடியோ", "ஷார்ட்ஸ்", "யூடியூப்"], rim: { color: "#F472B6", intensity: 0.85 } },
+  classroom_board: { en: ["exam", "neet", "tnpsc", "study", "college", "student", "marks"], ta: ["பரீட்சை", "படிப்பு", "மாணவர்"], rim: { color: "#FEF08A", intensity: 0.20 } },
+  clinic_consult:  { en: ["doctor", "health", "bp", "sugar", "sleep", "diet", "hospital"], ta: ["மருத்துவர்", "உடல்நலம்", "மருத்துவமனை"], rim: { color: "#5EEAD4", intensity: 0.35 } },
+  street_market:   { en: ["price", "gold", "petrol", "market", "shop", "business"], ta: ["கடை", "விலை", "விற்பனை", "தங்கம்"], rim: { color: "#FB923C", intensity: 0.42 } },
+};
+const EMOTION_RULES_V31 = [
+  { emotion: "surprised", en: ["shock", "unbelievable", "wait", "what"], ta: ["அடடா", "என்னது", "அதிர்ச்சி"], punct: /(\?\!|\!\!)/ },
+  { emotion: "angry", en: ["scam", "fraud", "never", "warning", "stop", "danger", "fake", "hack"], ta: ["ஏமாற்றம்", "ஆபத்து", "வேண்டாம்", "மோசடி"] },
+  { emotion: "thinking", en: ["why", "how", "secret", "reason"], ta: ["எப்படி", "ஏன்", "தெரியுமா", "யோசி"], punct: /\?$/ },
+  { emotion: "happy", en: ["free", "win", "awesome", "profit", "save", "easy", "super"], ta: ["இலவசம்", "சூப்பர்", "லாபம்", "நல்லது"] },
+];
+const HAND_POSE_RULES_V31 = [
+  { pose: "namaste", en: ["vanakkam", "namaste", "welcome"], ta: ["வணக்கம்", "நன்றி"] },
+  { pose: "point", en: ["look", "step", "first", "check", "warning"], ta: ["பாருங்க", "முக்கியம்", "கவனிங்க"] },
+  { pose: "fist", en: ["stop", "never", "scam", "fight", "hack"], ta: ["வேண்டாம்", "தப்பு", "ஆபத்து", "மோசடி"] },
+  { pose: "thumbs_up", en: ["super", "free", "best", "profit", "awesome"], ta: ["சூப்பர்", "இலவசம்", "நல்லது"] },
+];
+function routeSceneBackgroundV31(lines) {
+  const fullText = (lines || []).map(l => l.text || "").join(" ");
+  let best = { niche: "modern_office", score: 0 };
+  for (const [niche, cfg] of Object.entries(BG_PRESETS_V31)) {
+    const score = matchTermsV31(fullText, cfg.en, cfg.ta);
+    if (score > best.score) best = { niche, score };
+  }
+  return { bg_niche: best.niche, neon_rim: BG_PRESETS_V31[best.niche].rim };
+}
+function enrichDialogueV31(lines, castCount) {
+  let prevEmotion = "neutral";
+  return lines.map((line, idx) => {
+    const text = String(line.text || "").trim();
+    let emotion = "neutral", explicitTrigger = false;
+    for (const r of EMOTION_RULES_V31) {
+      if ((r.punct && r.punct.test(text)) || matchTermsV31(text, r.en, r.ta) > 0) { emotion = r.emotion; explicitTrigger = true; break; }
+    }
+    if (!explicitTrigger && text.length < 36 && prevEmotion !== "neutral") emotion = prevEmotion;
+    else if (emotion === "neutral" && text.endsWith("!")) emotion = "happy";
+    prevEmotion = emotion;
+    let hand_pose = "open_palm";
+    for (const r of HAND_POSE_RULES_V31) { if (matchTermsV31(text, r.en, r.ta) > 0) { hand_pose = r.pose; break; } }
+    let pair_action = line.pair_action || "none";
+    if (castCount >= 2 && pair_action === "none") {
+      if (matchTermsV31(text, ["deal", "high five", "win"], ["ஜெயிச்சாச்சு"]) > 0) { pair_action = "pair_high_five"; hand_pose = "open_palm"; }
+      else if (matchTermsV31(text, ["welcome", "agree", "partner"], ["வணக்கம்", "நன்றி"]) > 0) { pair_action = "pair_handshake"; hand_pose = "handshake"; }
+      else if (matchTermsV31(text, ["no way", "wrong", "wait a minute"], ["இல்லையே", "தப்பு", "பொய்"]) > 0) { pair_action = "pair_argue_face_to_face"; hand_pose = "point"; }
+    }
+    const camera_shot = idx === 0 ? "medium_punch" : emotion === "surprised" ? "closeup_snap" : "wide_two_shot";
+    return { ...line, emotion: line.emotion || emotion, hand_pose: line.hand_pose || hand_pose, pair_action, camera_shot };
+  });
+}
+
 async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false, opts = {}) {
   const bible = await loadCharBible(env);
   let custom3dChars = [];
@@ -810,6 +879,11 @@ Return ONLY valid JSON:
       meme: d.meme ? String(d.meme).replace(/[^a-z0-9_-]/gi, "_").toLowerCase() : ""
     };
   });
+  const dlgV31 = enrichDialogueV31(dlg, castKeys.length);
+  dlg.splice(0, dlg.length, ...dlgV31);
+  const _bgRoute = routeSceneBackgroundV31(dlg);
+  if (!tl.bg_niche) tl.bg_niche = _bgRoute.bg_niche;
+  if (!tl.neon_rim) tl.neon_rim = _bgRoute.neon_rim;
   const totalWords = dlg.map(d => String(d.text || "").trim().split(/\s+/).length).reduce((a, b) => a + b, 0);
   const autoReelSec = Math.min(85, Math.max(30, Math.ceil(totalWords / 1.85) + 6));
   tl.reel_sec = Math.max(Number(tl.reel_sec) || 30, autoReelSec);

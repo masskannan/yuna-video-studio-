@@ -276,3 +276,59 @@ try:
         print("GH_SYNC_SKIP: add GH_TOKEN in Kaggle Secrets for auto-sync")
 except Exception as gse:
     print("GH_SYNC_ERR:", gse)
+
+
+# 9. NICHE_BG_BANK_V31: 8-Niche Dual-Orientation SDXL-Lightning + Depth-Anything-V2 Bokeh Bank
+if has_gpu:
+    try:
+        from diffusers import EulerDiscreteScheduler, StableDiffusionXLPipeline
+        from huggingface_hub import hf_hub_download
+        from transformers import AutoImageProcessor, AutoModelForDepthEstimation
+        import cv2, numpy as np
+        NICHES = {
+            "cyber_desk":      ("3D Pixar style cybersecurity desk, glowing cyan monitors, clean floor plane, no people", "#22D3EE", 0.80),
+            "modern_office":   ("3D Pixar style bright modern corporate glass office, warm sunlight, wooden floor, no people", "#FDE68A", 0.28),
+            "tech_lab":        ("3D Pixar style robotics and AI hardware lab, clean workbench, blue rim lights, no people", "#38BDF8", 0.70),
+            "bank_counter":    ("3D Pixar style Indian modern bank branch interior, warm marble floor, teller counter, no people", "#FBBF24", 0.25),
+            "mobile_studio":   ("3D Pixar style creator podcast studio, acoustic panels, amber and magenta neon, no people", "#F472B6", 0.85),
+            "classroom_board": ("3D Pixar style bright Indian smart classroom with green board and sunlit floor, no people", "#FEF08A", 0.20),
+            "clinic_consult":  ("3D Pixar style clean friendly doctor consultation room, soft teal walls, no people", "#5EEAD4", 0.35),
+            "street_market":   ("3D Pixar style colorful South Indian morning street shop backdrop, golden hour, no people", "#FB923C", 0.42),
+        }
+        bg_dir = Path("/kaggle/working/out_bg_bank")
+        bg_dir.mkdir(parents=True, exist_ok=True)
+        need_niches = [k for k in NICHES if not (Path("public/bg_bank") / f"{k}_shorts_v1.webp").exists()]
+        if need_niches:
+            dev_gen = "cuda:0"
+            dev_dep = "cuda:1" if torch.cuda.device_count() > 1 else "cuda:0"
+            spipe = StableDiffusionXLPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, variant="fp16").to(dev_gen)
+            lora_p = hf_hub_download("ByteDance/SDXL-Lightning", "sdxl_lightning_4step_lora.safetensors")
+            spipe.load_lora_weights(lora_p); spipe.fuse_lora()
+            spipe.scheduler = EulerDiscreteScheduler.from_config(spipe.scheduler.config, timestep_spacing="trailing")
+            d_proc = AutoImageProcessor.from_pretrained("depth-anything/Depth-Anything-V2-Small-hf")
+            d_mod = AutoModelForDepthEstimation.from_pretrained("depth-anything/Depth-Anything-V2-Small-hf").to(dev_dep)
+            man = json.loads(Path("src/bg_manifest.json").read_text()) if Path("src/bg_manifest.json").exists() else {}
+            for nk in need_niches:
+                pr, rc, ri = NICHES[nk]
+                for ori, gw, gh, ow, oh in [("shorts", 432, 768, 1080, 1920), ("landscape", 768, 432, 1280, 720)]:
+                    im = spipe(prompt=pr, num_inference_steps=4, guidance_scale=0.0, width=gw, height=gh).images[0].resize((ow, oh), Image.Resampling.LANCZOS)
+                    inp = d_proc(images=im, return_tensors="pt").to(dev_dep)
+                    with torch.no_grad():
+                        dep = d_mod(**inp).predicted_depth.squeeze().cpu().numpy()
+                    dep_r = cv2.resize(dep, (ow, oh), interpolation=cv2.INTER_CUBIC)
+                    dep_n = (dep_r - dep_r.min()) / (dep_r.max() - dep_r.min() + 1e-6)
+                    rgb = np.array(im)
+                    bm = cv2.GaussianBlur(rgb, (15, 15), 0)
+                    bf = cv2.GaussianBlur(rgb, (35, 35), 0)
+                    fg = np.linspace(1.0, 0.25, oh)[:, None, None]
+                    wf = np.clip((1.0 - dep_n) * 1.35, 0.0, 1.0)[..., None] * fg
+                    comp = np.clip(rgb * (1 - wf) + (0.4 * bm + 0.6 * bf) * wf, 0, 255).astype(np.uint8)
+                    out_f = bg_dir / f"{nk}_{ori}_v1.webp"
+                    Image.fromarray(comp).save(out_f, "WEBP", quality=86)
+                    if ori == "shorts":
+                        man[nk] = f"bg_bank/{out_f.name}"
+                print("BG_BANK_NICHE_OK:", nk)
+            (bg_dir / "bg_manifest.json").write_text(json.dumps(man, indent=2), encoding="utf-8")
+            del spipe, d_mod; torch.cuda.empty_cache()
+    except Exception as bge:
+        print("BG_BANK_SKIP:", bge)
