@@ -15,6 +15,8 @@ import { CharacterRig, CharConfig } from "./rig/CharacterRig";
 import { UniversalCharacter } from "./rig/UniversalCharacter";
 import charsManifest from "./rig/chars_manifest.json";
 import { UiUxOverlay } from "./modes/UiUxOverlay";
+import bgManifestRaw from "./bg_manifest.json";
+const bgManifest = bgManifestRaw as Record<string, string>;
 
 const timeline = timelineRaw as Record<string, any>;
 const brand = brandRaw as Record<string, any>;
@@ -112,7 +114,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         return (
           <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX + shakeX}px, ${shakeY}px, 0)` }}>
         {["village_street", "tea_shop", "house_room"].includes(stg) && (timeline.fx_mode || "SAFE") !== "SAFE" && (<>
-          <Img src={staticFile(`approved/bg_${stg}.jpg`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.92 }} />
+          <Img src={staticFile(bgManifest[stg] || `approved/bg_${stg}.jpg`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.92 }} />
           <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 480, background: "linear-gradient(to top, rgba(2,6,23,0.82), transparent)", pointerEvents: "none" }} />
           {/* YUNA_KINETIC_HOOK */}
           {idx === 0 && frame < 75 && (timeline.fx_mode || "SAFE") !== "SAFE" && (

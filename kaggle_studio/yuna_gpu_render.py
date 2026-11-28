@@ -233,3 +233,46 @@ if has_gpu and need_bgm:
         torch.cuda.empty_cache()
     except Exception as mg_e:
         print("MUSICGEN_SKIP:", mg_e)
+
+
+# 8. OPTIONAL_GITHUB_SYNC: Auto-commit bgm_*.mp3 & bg_*_bokeh.jpg if GH_TOKEN is in Kaggle Secrets
+try:
+    import base64
+    gh_tok = os.environ.get("GH_TOKEN", "")
+    if not gh_tok:
+        try:
+            from kaggle_secrets import UserSecretsClient
+            gh_tok = UserSecretsClient().get_secret("GH_TOKEN") or ""
+        except Exception:
+            gh_tok = ""
+    if gh_tok:
+        def gh_put(repo_path, data_bytes, msg):
+            api = f"https://api.github.com/repos/masskannan/yuna-video-studio-/contents/{repo_path}"
+            hdr = {"Authorization": f"Bearer {gh_tok}", "Accept": "application/vnd.github+json", "User-Agent": "YunaKaggle"}
+            sha = None
+            try:
+                meta = json.loads(urllib.request.urlopen(urllib.request.Request(api + "?ref=main", headers=hdr)).read())
+                sha = meta.get("sha")
+            except Exception:
+                pass
+            body = {"message": msg, "content": base64.b64encode(data_bytes).decode(), "branch": "main"}
+            if sha:
+                body["sha"] = sha
+            urllib.request.urlopen(urllib.request.Request(api, data=json.dumps(body).encode(), headers={**hdr, "Content-Type": "application/json"}, method="PUT"))
+            print("GH_SYNC_OK:", repo_path)
+
+        for mp in sorted(Path("/kaggle/working/out_audio").glob("bgm_*.mp3")) if Path("/kaggle/working/out_audio").exists() else []:
+            gh_put(f"assets/audio/{mp.name}", mp.read_bytes(), f"feat(audio): MusicGen {mp.name} [skip ci]")
+        bg_man = json.loads(Path("src/bg_manifest.json").read_text(encoding="utf-8")) if Path("src/bg_manifest.json").exists() else {}
+        changed_bm = False
+        for bp in sorted(Path("/kaggle/working/out_bokeh").glob("bg_*_bokeh.jpg")) if Path("/kaggle/working/out_bokeh").exists() else []:
+            gh_put(f"public/approved/{bp.name}", bp.read_bytes(), f"feat(bokeh): {bp.name} [skip ci]")
+            loc_key = bp.stem.replace("bg_", "", 1).replace("_bokeh", "")
+            bg_man[loc_key] = f"approved/{bp.name}"
+            changed_bm = True
+        if changed_bm:
+            gh_put("src/bg_manifest.json", (json.dumps(bg_man, indent=2) + "\n").encode(), "chore(bokeh): update bg_manifest.json [skip ci]")
+    else:
+        print("GH_SYNC_SKIP: add GH_TOKEN in Kaggle Secrets for auto-sync")
+except Exception as gse:
+    print("GH_SYNC_ERR:", gse)
