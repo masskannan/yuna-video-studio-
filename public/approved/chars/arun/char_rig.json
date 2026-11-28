@@ -1,11 +1,184 @@
 {
-  "source_size": [
-    151,
-    401
-  ],
-  "cropped_size": [
+  "schema_version": "3.1.0",
+  "character_id": "arun",
+  "rig_tier": "fast_auto_slice",
+  "framing": "full_body",
+  "rig_confidence": 0.998,
+  "fallback_mode": "none",
+  "canvas": {
+    "width": 151,
+    "height": 397,
+    "floor_y": 0.945,
+    "contact_shadow_rx": 0.19
+  },
+  "pivots": {
+    "root_floor": {
+      "x": 0.5026,
+      "y": 0.945
+    },
+    "pelvis": {
+      "x": 0.5026,
+      "y": 0.6042
+    },
+    "neck_pivot": {
+      "x": 0.5055,
+      "y": 0.2444
+    },
+    "shoulder_l": {
+      "x": 0.2058,
+      "y": 0.2792
+    },
+    "elbow_l": {
+      "x": 0.1116,
+      "y": 0.4489
+    },
+    "wrist_l": {
+      "x": 0.0765,
+      "y": 0.6
+    },
+    "shoulder_r": {
+      "x": 0.8052,
+      "y": 0.2795
+    },
+    "elbow_r": {
+      "x": 0.895,
+      "y": 0.448
+    },
+    "wrist_r": {
+      "x": 0.9239,
+      "y": 0.5954
+    }
+  },
+  "bones_px": {
+    "upper_arm_l": {
+      "length_px": 68.86,
+      "rest_deg": 101.92
+    },
+    "forearm_l": {
+      "length_px": 60.22,
+      "rest_deg": 95.05
+    },
+    "upper_arm_r": {
+      "length_px": 68.25,
+      "rest_deg": 78.54
+    },
+    "forearm_r": {
+      "length_px": 58.68,
+      "rest_deg": 85.74
+    }
+  },
+  "face_boxes": {
+    "head_box": {
+      "x": 0.2823,
+      "y": 0.0,
+      "w": 0.4166,
+      "h": 0.2764
+    },
+    "eye_box": {
+      "x": 0.3768,
+      "y": 0.0899,
+      "w": 0.229,
+      "h": 0.036
+    },
+    "mouth_box": {
+      "x": 0.4206,
+      "y": 0.1453,
+      "w": 0.1408,
+      "h": 0.0368
+    },
+    "jaw_pivot": {
+      "x": 0.4896,
+      "y": 0.1512
+    }
+  },
+  "layers": {
+    "back_hair": {
+      "src": "layers/back_hair.png",
+      "type": "raster",
+      "z": 10,
+      "parallax": -0.4
+    },
+    "legs": {
+      "src": "layers/legs.svg",
+      "type": "inline_svg",
+      "z": 20,
+      "parallax": 0.0,
+      "recolor_var": "--pant-color"
+    },
+    "upper_arm_l": {
+      "src": "layers/upper_arm_l.svg",
+      "type": "inline_svg",
+      "z": 26,
+      "parallax": 0.25,
+      "recolor_var": "--shirt-color"
+    },
+    "forearm_l": {
+      "src": "layers/forearm_l.svg",
+      "type": "inline_svg",
+      "z": 27,
+      "parallax": 0.28,
+      "recolor_var": "--shirt-color"
+    },
+    "torso": {
+      "src": "layers/torso.svg",
+      "type": "inline_svg",
+      "z": 30,
+      "parallax": 0.2,
+      "recolor_var": "--shirt-color"
+    },
+    "upper_arm_r": {
+      "src": "layers/upper_arm_r.svg",
+      "type": "inline_svg",
+      "z": 50,
+      "parallax": 0.3,
+      "recolor_var": "--shirt-color"
+    },
+    "forearm_r": {
+      "src": "layers/forearm_r.svg",
+      "type": "inline_svg",
+      "z": 51,
+      "parallax": 0.33,
+      "recolor_var": "--shirt-color"
+    },
+    "head": {
+      "src": "layers/head.png",
+      "type": "raster",
+      "z": 40,
+      "parallax": 1.0
+    },
+    "eyes": {
+      "src": "layers/eyes_open.png",
+      "type": "raster",
+      "z": 45,
+      "parallax": 1.2
+    },
+    "rim_mask": {
+      "src": "layers/rim_mask.png",
+      "type": "raster",
+      "z": 60,
+      "parallax": 0.0
+    }
+  },
+  "mouth_visemes": {
+    "A": "layers/mouth_A.svg",
+    "B": "layers/mouth_B.svg",
+    "C": "layers/mouth_C.svg",
+    "D": "layers/mouth_D.svg",
+    "E": "layers/mouth_E.svg",
+    "F": "layers/mouth_F.svg",
+    "G": "layers/mouth_G.svg",
+    "H": "layers/mouth_H.svg",
+    "X": "layers/mouth_X.svg"
+  },
+  "size": [
     151,
     397
+  ],
+  "neck_y": 74,
+  "hip_y": 196,
+  "torso_x": [
+    10,
+    141
   ],
   "body_profile": {
     "type": "balanced",
@@ -15,42 +188,29 @@
     "leg_ratio": 0.506
   },
   "physics_adapt": {
+    "stride_mult": 1.35,
+    "cycle_hz_mult": 0.75,
     "squash_bias": 1.0,
-    "arm_clearance_mult": 1.0,
-    "stride_px_mult": 1.35,
-    "cycle_hz_mult": 0.75
+    "arm_clearance": 1.0
   },
-  "anchors_norm": {
-    "neck_y": 0.186,
-    "hip_y": 0.494,
-    "torso_x": [
-      0.066,
-      0.934
-    ],
-    "shoulder_l": [
-      0.066,
-      0.223
-    ],
-    "shoulder_r": [
-      0.934,
-      0.223
-    ],
-    "mouth_box": [
-      0.38,
-      0.121,
-      0.24,
-      0.034
-    ],
-    "eye_box": [
-      0.3,
-      0.075,
-      0.4,
-      0.034
-    ],
-    "foot_center": [
-      0.5,
-      1.0
-    ]
+  "mouth_box": {
+    "x": 0.4206,
+    "y": 0.1453,
+    "w": 0.1408,
+    "h": 0.0368
+  },
+  "eye_box": {
+    "x": 0.3768,
+    "y": 0.0899,
+    "w": 0.229,
+    "h": 0.036
+  },
+  "parts": {
+    "head": "head.png",
+    "torso": "torso.png",
+    "arm_l": "arm_l.png",
+    "arm_r": "arm_r.png",
+    "legs": "legs.png"
   },
   "character_name": "arun",
   "angles": [

@@ -1,11 +1,184 @@
 {
-  "source_size": [
-    311,
-    424
-  ],
-  "cropped_size": [
+  "schema_version": "3.1.0",
+  "character_id": "arjun",
+  "rig_tier": "fast_auto_slice",
+  "framing": "full_body",
+  "rig_confidence": 0.997,
+  "fallback_mode": "none",
+  "canvas": {
+    "width": 310,
+    "height": 423,
+    "floor_y": 0.945,
+    "contact_shadow_rx": 0.19
+  },
+  "pivots": {
+    "root_floor": {
+      "x": 0.4998,
+      "y": 0.945
+    },
+    "pelvis": {
+      "x": 0.4998,
+      "y": 0.57
+    },
+    "neck_pivot": {
+      "x": 0.5049,
+      "y": 0.2472
+    },
+    "shoulder_l": {
+      "x": 0.3595,
+      "y": 0.2799
+    },
+    "elbow_l": {
+      "x": 0.2246,
+      "y": 0.3949
+    },
+    "wrist_l": {
+      "x": 0.1025,
+      "y": 0.4894
+    },
+    "shoulder_r": {
+      "x": 0.6504,
+      "y": 0.2845
+    },
+    "elbow_r": {
+      "x": 0.7803,
+      "y": 0.399
+    },
+    "wrist_r": {
+      "x": 0.9005,
+      "y": 0.4909
+    }
+  },
+  "bones_px": {
+    "upper_arm_l": {
+      "length_px": 64.15,
+      "rest_deg": 130.68
+    },
+    "forearm_l": {
+      "length_px": 55.05,
+      "rest_deg": 133.44
+    },
+    "upper_arm_r": {
+      "length_px": 62.99,
+      "rest_deg": 50.26
+    },
+    "forearm_r": {
+      "length_px": 53.85,
+      "rest_deg": 46.21
+    }
+  },
+  "face_boxes": {
+    "head_box": {
+      "x": 0.3594,
+      "y": 0.0044,
+      "w": 0.2794,
+      "h": 0.2933
+    },
+    "eye_box": {
+      "x": 0.4309,
+      "y": 0.1106,
+      "w": 0.1376,
+      "h": 0.0373
+    },
+    "mouth_box": {
+      "x": 0.453,
+      "y": 0.1651,
+      "w": 0.0897,
+      "h": 0.0351
+    },
+    "jaw_pivot": {
+      "x": 0.4992,
+      "y": 0.1717
+    }
+  },
+  "layers": {
+    "back_hair": {
+      "src": "layers/back_hair.png",
+      "type": "raster",
+      "z": 10,
+      "parallax": -0.4
+    },
+    "legs": {
+      "src": "layers/legs.svg",
+      "type": "inline_svg",
+      "z": 20,
+      "parallax": 0.0,
+      "recolor_var": "--pant-color"
+    },
+    "upper_arm_l": {
+      "src": "layers/upper_arm_l.svg",
+      "type": "inline_svg",
+      "z": 26,
+      "parallax": 0.25,
+      "recolor_var": "--shirt-color"
+    },
+    "forearm_l": {
+      "src": "layers/forearm_l.svg",
+      "type": "inline_svg",
+      "z": 27,
+      "parallax": 0.28,
+      "recolor_var": "--shirt-color"
+    },
+    "torso": {
+      "src": "layers/torso.svg",
+      "type": "inline_svg",
+      "z": 30,
+      "parallax": 0.2,
+      "recolor_var": "--shirt-color"
+    },
+    "upper_arm_r": {
+      "src": "layers/upper_arm_r.svg",
+      "type": "inline_svg",
+      "z": 50,
+      "parallax": 0.3,
+      "recolor_var": "--shirt-color"
+    },
+    "forearm_r": {
+      "src": "layers/forearm_r.svg",
+      "type": "inline_svg",
+      "z": 51,
+      "parallax": 0.33,
+      "recolor_var": "--shirt-color"
+    },
+    "head": {
+      "src": "layers/head.png",
+      "type": "raster",
+      "z": 40,
+      "parallax": 1.0
+    },
+    "eyes": {
+      "src": "layers/eyes_open.png",
+      "type": "raster",
+      "z": 45,
+      "parallax": 1.2
+    },
+    "rim_mask": {
+      "src": "layers/rim_mask.png",
+      "type": "raster",
+      "z": 60,
+      "parallax": 0.0
+    }
+  },
+  "mouth_visemes": {
+    "A": "layers/mouth_A.svg",
+    "B": "layers/mouth_B.svg",
+    "C": "layers/mouth_C.svg",
+    "D": "layers/mouth_D.svg",
+    "E": "layers/mouth_E.svg",
+    "F": "layers/mouth_F.svg",
+    "G": "layers/mouth_G.svg",
+    "H": "layers/mouth_H.svg",
+    "X": "layers/mouth_X.svg"
+  },
+  "size": [
     310,
     423
+  ],
+  "neck_y": 85,
+  "hip_y": 190,
+  "torso_x": [
+    70,
+    241
   ],
   "body_profile": {
     "type": "chubby",
@@ -15,42 +188,29 @@
     "leg_ratio": 0.551
   },
   "physics_adapt": {
+    "stride_mult": 1.35,
+    "cycle_hz_mult": 0.75,
     "squash_bias": 1.22,
-    "arm_clearance_mult": 1.25,
-    "stride_px_mult": 1.35,
-    "cycle_hz_mult": 0.75
+    "arm_clearance": 1.25
   },
-  "anchors_norm": {
-    "neck_y": 0.201,
-    "hip_y": 0.449,
-    "torso_x": [
-      0.226,
-      0.777
-    ],
-    "shoulder_l": [
-      0.226,
-      0.231
-    ],
-    "shoulder_r": [
-      0.777,
-      0.231
-    ],
-    "mouth_box": [
-      0.38,
-      0.131,
-      0.24,
-      0.036
-    ],
-    "eye_box": [
-      0.3,
-      0.08,
-      0.4,
-      0.036
-    ],
-    "foot_center": [
-      0.5,
-      1.0
-    ]
+  "mouth_box": {
+    "x": 0.453,
+    "y": 0.1651,
+    "w": 0.0897,
+    "h": 0.0351
+  },
+  "eye_box": {
+    "x": 0.4309,
+    "y": 0.1106,
+    "w": 0.1376,
+    "h": 0.0373
+  },
+  "parts": {
+    "head": "head.png",
+    "torso": "torso.png",
+    "arm_l": "arm_l.png",
+    "arm_r": "arm_r.png",
+    "legs": "legs.png"
   },
   "character_name": "arjun",
   "angles": [
