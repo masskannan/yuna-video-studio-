@@ -742,6 +742,7 @@ Return ONLY valid JSON:
   if (opts.tg_msg_id) tl.tg_msg_id = String(opts.tg_msg_id);
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
   tl.hook_text = String(tl.hook_text || tl.title || "").slice(0, 72);
+  if (!Array.isArray(tl.counters) || !tl.counters.length) tl.counters = [{ label: "YUNA AI SPEED", from: 0, to: 100, suffix: "%", start_sec: 0.3, end_sec: 2.9 }];
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
   tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; const _acts = ["talk_casual_gesture", "explain_point_board", "happy_fist_pump", "shock_jaw_drop_pop", "confused_head_scratch", "wave_hello_energetic"]; const _mets = ["neon_topics", "bus_balancer", "hotel_menu", "payment_stamp"]; return { ...s, part: s.part || i + 1, action: String(s.action || _acts[i % _acts.length]), metaphor: (!s.metaphor || s.metaphor === "card_rain") ? _mets[i % _mets.length] : s.metaphor, start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
   const parsedChars = (parsed.characters && typeof parsed.characters === "object") ? parsed.characters : {};
