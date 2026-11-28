@@ -38,7 +38,7 @@ export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "
       <BokehBackdrop config={on} fxMode={fxMode} />
       <AudioWaveformGlow config={on} fxMode={fxMode} />
       <SceneTransition config={on} fxMode={fxMode} startFrame={segStart} durationFrames={10} kind={idx % 2 === 0 ? "wipe" : "slide"} />
-      <div style={{ opacity: fadeOut }}>{renderMetaphor()}</div>
+      {frame >= 85 ? <div style={{ opacity: fadeOut * interpolate(frame, [85, 98], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>{renderMetaphor()}</div> : null}
       {idx === 0 ? <SpeedLinesOverlay config={on} fxMode={fxMode} /> : <CursorRipple config={on} fxMode={fxMode} x={0.72} y={0.34} />}
     </>
   );

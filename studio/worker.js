@@ -1183,8 +1183,10 @@ export default {
               const dress = ["suit","hoodie","casual","none"].includes(parts[1]) ? parts[1] : "casual";
               const hat = ["none","cap","crown","beanie"].includes(parts[2]) ? parts[2] : "none";
               const glasses = ["none","round","shades"].includes(parts[3]) ? parts[3] : "none";
+              const stylePreset = ["energetic","calm","dramatic","chill","curious","happy"].includes(parts[4]) ? parts[4] : "energetic";
               const b = await loadCharBible(env);
-              b.cameo = { name: cname, type: "character", body_color: "#F59E0B", dress_style: dress, expression: "happy", hat, mustache: "none", glasses, voice: "ta-SG-VenbaNeural" };
+              b.cameo = { name: cname, type: "character", body_color: "#F59E0B", dress_style: dress, expression: "happy", hat, mustache: "none", glasses, style_preset: stylePreset, voice: "ta-SG-VenbaNeural" };
+              b.custom = b.custom || {}; b.custom[cname] = b.cameo;
               const r = await gh("/contents/characters_db.json?ref=main", env).then(x => x.json()).catch(() => ({}));
               await gh("/contents/characters_db.json", env, { method: "PUT", body: JSON.stringify({ message: `chore(cast): update cameo ${cname} [skip ci]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(b, null, 2)))), sha: r.sha }) });
               await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Cameo Saved:</b> <code>${escH(cname)}</code> (${dress}, ${hat}, ${glasses})` });
