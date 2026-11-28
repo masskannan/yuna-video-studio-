@@ -14,6 +14,8 @@ export interface UniversalCharProps {
   pose?: string;
   prop?: string;
   action?: string;
+  emotion?: string;
+  neonRim?: { color: string; intensity: number };
 }
 
 const POSE_TO_ACTION: Record<string, string> = {
@@ -35,6 +37,8 @@ export const UniversalCharacter: React.FC<UniversalCharProps> = ({
   lookDir,
   pose = "idle",
   action = "",
+  emotion = "neutral",
+  neonRim,
 }) => {
   const { fps } = useVideoConfig();
   const key = name.toLowerCase();
@@ -70,7 +74,7 @@ export const UniversalCharacter: React.FC<UniversalCharProps> = ({
   const sy = (1 + ((act?.slice_motion?.torso?.stretch_y || 1) - 1) * (preset.squash_mult || 1)) * talkBounce;
   const surfaceY = (act?.surface_anchor?.y_offset || 0) * 240;
 
-  let angle = active ? "three_quarter" : "front";
+  let angle = "front";
   if (actKey.startsWith("run_") || actKey.startsWith("walk_")) angle = "side";
   else if (actKey.includes("back")) angle = "back";
 
@@ -84,8 +88,10 @@ export const UniversalCharacter: React.FC<UniversalCharProps> = ({
   const eyeBox = anch.eye_box ?? [0.32, 0.12, 0.36, 0.045];
 
   const isBlink = frame % 105 >= 100;
-  const isTalking = active && mouth !== "X" && mouth !== "M";
-  const mouthOpenH = mouth === "A" || mouth === "O" ? 11 : mouth === "E" || mouth === "C" ? 7 : isTalking ? 5 : 0;
+  const isTalking = active && mouth !== "X" && mouth !== "A";
+  const RHUBARB_OPEN: Record<string, number> = { D: 15, C: 11, E: 9, G: 7, H: 7, B: 5, F: 3, A: 0, X: 0 };
+  const mouthOpenH = isTalking ? (RHUBARB_OPEN[mouth] ?? 6) : 0;
+  const isV31 = Boolean(rig.schema_version && String(rig.schema_version).startsWith("3.1"));
 
   return (
     <div style={{ position: "relative", width: boxW, height: boxH, display: "flex", alignItems: "flex-end", justifyContent: "center", perspective: 900 }}>
@@ -101,11 +107,17 @@ export const UniversalCharacter: React.FC<UniversalCharProps> = ({
         }}
       >
         <Img src={staticFile(`${basePath}/${angle}.png`)} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+        {isV31 && isTalking && rig.mouth_visemes?.[mouth] && (
+          <Img src={staticFile(`${basePath}/${rig.mouth_visemes[mouth]}`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain" }} />
+        )}
+        {isV31 && neonRim && neonRim.intensity > 0.05 && rig.layers?.rim_mask && (
+          <div style={{ position: "absolute", inset: 0, backgroundColor: neonRim.color, opacity: neonRim.intensity * 0.4, mixBlendMode: "screen", WebkitMaskImage: `url(${staticFile(`${basePath}/${rig.layers.rim_mask.src}`)})`, WebkitMaskSize: "100% 100%", pointerEvents: "none" }} />
+        )}
         {isBlink && angle !== "back" && (
           <div style={{ position: "absolute", left: `${eyeBox[0] * 100}%`, top: `${eyeBox[1] * 100}%`, width: `${eyeBox[2] * 100}%`, height: `${eyeBox[3] * 55}%`, borderRadius: 99, backgroundColor: "rgba(30,20,16,0.78)" }} />
         )}
-        {mouthOpenH > 0 && angle !== "back" && (
-          <div style={{ position: "absolute", left: `${(mouthBox[0] + mouthBox[2] * 0.25) * 100}%`, top: `${mouthBox[1] * 100}%`, width: `${mouthBox[2] * 48}%`, height: mouthOpenH, borderRadius: "40% 40% 60% 60%", backgroundColor: "#3B0D0C", border: "1.5px solid #FDE68A" }} />
+        {!isV31 && mouthOpenH > 0 && angle !== "back" && (
+          <div style={{ position: "absolute", left: `${(mouthBox[0] + mouthBox[2] * 0.25) * 100}%`, top: `${mouthBox[1] * 100}%`, width: `${mouthBox[2] * 48}%`, height: mouthOpenH, borderRadius: "40% 40% 60% 60%", backgroundColor: "#3B0D0C", border: "1.5px solid #991B1B" }} />
         )}
       </div>
       <div style={{ position: "absolute", bottom: -26, padding: "2px 12px", borderRadius: 999, backgroundColor: "rgba(15,23,42,0.88)", border: `1.5px solid ${active ? accent : "#475569"}`, color: active ? accent : "#CBD5E1", fontSize: 15, fontWeight: 800, letterSpacing: 0.8 }}>{name.toUpperCase()}</div>

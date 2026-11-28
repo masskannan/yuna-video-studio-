@@ -114,7 +114,7 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         return (
           <AbsoluteFill key={idx} style={{ opacity, transform: `scale(${zoom}) translate3d(${panX + shakeX}px, ${shakeY}px, 0)` }}>
         {["village_street", "tea_shop", "house_room"].includes(stg) && (timeline.fx_mode || "SAFE") !== "SAFE" && (<>
-          <Img src={staticFile(bgManifest[stg] || `approved/bg_${stg}.jpg`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.92 }} />
+          <Img src={staticFile(bgManifest[String(timeline.bg_niche || stg)] || bgManifest[stg] || `approved/bg_${stg}.jpg`)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.92 }} />
           <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 480, background: "linear-gradient(to top, rgba(2,6,23,0.82), transparent)", pointerEvents: "none" }} />
           {/* YUNA_KINETIC_HOOK */}
           {idx === 0 && frame < 75 && (timeline.fx_mode || "SAFE") !== "SAFE" && (
@@ -213,14 +213,14 @@ export const MainMovie: React.FC<{ wide?: boolean }> = ({ wide = true }) => {
         </div>
 
         {(mode === "cartoon" || mode === "cinema") && charEntries.length ? (
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 145 : 275 }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: wide ? 24 : 38, paddingBottom: wide ? 120 : 195 }}>
             {(timeline.fx_mode || "SAFE") === "SAFE" && frame >= 75 ? (<div style={{ padding: "12px 24px", borderRadius: 16, backgroundColor: "rgba(15, 23, 42, 0.78)", border: `1.5px solid ${active.accent}88`, fontSize: wide ? 36 : 38, fontWeight: 800, textAlign: "center", maxWidth: "92%", boxShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>{active.heading}</div>) : null}
             <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "space-around", alignItems: "flex-end", paddingTop: 26 }}>
             {charEntries.map(([cname, ccfg], cIdx) => {
                 const rSc = (Array.isArray(timeline.scenes) ? timeline.scenes : []).find((rs: any, ri: number) => (rs.part || ri + 1) === active.part) || {};
                 const hasCustomRig = Boolean((charsManifest as Record<string, any>)[cname.toLowerCase()]);
                 return hasCustomRig ? (
-                  <UniversalCharacter key={cname} name={cname} cfg={ccfg} mouth={activeSpeaker === cname && activeLip ? activeLip.mouth : "X"} frame={frame} active={activeSpeaker === cname} accent={active.accent} lookDir={cIdx === 0 ? 1 : -1} pose={rSc.pose} prop={rSc.prop} action={rSc.action || ""} />
+                  <UniversalCharacter key={cname} name={cname} cfg={ccfg} mouth={activeSpeaker === cname && activeLip ? activeLip.mouth : "X"} frame={frame} active={activeSpeaker === cname} accent={active.accent} lookDir={cIdx === 0 ? 1 : -1} pose={rSc.pose} prop={rSc.prop} action={rSc.action || ""} emotion={rSc.emotion || timeline.emotion || "neutral"} neonRim={timeline.neon_rim} />
                 ) : (
                   <div key={cname} style={{ transform: "scale(1.42)", transformOrigin: "bottom center" }}><CharacterRig
                     key={cname}
