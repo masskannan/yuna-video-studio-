@@ -1,0 +1,70 @@
+{
+  "source_size": [
+    144,
+    413
+  ],
+  "cropped_size": [
+    144,
+    409
+  ],
+  "body_profile": {
+    "type": "slim",
+    "width_ratio": 0.352,
+    "head_ratio": 0.178,
+    "torso_ratio": 0.386,
+    "leg_ratio": 0.435
+  },
+  "physics_adapt": {
+    "squash_bias": 0.88,
+    "arm_clearance_mult": 0.85,
+    "stride_px_mult": 1.243,
+    "cycle_hz_mult": 0.805
+  },
+  "anchors_norm": {
+    "neck_y": 0.178,
+    "hip_y": 0.565,
+    "torso_x": [
+      0.16,
+      0.965
+    ],
+    "shoulder_l": [
+      0.16,
+      0.225
+    ],
+    "shoulder_r": [
+      0.965,
+      0.225
+    ],
+    "mouth_box": [
+      0.38,
+      0.116,
+      0.24,
+      0.032
+    ],
+    "eye_box": [
+      0.3,
+      0.071,
+      0.4,
+      0.032
+    ],
+    "foot_center": [
+      0.5,
+      1.0
+    ]
+  },
+  "character_name": "maya",
+  "angles": [
+    "front",
+    "three_quarter",
+    "side",
+    "back"
+  ],
+  "face_cuts": [
+    "face_neutral",
+    "face_happy",
+    "face_angry",
+    "face_surprised",
+    "face_blink",
+    "face_mouth"
+  ]
+}
