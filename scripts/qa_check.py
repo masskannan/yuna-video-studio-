@@ -28,4 +28,11 @@ def check_media(path):
 
 for target in ("final/reel_9x16.mp4", "final/final_master.mp4"):
     check_media(target)
-print("QA_GATE_PASSED")
+import glob as _glob
+for _rp in _glob.glob("public/approved/chars/*/char_rig.json"):
+    _rj = json.load(open(_rp, encoding="utf-8"))
+    for _bn, _bi in (_rj.get("bones_px") or {}).items():
+        assert _bi.get("length_px", 0) > 10, f"QA FAIL {_rp}: bad bone {_bn}={_bi}"
+    for _sp in _glob.glob(os.path.join(os.path.dirname(_rp), "layers", "*.svg")):
+        assert os.path.getsize(_sp) <= 180_000, f"QA FAIL {_sp}: oversized SVG"
+print("QA_GATE_PASSED") # V31_RIG_QA

@@ -36,11 +36,18 @@ jobs:
                   manifest[cname.lower()] = json.load(f)
           with open("src/rig/chars_manifest.json", "w", encoding="utf-8") as f:
               json.dump(manifest, f, indent=2)
+          svgs_manifest = {}
+          for sp in sorted(glob.glob("public/approved/chars/*/rig_svgs.json")):
+              cname = os.path.basename(os.path.dirname(sp))
+              with open(sp, "r", encoding="utf-8") as sf:
+                  svgs_manifest[cname.lower()] = json.load(sf)
+          with open("src/rig/chars_svgs_manifest.json", "w", encoding="utf-8") as sf:
+              json.dump(svgs_manifest, sf)
           print("MANIFEST_UPDATED:", list(manifest.keys()))
           PYEOF
       - name: Commit Approved Character Rigs
         run: |
           git config user.name "yuna-bot"
           git config user.email "yuna-bot@users.noreply.github.com"
-          git add public/approved/chars/ src/rig/chars_manifest.json
+          git add public/approved/chars/ src/rig/chars_manifest.json src/rig/chars_svgs_manifest.json
           git diff --staged --quiet || (git commit -m "chore(chars): auto-parsed 4-angle + 6-face rig + manifest [skip ci]" && git push)

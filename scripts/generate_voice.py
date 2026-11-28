@@ -198,7 +198,10 @@ def write_lipsync(words, out_path):
     if rh and os.path.exists(VOICE_WAV):
         try:
             rj = os.path.join(OUT_DIR, "rhubarb.json")
-            if subprocess.run([rh, "-r", "phonetic", "-f", "json", "--extendedShapes", "GHX", "-o", rj, VOICE_WAV], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=45).returncode == 0 and os.path.exists(rj):
+            rh_wav = os.path.join(OUT_DIR, "rhubarb_16k.wav")
+            subprocess.run(["ffmpeg", "-y", "-i", VOICE_WAV, "-ac", "1", "-ar", "16000", "-sample_fmt", "s16", rh_wav], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
+            rh_in = rh_wav if os.path.exists(rh_wav) and os.path.getsize(rh_wav) > 500 else VOICE_WAV
+            if subprocess.run([rh, "-r", "phonetic", "-f", "json", "--extendedShapes", "GHX", "-o", rj, rh_in], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=45).returncode == 0 and os.path.exists(rj):
                 rc = json.load(open(rj, encoding="utf-8")).get("mouthCues", [])
                 lt = json.load(open(LINE_TIMINGS_JSON, encoding="utf-8")) if os.path.exists(LINE_TIMINGS_JSON) else []
                 cues = []
