@@ -640,6 +640,15 @@ async function callNvidiaAgent(env, sys, usr) {
 
 async function runDirectorAndCommitV2(env, rawText, target = "both", useCameo = false, opts = {}) {
   const bible = await loadCharBible(env);
+  let custom3dChars = [];
+  try {
+    const cmR = await gh("/contents/src/rig/chars_manifest.json?ref=main", env);
+    if (cmR.ok) {
+      const cmD = await cmR.json();
+      const cmObj = JSON.parse(atob(String(cmD.content || "").replace(/\s+/g, "")));
+      custom3dChars = Object.keys(cmObj || {}).map(k => k.toUpperCase());
+    }
+  } catch (_) {}
   let scriptText = String(rawText || "").trim();
   const hasSpeakerLines = /(?:^|\n)\s*[A-Za-z0-9_ ]{2,18}\s*:/.test(scriptText);
   if (scriptText.length > 2500 && !hasSpeakerLines && opts.script_mode !== "exact") {
@@ -679,6 +688,7 @@ Output ONLY plain dialogue lines as SPEAKER: line.`;
 ${langRule}
 
 OUR ENGINE CAPABILITIES (USE THESE FULLY):
+- 3D Pixar Characters (prefer when fitting!): ${custom3dChars.join(", ") || "ARJUN"}
 1. Cast: ${bible.main.name} (${bible.main.role || "Host"}: ${bible.main.personality || "Curious"}), ${bible.sub.name} (${bible.sub.role || "Co-Host"}: ${bible.sub.personality || "Witty"})${useCameo && bible.cameo ? `, ${bible.cameo.name} (Floating Jetpack AI Robot with glowing cyan visor & megaphone)` : ""}.
 2. Environments & 2.5D Parallax:
    - setting: "village_street" | "tea_shop" | "house_room"
@@ -744,7 +754,7 @@ Return ONLY valid JSON:
   tl.hook_text = String(tl.hook_text || tl.title || "").slice(0, 72);
   if (!Array.isArray(tl.counters) || !tl.counters.length) tl.counters = [{ label: "YUNA AI SPEED", from: 0, to: 100, suffix: "%", start_sec: 0.3, end_sec: 2.9 }];
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
-  tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; const _acts = ["talk_casual_gesture", "explain_point_board", "happy_fist_pump", "shock_jaw_drop_pop", "confused_head_scratch", "wave_hello_energetic"]; const _mets = ["neon_topics", "bus_balancer", "hotel_menu", "payment_stamp"]; return { ...s, part: s.part || i + 1, action: String(s.action || _acts[i % _acts.length]), metaphor: (!s.metaphor || s.metaphor === "card_rain") ? _mets[i % _mets.length] : s.metaphor, start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
+  tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; const _acts = ["talk_casual_gesture", "explain_point_board", "happy_fist_pump", "shock_jaw_drop_pop", "confused_head_scratch", "wave_hello_energetic"]; const _mets = ["neon_topics", "bus_balancer", "hotel_menu", "payment_stamp"]; return { ...s, part: s.part || i + 1, action: String(s.action || _acts[i % _acts.length]), metaphor: (!s.metaphor || s.metaphor === "card_rain") ? _mets[i % _mets.length] : s.metaphor, media_name: s.media_name || s.setting || "village_street", start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
   const parsedChars = (parsed.characters && typeof parsed.characters === "object") ? parsed.characters : {};
   const chars = {};
   const pKeys = Object.keys(parsedChars).slice(0, useCameo ? 2 : 3);
@@ -1191,6 +1201,10 @@ export default {
               const r = await gh("/contents/characters_db.json?ref=main", env).then(x => x.json()).catch(() => ({}));
               await gh("/contents/characters_db.json", env, { method: "PUT", body: JSON.stringify({ message: `chore(cast): update cameo ${cname} [skip ci]`, content: btoa(unescape(encodeURIComponent(JSON.stringify(b, null, 2)))), sha: r.sha }) });
               await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: `✅ <b>Cameo Saved:</b> <code>${escH(cname)}</code> (${dress}, ${hat}, ${glasses})` });
+              return;
+            }
+            if (txt === "/gpu") {
+              await tgApi(env, "sendMessage", { chat_id: cid, parse_mode: "HTML", text: "🚀 <b>Kaggle 2x T4 GPU Kernel (VER: 8)</b>\n• Depth-Anything-V2 Bokeh + MusicGen 3-Mood BGM + TripoSR 3D\n• Open &amp; click <b>Run All</b>: https://www.kaggle.com/code/masskannan/yuna-gpu-render" });
               return;
             }
             if (txt === "/memes") {
