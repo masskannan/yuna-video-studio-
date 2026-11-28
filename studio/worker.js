@@ -854,7 +854,8 @@ function buildShotList(dlgArr, rawShots, tl = null) {
     const tod = String(s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night"));
     const sfx = String(s.sfx || d.sfx || "");
     const spk = String(s.line?.speaker || d.speaker || "KANNAN");
-    const castIn = Array.isArray(s.cast) && s.cast.length ? s.cast : [{ name: spk, pose: "hand_on_hip", expression: "happy", lookDir: i % 2 === 0 ? 1 : -1, prop: "mic" }];
+    const ACT_CYCLE = ["talk_casual_gesture", "explain_point_board", "happy_fist_pump", "shock_jaw_drop_pop", "confused_head_scratch", "wave_hello_energetic"];
+    const castIn = Array.isArray(s.cast) && s.cast.length ? s.cast : [{ name: spk, pose: "hand_on_hip", action: String(s.action || ACT_CYCLE[i % ACT_CYCLE.length]), expression: "happy", lookDir: i % 2 === 0 ? 1 : -1, prop: "mic" }];
     const cast = castIn.map((c) => ({
       name: String(c?.name || spk),
       pose: POSES.has(c?.pose) ? c.pose : "hand_on_hip",

@@ -59,6 +59,7 @@ jobs:
           (sudo apt-get update -qq || true) && sudo apt-get install -y --no-install-recommends ffmpeg python3-pip
           pip3 install --quiet --break-system-packages edge-tts
           mkdir -p out_audio
+          (which rhubarb >/dev/null 2>&1 || [ -x /tmp/rhubarb/rhubarb ] || (rm -rf /tmp/rh_ex /tmp/rhubarb && curl -sL "https://github.com/DanielSWolf/rhubarb-lip-sync/releases/download/v1.13.0/Rhubarb-Lip-Sync-1.13.0-Linux.zip" -o /tmp/rh.zip && unzip -q /tmp/rh.zip -d /tmp/rh_ex && mv /tmp/rh_ex/Rhubarb-* /tmp/rhubarb && chmod +x /tmp/rhubarb/rhubarb)) || true
           python3 scripts/generate_voice.py && BOT="${{ secrets.TELEGRAM_BOT_TOKEN }}" CHAT="${{ secrets.TELEGRAM_CHAT_ID }}" python3 scripts/tg_progress.py "🧠 <b>Brain ✓</b> → 🎙 <b>Voice ✓</b> → 🎨 <b>Rendering 9:16...</b>" || true
           python3 scripts/plan_finalize.py
           ONLY_CHUNK="${{ github.event.inputs.only_chunk }}" python3 scripts/plan_chunks.py

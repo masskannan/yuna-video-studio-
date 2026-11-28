@@ -191,6 +191,25 @@ def process_line(line):
 
 
 def write_lipsync(words, out_path):
+    import shutil
+    rh = shutil.which("rhubarb") or ("/tmp/rhubarb/rhubarb" if os.path.exists("/tmp/rhubarb/rhubarb") else None)
+    if rh and os.path.exists(VOICE_WAV):
+        try:
+            rj = os.path.join(OUT_DIR, "rhubarb.json")
+            if subprocess.run([rh, "-r", "phonetic", "-f", "json", "-o", rj, VOICE_WAV], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=45).returncode == 0 and os.path.exists(rj):
+                rc = json.load(open(rj, encoding="utf-8")).get("mouthCues", [])
+                lt = json.load(open(LINE_TIMINGS_JSON, encoding="utf-8")) if os.path.exists(LINE_TIMINGS_JSON) else []
+                cues = []
+                for m in rc:
+                    st = float(m.get("start", 0))
+                    sp = next((x["speaker"] for x in lt if x["start"] <= st <= x["end"]), words[0]["speaker"] if words else "YUNA")
+                    cues.append({"start": round(st, 3), "end": round(float(m.get("end", st + 0.1)), 3), "mouth": str(m.get("value", "X")), "speaker": sp})
+                if cues:
+                    json.dump(cues, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, separators=(",", ":"))
+                    print(f"RHUBARB_PHONETIC_OK: {len(cues)} cues")
+                    return
+        except Exception:
+            pass
     shapes = ["B", "C", "D", "E", "C"]
     frames = []
     for idx, w in enumerate(words):

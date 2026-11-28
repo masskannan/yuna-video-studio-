@@ -26,7 +26,7 @@ export const FxLayer: React.FC<{fxMode?: FxMode; scenes?: any[]}> = ({fxMode = "
   const on = { enabled: true };
 
   const renderMetaphor = () => {
-    if (metaphor === "card_rain" || (!metaphor && idx === 0)) return <CardRain40 title={title.slice(0, 24)} />;
+    if (metaphor === "card_rain") return <CardRain40 title={title.slice(0, 24)} />;
     if (metaphor === "bus_balancer") return <BusLoadBalancer title={title} items={items} />;
     if (metaphor === "hotel_menu") return <HotelMenuCard title={title} items={items} />;
     if (metaphor === "payment_stamp") return <PaymentStampCard title={title} items={items} />;
