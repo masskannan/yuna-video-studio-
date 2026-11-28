@@ -751,8 +751,9 @@ Return ONLY valid JSON:
   if (opts.dim === "blender" || opts.dim === "5d") tl.use_blender = true;
   if (opts.tg_msg_id) tl.tg_msg_id = String(opts.tg_msg_id);
   if (!["none", "cyber", "warm", "noir"].includes(tl.grade)) tl.grade = "cyber";
+  if (!["upbeat", "tech", "suspense", "default"].includes(tl.bgm)) tl.bgm = (opts.dim === "manim" || opts.dim === "5d" || opts.mode === "ui_ux") ? "tech" : "upbeat";
   tl.hook_text = String(tl.hook_text || tl.title || "").slice(0, 72);
-  if (!Array.isArray(tl.counters) || !tl.counters.length) tl.counters = [{ label: "YUNA AI SPEED", from: 0, to: 100, suffix: "%", start_sec: 0.3, end_sec: 2.9 }];
+  tl.counters = Array.isArray(tl.counters) ? tl.counters : [];
   if (!Array.isArray(tl.scenes) || !tl.scenes.length) tl.scenes = [{ part: 1, heading: "YUNA Studio", accent: "#38BDF8", bgTop: "#0F172A" }];
   tl.scenes = tl.scenes.map((s, i) => { const rawSt = Number(s.start_sec); const st = Number.isFinite(rawSt) ? rawSt : i * 15; const rawEn = Number(s.end_sec); const en = (Number.isFinite(rawEn) && rawEn > st) ? rawEn : st + 15; const _acts = ["talk_casual_gesture", "explain_point_board", "happy_fist_pump", "shock_jaw_drop_pop", "confused_head_scratch", "wave_hello_energetic"]; const _mets = ["neon_topics", "bus_balancer", "hotel_menu", "payment_stamp"]; return { ...s, part: s.part || i + 1, action: String(s.action || _acts[i % _acts.length]), metaphor: (!s.metaphor || s.metaphor === "card_rain") ? _mets[i % _mets.length] : s.metaphor, media_name: s.media_name || s.setting || "village_street", start_sec: st, end_sec: en, time_of_day: (opts.time_of_day && opts.time_of_day !== "auto") ? opts.time_of_day : (s.time_of_day || (i === 0 ? "morning" : i === 1 ? "sunset" : "night")) }; });
   const parsedChars = (parsed.characters && typeof parsed.characters === "object") ? parsed.characters : {};
@@ -778,6 +779,15 @@ Return ONLY valid JSON:
     chars[bible.main.name || "KANNAN"] = bible.main;
     chars[bible.sub.name || "YUNA"] = bible.sub;
     if (useCameo && bible.cameo) chars[bible.cameo.name || "BUGGY"] = bible.cameo;
+  }
+  const dlgStr = (JSON.stringify(parsed.dialogue || []) + " " + scriptText).toUpperCase();
+  const mentioned3d = custom3dChars.filter(c => dlgStr.includes(c));
+  for (const [ci, c3d] of mentioned3d.entries()) {
+    if (!chars[c3d]) {
+      if (ci === 0 && chars["KANNAN"] && !dlgStr.includes("KANNAN")) delete chars["KANNAN"];
+      if (ci === 1 && chars["YUNA"] && !dlgStr.includes("YUNA")) delete chars["YUNA"];
+      chars[c3d] = { type: "character", body_color: ci % 2 === 0 ? "#38BDF8" : "#A855F7", dress_style: "casual", dress_color: "#0284C7", expression: "happy", hat: "none", mustache: "none", glasses: "none", voice: ci % 2 === 0 ? "ta-IN-ValluvarNeural" : "ta-IN-PallaviNeural" };
+    }
   }
   const dlgRaw = Array.isArray(parsed.dialogue) && parsed.dialogue.length ? parsed.dialogue : [{ speaker: Object.keys(chars)[0], text: scriptText.slice(0, 140), sfx: "pop" }];
   const castKeys = Object.keys(chars);

@@ -17,7 +17,7 @@ if bg:
     bg.inputs[0].default_value = (0.02, 0.04, 0.09, 1.0)
 
 import glob as _glob
-_glb_files = sorted(_glob.glob("public/approved/props/*.glb"))
+_glb_files = sorted(_glob.glob("public/approved/props/*.glb") + _glob.glob("public/approved/chars/*/*.glb"))
 _glb_loaded = False
 if _glb_files:
     try:
