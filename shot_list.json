@@ -10,11 +10,11 @@
       "time_of_day": "morning",
       "camera": {
         "move": "punch_in",
-        "focus": "ARJUN"
+        "focus": "ARUN"
       },
       "cast": [
         {
-          "name": "ARJUN",
+          "name": "ARUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -22,8 +22,8 @@
         }
       ],
       "line": {
-        "speaker": "ARJUN",
-        "text": "ஜெமினி, நீ கோடு கரெக்டா எழுதி இருக்கியா? நீ பண்ணதுல தப்பு இருக்கு!",
+        "speaker": "ARUN",
+        "text": "Maya! Un oda VOICE-ல emergency-யா UPI money கேக்குறாங்க!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
@@ -39,11 +39,11 @@
       "time_of_day": "sunset",
       "camera": {
         "move": "punch_in",
-        "focus": "YUNA"
+        "focus": "MAYA"
       },
       "cast": [
         {
-          "name": "YUNA",
+          "name": "MAYA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -51,8 +51,8 @@
         }
       ],
       "line": {
-        "speaker": "YUNA",
-        "text": "தப்பு பண்ணிட்டேன் பாஸ், மன்னிச்சுக்கோங்க! இப்போ மறுபடியும் கரெக்டா பண்ணிடறேன்.",
+        "speaker": "MAYA",
+        "text": "Hey STOP! நா பக்கத்துலதான இருக்கேன்? அது AI Voice Cloning!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
@@ -68,11 +68,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "ARJUN"
+        "focus": "ARUN"
       },
       "cast": [
         {
-          "name": "ARJUN",
+          "name": "ARUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -80,8 +80,8 @@
         }
       ],
       "line": {
-        "speaker": "ARJUN",
-        "text": "சும்மா சொல்லாத! முன்னாடி ஆடியோவும் வீடியோவும் வேற வேறயா ஓடுச்சு.",
+        "speaker": "ARUN",
+        "text": "What? Audio exact-ஆ un tone-ல பேசுதே, Server HACK ஆயிடுச்சா?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
@@ -97,11 +97,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "YUNA"
+        "focus": "MAYA"
       },
       "cast": [
         {
-          "name": "YUNA",
+          "name": "MAYA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -109,8 +109,8 @@
         }
       ],
       "line": {
-        "speaker": "YUNA",
-        "text": "இப்போ அப்படி இல்ல பாஸ்! 16-க்கு 16 ஆடிட் போட்டு எல்லா பிழையையும் தூக்கிட்டேன்.",
+        "speaker": "MAYA",
+        "text": "Un Insta Reels audio-வ வச்சு, AI Deepfake Model clean-ஆ generate பண்ணிடுச்சு!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
@@ -126,11 +126,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "ARJUN"
+        "focus": "ARUN"
       },
       "cast": [
         {
-          "name": "ARJUN",
+          "name": "ARUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -138,12 +138,12 @@
         }
       ],
       "line": {
-        "speaker": "ARJUN",
-        "text": "அப்போ என் அர்ஜுன் கேரக்டர் இப்போ கை அசைச்சு, வாய் அசைச்சுப் பேசுவானா?",
+        "speaker": "ARUN",
+        "text": "Damn! அப்போ நம்ம OTP கூட SAFE இல்லையா?!",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "whoosh",
+      "sfx": "boing",
       "notes": ""
     },
     {
@@ -155,11 +155,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "YUNA"
+        "focus": "MAYA"
       },
       "cast": [
         {
-          "name": "YUNA",
+          "name": "MAYA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -167,8 +167,8 @@
         }
       ],
       "line": {
-        "speaker": "YUNA",
-        "text": "ஆமா பாஸ்! 5-Part 3D அசைவு, Lip-Sync, Speaker Zoom எல்லாம் உள்ளே ரெடி!",
+        "speaker": "MAYA",
+        "text": "Simple! அந்த Call-ல Password கேளு... Bot freeze ஆயிடும்!",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
@@ -184,11 +184,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "ARJUN"
+        "focus": "ARUN"
       },
       "cast": [
         {
-          "name": "ARJUN",
+          "name": "ARUN",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": 1,
@@ -196,12 +196,12 @@
         }
       ],
       "line": {
-        "speaker": "ARJUN",
-        "text": "சூப்பர்! இது உண்மையா இருந்தா இனி நம்ம ஸ்டுடியோ வேற லெவல்!",
+        "speaker": "ARUN",
+        "text": "Machan... un first PET name என்ன?",
         "voice": "ta-IN-ValluvarNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "ding",
+      "sfx": "click",
       "notes": ""
     },
     {
@@ -213,11 +213,11 @@
       "time_of_day": "night",
       "camera": {
         "move": "punch_in",
-        "focus": "YUNA"
+        "focus": "MAYA"
       },
       "cast": [
         {
-          "name": "YUNA",
+          "name": "MAYA",
           "pose": "hand_on_hip",
           "expression": "happy",
           "lookDir": -1,
@@ -225,12 +225,12 @@
         }
       ],
       "line": {
-        "speaker": "YUNA",
-        "text": "கண்டிப்பா பாஸ்! நீங்களும் சப்ஸ்கிரைப் பண்ணி நம்ம YUNA ஸ்டுடியோவைப் பாருங்க!",
+        "speaker": "MAYA",
+        "text": "Call DISCONNECT ஆயிடுச்சு! Next time un Voice வந்தா... என்ன பண்ணுவ?",
         "voice": "ta-IN-PallaviNeural"
       },
       "widget": "NeonTopicRow",
-      "sfx": "boing",
+      "sfx": "ding",
       "notes": ""
     }
   ]

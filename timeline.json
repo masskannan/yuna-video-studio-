@@ -1,13 +1,13 @@
 {
   "fps": 30,
   "total_sec": "auto",
-  "reel_sec": 48,
+  "reel_sec": 43,
   "mode": "cartoon",
   "grade": "warm",
   "fx_mode": "HYBRID",
   "render_target": "reel",
-  "use_manim": false,
-  "use_blender": false,
+  "use_manim": true,
+  "use_blender": true,
   "scenes": [
     {
       "part": 1,
@@ -19,20 +19,22 @@
       "pose": "listen_ear",
       "prop": "camera",
       "char_pos": "around",
-      "metaphor": "card_rain",
+      "metaphor": "neon_topics",
       "topics": [
-        "Gemini Code",
-        "Bug Fix",
-        "Audio Sync"
+        "Deepfake AI",
+        "Voice Clone",
+        "Cyber Alert"
       ],
       "metaphor_items": [
-        "Code Check",
-        "Error Spot",
-        "Fixing Bug"
+        "Audio Hack",
+        "Fake Call",
+        "Security Breach"
       ],
-      "heading": "GEMINI CODE AUDIT",
+      "heading": "AI VOICE SCAM!",
       "accent": "#38BDF8",
-      "bgTop": "#0F172A"
+      "bgTop": "#0F172A",
+      "action": "talk_casual_gesture",
+      "media_name": "village_street"
     },
     {
       "part": 2,
@@ -46,23 +48,25 @@
       "char_pos": "left",
       "metaphor": "bus_balancer",
       "topics": [
-        "16-Audit",
-        "Lip-Sync",
-        "3D Animation"
+        "Insta Audio",
+        "Model Train",
+        "Server Safe"
       ],
       "metaphor_items": [
-        "Frame Rate",
-        "Voice Match",
-        "Character Move"
+        "Reels Data",
+        "AI Model",
+        "Secure API"
       ],
-      "heading": "ANIMATION SYNC",
+      "heading": "HOW IT WORKS",
       "accent": "#F43F5E",
-      "bgTop": "#1E1B4B"
+      "bgTop": "#1E1B4B",
+      "action": "explain_point_board",
+      "media_name": "tea_shop"
     },
     {
       "part": 3,
       "start_sec": 28,
-      "end_sec": 48,
+      "end_sec": 43,
       "setting": "house_room",
       "time_of_day": "night",
       "location": "TECH HUB",
@@ -71,17 +75,23 @@
       "char_pos": "right",
       "metaphor": "payment_stamp",
       "topics": [
-        "Studio Level",
-        "YUNA Studio",
-        "Pro Result"
+        "Secret Code",
+        "Bot Freeze",
+        "Safe UPI"
       ],
       "metaphor_items": [
-        "Verified",
-        "Ready"
+        "Password Check",
+        "Verified Safe"
       ],
-      "heading": "STUDIO LEVEL",
+      "heading": "SMART TRICK",
       "accent": "#10B981",
-      "bgTop": "#022C22"
+      "bgTop": "#022C22",
+      "action": "happy_fist_pump",
+      "media_name": "house_room"
     }
-  ]
+  ],
+  "tg_msg_id": "337",
+  "bgm": "tech",
+  "hook_text": "",
+  "counters": []
 }
