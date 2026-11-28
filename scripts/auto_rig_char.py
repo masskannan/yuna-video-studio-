@@ -352,6 +352,7 @@ def analyze_and_split(png_path, out_dir):
     }
     (out_p / "char_rig.json").write_text(json.dumps(rig, indent=2), encoding="utf-8")
     print(f"AUTO_RIG_V31_OK: {out_dir} ({framing}, conf={confidence})")
+    return rig
 
 if __name__ == "__main__":
     if len(sys.argv) >= 3 and not sys.argv[1].startswith("--"):

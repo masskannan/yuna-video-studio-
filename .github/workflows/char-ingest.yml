@@ -18,6 +18,7 @@ jobs:
           python-version: '3.11'
       - name: Install Pillow & NumPy
         run: |
+          sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends libgl1 libegl1 libgles2 libglib2.0-0
           pip install --quiet pillow numpy opencv-python-headless mediapipe vtracer
           mkdir -p models
           curl -sL -o models/pose_landmarker_heavy.task "https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task" || true
